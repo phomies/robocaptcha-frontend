@@ -21,11 +21,11 @@ function Layout(props: Props) {
   }, [router.pathname]);
 
   return (
-    <div className="font-poppins font-semibold text-gray-600 flex h-screen w-screen">
+    <div className="font-poppins-semibold text-gray-700 flex h-screen w-screen">
       <div className="z-50 h-screen fixed flex w-72 bg-white shadow-xl justify-center">
         <div className="flex-col">
           <button
-            className="flex mt-9 mb-8 self-start"
+            className="flex my-8 self-start"
             onClick={() => router.push("/home")}>
             <img src="/logo.png" alt="Logo" className="px-9" />
           </button>
@@ -36,7 +36,7 @@ function Layout(props: Props) {
         </div>
       </div>
       <div className="ml-72 bg-gray-100 w-full">
-        <div className="z-40 sticky top-0 px-9 pt-9 justify-between flex items-center">
+        <div className="z-40 sticky top-0 px-11 pt-9 justify-between flex items-center">
           <div>
             <h1 className="text-secondary text-2xl">{title}</h1>
           </div>
