@@ -26,7 +26,6 @@ function HomeItem(props: Props) {
             </h3>
           }
         </div>
-
       </div>
     </div>
   );

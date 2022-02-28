@@ -54,14 +54,14 @@ function Layout(props: Props) {
         </div>
       </div>
       <div className="ml-72 bg-background1 w-full">
-        <div className="z-40 sticky top-0 px-12 pt-9 justify-between flex items-center">
+        <div className="bg-background1 z-40 sticky top-0 px-12 pt-9 pb-5 justify-between flex items-center">
           <h1 className="font-poppins-semibold text-secondary text-2xl">{title}</h1>
           <div className="flex items-center gap-x-9 -mt-1 mb-1">
             <MdNotificationsNone className="h-8 w-8 text-gray-700 hover:text-blue-600 cursor-pointer" />
-            <div className="w-10 h-10 bg-blue-600 rounded-full" />
+            <button className="w-10 h-10 bg-blue-600 rounded-full" onClick={() => router.push("/profile")} />
           </div>
         </div>
-        <div className="bg-background2 overflow-y-scroll">{props.children}</div>
+        <div className="-mt-5 bg-background2 overflow-y-scroll">{props.children}</div>
       </div>
     </div>
   );
