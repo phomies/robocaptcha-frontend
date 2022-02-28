@@ -10,7 +10,14 @@ module.exports = {
         'poppins-medium': ['Poppins-Medium', 'sans-serif'],
         'poppins-semibold': ['Poppins-SemiBold', 'sans-serif'],
       },
+      colors: {
+        blue: {
+          lightBlue: '#F6F8FB',
+          darkBlue: '#1F58E7'
+        }
+      }
     },
+    
   },
   plugins: [],
 }
