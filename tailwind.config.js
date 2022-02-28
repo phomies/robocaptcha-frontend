@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        background1: '#F6F8FB',
+      },
       fontFamily: {
         'poppins-regular': ['Poppins-Regular', 'sans-serif'],
         'poppins-medium': ['Poppins-Medium', 'sans-serif'],
