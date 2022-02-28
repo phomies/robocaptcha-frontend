@@ -10,7 +10,7 @@ const Index: NextPage = () => {
         <link rel="icon" href="/logo.ico" />
       </Head>
 
-      <div className="font-poppins-semibold text-blue-500 flex justify-center items-center h-screen">Test</div>
+      <div className="font-poppins-semibold text-blue-600 flex justify-center items-center h-screen">Test</div>
     </div>
   )
 }

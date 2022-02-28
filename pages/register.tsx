@@ -6,7 +6,7 @@ export default function Register() {
   return (
     <div className="flex flex-col h-screen overflow-y-hidden">
       <nav className="h-12">
-        <img className="h-8 my-8 mx-20" alt="icon" src="/logo.png" />
+        <img className="h-8 my-8 mx-32" alt="icon" src="/logo.png" />
       </nav>
       <div className="grid grid-cols-3 mx-32 h-full">
         <div className="mt-44">
@@ -38,7 +38,7 @@ export default function Register() {
             <button className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white w-10/12 shadow-xl" onClick={() => router.push("/home")}>Register</button>
           </form>
         </div>
-          </div>
-          </div>
-    )
+      </div>
+    </div>
+  )
 }

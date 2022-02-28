@@ -6,7 +6,7 @@ export default function Login() {
   return (
     <div className="flex flex-col h-screen overflow-y-hidden">
       <nav className="h-12">
-        <img className="h-8 my-8 mx-20" alt="icon" src="/logo.png" />
+        <img className="h-8 my-8 mx-32" alt="icon" src="/logo.png" />
       </nav>
       <div className="grid grid-cols-3 mx-32 h-full">
         <div className="mt-44">
