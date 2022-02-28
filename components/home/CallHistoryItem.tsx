@@ -1,4 +1,4 @@
-import { BiCheckShield, BiShieldX } from "react-icons/bi";
+import { BiCheckShield, BiShieldX, BiUserCircle } from "react-icons/bi";
 import { VscCallOutgoing } from "react-icons/vsc";
 
 interface Props {
@@ -14,7 +14,10 @@ function CallHistoryItem(props: Props) {
   const { phoneNumber, contactName, location, date, time, blocked } = props;
   return (
     <div className="text-sm py-4 px-6 grid grid-cols-11">
-      <h3 className="col-span-2">{phoneNumber}</h3>
+      <h3 className="col-span-2 flex items-center gap-x-3">
+        <BiUserCircle className="h-6 w-6 text-gray-500" />
+        {phoneNumber}
+      </h3>
       <h3 className="col-span-2">{contactName || "-"}</h3>
       <h3 className="col-span-2">{location}</h3>
       <h3 className="col-span-2">{date}</h3>

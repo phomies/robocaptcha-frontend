@@ -9,7 +9,7 @@ export default function Login() {
         <img className="h-8 my-8 mx-32" alt="icon" src="/logo.png" />
       </nav>
       <div className="grid grid-cols-3 mx-32 h-full">
-        <div className="mt-44">
+        <div className="mt-60">
           <h1 className="font-poppins-semibold text-secondary text-5xl mb-6">Sign in to</h1>
           <h1 className="font-poppins-medium text-secondary text-3xl mb-12">our user platform</h1>
           <h1 className="font-poppins-regular text-sm mb-1">If you don't have an account registered <br /> You can register <a className="font-poppins-semibold text-blue-600 hover:underline" href="/register">here!</a></h1>
@@ -17,7 +17,7 @@ export default function Login() {
 
         <img className="w-7/12 mt-48" alt="login" src="/images/login.png" />
 
-        <div className="justify-end mt-36">
+        <div className="justify-end mt-44">
           <form>
             <h1 className="flex font-poppins-semibold text-2xl mb-9">Sign in</h1>
             <input className="placeholder:text-blue-darkBlue focus:outline-none font-poppins-regular text-sm text-blue-darkBlue px-5 w-10/12 h-14 rounded-lg bg-blue-lightBlue mb-10"
