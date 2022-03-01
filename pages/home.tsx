@@ -18,12 +18,12 @@ function Home() {
         </div>
         <div className="mt-7 bg-white shadow-lg rounded-lg w-full">
           <h2 className="py-4 px-6">Call History</h2>
-          <div className="bg-gray-50 text-sm py-4 px-6 grid grid-cols-11">
+          <div className="bg-gray-50 text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
             <h3 className="col-span-2">Phone Number</h3>
-            <h3 className="col-span-2">Contact Name</h3>
-            <h3 className="col-span-2">Location</h3>
+            <h3 className="hidden lg:block lg:col-span-2">Contact Name</h3>
+            <h3 className="hidden md:block md:col-span-2">Location</h3>
             <h3 className="col-span-2">Date</h3>
-            <h3 className="col-span-2">Time</h3>
+            <h3 className="hidden md:block md:col-span-2">Time</h3>
           </div>
           <CallHistoryItem phoneNumber="+65 8123 4567" contactName="John Doe" location="Singapore" date="10/10/2020" time="09:15-09:45am" blocked={true} />
           <CallHistoryItem phoneNumber="+65 8123 4567" contactName="John Doe" location="Singapore" date="10/10/2020" time="09:15-09:45am" blocked={true} />
