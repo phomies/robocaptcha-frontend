@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function Register() {
   const router = useRouter();
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   return (
     <div className="flex flex-col h-screen overflow-y-hidden">
@@ -33,15 +36,23 @@ export default function Register() {
             <input className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-10/12 h-14 rounded-lg bg-blue-lightBlue mb-3"
               placeholder="Phone number"
             />
-            <input className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-10/12 h-14 rounded-lg bg-blue-lightBlue mb-3"
+            <input className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-10/12 h-14 rounded-lg bg-blue-lightBlue mb-3 ${password !== "" && confirmPassword !== "" && password !== confirmPassword && "border border-red-400"}`}
               placeholder="Password"
               type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
             />
-            <input className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-10/12 h-14 rounded-lg bg-blue-lightBlue mb-7"
+            <input className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-10/12 h-14 rounded-lg bg-blue-lightBlue ${password !== "" && confirmPassword !== "" && password !== confirmPassword && "border border-red-400"}`}
               placeholder="Confirm password"
               type="password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
             />
-            <button className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white w-10/12 shadow-xl" onClick={() => router.push("/home")}>Register</button>
+            {
+              password !== "" && confirmPassword !== "" && password !== confirmPassword &&
+              <div className="mt-3 text-red-400">The two passwords do not match.</div>
+            }
+            <button className="mt-7 h-14 rounded-lg bg-blue-darkBlue mx-auto text-white w-10/12 shadow-xl" onClick={() => router.push("/home")}>Register</button>
           </form>
         </div>
       </div>
