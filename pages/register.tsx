@@ -50,7 +50,7 @@ export default function Register() {
             />
             {
               password !== "" && confirmPassword !== "" && password !== confirmPassword &&
-              <div className="mt-3 text-red-400">The two passwords do not match.</div>
+              <div className="mt-2 -mb-2 text-red-400">The two passwords do not match.</div>
             }
             <button className="mt-7 h-14 rounded-lg bg-blue-darkBlue mx-auto text-white w-10/12 shadow-xl" onClick={() => router.push("/home")}>Register</button>
           </form>
