@@ -16,20 +16,27 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
+// const UPDATE_EMAIL = gql`
+//   mutation UpdateUser($userInput: UserInput) {
+//     updateUser(userInput: $userInput) {
+//       email
+//     }
+//   }
+// `;
+
+
+
 function Profile() {
   const { getUserId } = useContext(AuthContext);
 
   const [editProfile, setEditProfile] = useState(false);
 
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  
   const { loading, error, data } = useQuery(GET_USER_BY_ID, {
     variables: { getUserId: getUserId() },
   })
+
   
+
   if (loading) return null;
   if (error) console.log("error");
   if (data) console.log(data);
@@ -37,21 +44,21 @@ function Profile() {
   return (
     <Layout>
       <div className="flex items-center gap-x-8 bg-background w-full px-12 py-3 pb-12">
-        <div className="items-center gap-x-8 first-letter:bg-background w-full px-24 py-7 pb-12">
-          <div className="grid grid-cols-5 mb-12">
-            <div className="col-span-1 w-32 h-32 bg-blue-600 rounded-full" />
+        <div className="items-center gap-x-8 first-letter:bg-background w-full lg:px-24 py-4">
+          <div className="grid lg:grid-cols-5 grid-cols-3 mb-12 gap-x-20">
+            <div className="lg:col-span-1 col-span-1 lg:w-32 lg:h-32 w-24 h-24 bg-blue-600 rounded-full" />
 
-            <div className="col-span-4 my-auto">
+            <div className="lg:col-span-4 col-span-2 my-auto">
               <h2 className="flex font-poppins-semibold mb-2 text-xl">{data?.getUser.name}</h2>
               <h2 className="flex font-poppins-regular text-sm text-gray-600">Update your photo and personal details</h2>
             </div>
           </div>
 
-          <div className="bg-white w-full px-8 p-6 shadow-sm">
-            <div className="grid grid-cols-2 mb-6">
-              <h1>Profile details</h1>
-              <div className="flex justify-self-end" onClick={() => { setEditProfile(true); }}>
-                <AiFillEdit className="my-auto mx-4" />
+          <div className="bg-white w-full px-8 p-5 shadow-sm">
+            <div className="grid grid-cols-2 mb-3">
+              <h1 className="my-auto">Profile details</h1>
+              <div className="flex justify-self-end hover:bg-blue-lightBlue px-4 py-2 rounded-lg" onClick={() => { setEditProfile(true); }}>
+                <AiFillEdit className="my-auto mr-4" />
                 <h1>Edit profile</h1>
               </div>
 
@@ -65,12 +72,27 @@ function Profile() {
                 <h1 className="text-right text-sm py-4">Contact Number</h1>
                 <h1 className="text-right text-sm py-4">Password</h1>
               </div>
-              <div className="col-span-3">
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.name}</h1>
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.email}</h1>
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.phoneNumber}</h1>
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.password}</h1>
-              </div>
+              {
+                (editProfile ?
+                  <>
+                    <div className="col-span-3">
+                      <input className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue border rounded-lg outline-none px-5 h-12" value={data?.getUser.name}/>
+                      <input className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue border rounded-lg outline-none px-5 h-12" value={data?.getUser.email}/>
+                      <input className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue border rounded-lg outline-none px-5 h-12" value={data?.getUser.phoneNumber}/>
+                      <input className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue border rounded-lg outline-none px-5 h-12" value={data?.getUser.password}/>
+                      
+                      <button className="bg-blue-darkBlue hover:shadow-md px-5 py-2 mt-4 font-poppins-regular flex ml-auto rounded-lg text-white text-sm" onClick={() => { setEditProfile(false);}}>Save</button>
+                    </div>
+                  </> :
+                  <>
+                    <div className="col-span-3">
+                      <h1 className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue h-12">{data?.getUser.name}</h1>
+                      <h1 className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue h-12">{data?.getUser.email}</h1>
+                      <h1 className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue h-12">{data?.getUser.phoneNumber.includes("Anonymous") ? "Anonymous" : data?.getUser.phoneNumber.slice(0, 3) + " " + data?.getUser.phoneNumber.slice(3, 7) + " " + data?.getUser.phoneNumber.slice(7)}</h1>
+                      <h1 className="flex text-sm py-4 my-1 font-poppins-regular w-full text-blue-darkBlue h-12 overflow-hidden">{data?.getUser.password}</h1>
+                    </div>
+                  </>)
+              }
             </div>
           </div>
         </div>
