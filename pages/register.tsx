@@ -1,10 +1,13 @@
 import { useRouter } from "next/router";
+import { AuthContext } from "../components/context/AuthContext";
+import { useEffect, useContext } from "react";
 import { useState } from "react";
 
 export default function Register() {
   const router = useRouter();
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const { getUserId, saveUserId } = useContext(AuthContext);
 
   return (
     <div className="flex flex-col h-screen overflow-y-hidden">
@@ -49,7 +52,10 @@ export default function Register() {
               password !== "" && confirmPassword !== "" && password !== confirmPassword &&
               <div className="mt-2 -mb-2 text-red-400">The two passwords do not match.</div>
             }
-            <button className="mt-7 h-12 lg:h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl" onClick={() => router.push("/home")}>Register</button>
+            <button className="mt-7 h-12 lg:h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl" onClick={() => {
+              saveUserId("6215b6f7836783021a4a585c");
+              router.push("/home");
+            }}>Register</button>
 
             <h1 className="text-gray-400 sm:my-6 mt-8 mb-4 text-center lg:w-10/12 w-full">or continue with</h1>
             <div className="flex lg:w-10/12 w-full">
