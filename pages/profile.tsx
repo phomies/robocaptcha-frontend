@@ -1,9 +1,9 @@
 import Layout from "../components/layout/Layout";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { AuthContext } from "../components/context/AuthContext";
-import { useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
-import { useState } from "react";
+import { useRouter } from "next/router";
 
 const GET_USER_BY_ID = gql`
   query getUser($getUserId: ID) {
@@ -16,23 +16,47 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
+const EDIT_USER_BY_ID = gql`
+  mutation updateUser($userInput: UserInput) {
+    updateUser(userInput: $userInput) {
+      name
+    }
+  }
+`
+
 function Profile() {
   const { getUserId } = useContext(AuthContext);
+  const router = useRouter();
 
   const [editProfile, setEditProfile] = useState(false);
-
-  const [userName, setUserName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  
+
   const { loading, error, data } = useQuery(GET_USER_BY_ID, {
     variables: { getUserId: getUserId() },
   })
-  
-  if (loading) return null;
+
+  const [updateUser] = useMutation(EDIT_USER_BY_ID, {
+    variables: {
+      userInput: {
+        _id: getUserId(),
+        name: name,
+        email: email,
+        phoneNumber: phoneNumber
+      }
+    }
+  })
+
+  if (loading) console.log("loading");
   if (error) console.log("error");
   if (data) console.log(data);
+
+  useEffect(() => {
+    setName(data?.getUser.name);
+    setEmail(data?.getUser.email);
+    setPhoneNumber(data?.getUser.phoneNumber);
+  }, [data])
 
   return (
     <Layout>
@@ -50,7 +74,7 @@ function Profile() {
           <div className="bg-white w-full px-8 p-6 shadow-sm">
             <div className="grid grid-cols-2 mb-6">
               <h1>Profile details</h1>
-              <div className="flex justify-self-end" onClick={() => { setEditProfile(true); }}>
+              <div className="flex justify-self-end" onClick={() => { setEditProfile(true) }}>
                 <AiFillEdit className="my-auto mx-4" />
                 <h1>Edit profile</h1>
               </div>
@@ -63,16 +87,18 @@ function Profile() {
                 <h1 className="text-right text-sm py-4">Name</h1>
                 <h1 className="text-right text-sm py-4">Email</h1>
                 <h1 className="text-right text-sm py-4">Contact Number</h1>
-                <h1 className="text-right text-sm py-4">Password</h1>
               </div>
               <div className="col-span-3">
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.name}</h1>
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.email}</h1>
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.phoneNumber}</h1>
-                <h1 className="flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue">{data?.getUser.password}</h1>
+                <input className="focus:outline-none flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue" value={name} onChange={e => setName(e.target.value)} />
+                <input className="focus:outline-none flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue" value={email} onChange={e => setEmail(e.target.value)} />
+                <input className="focus:outline-none flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
               </div>
             </div>
           </div>
+          <button onClick={() => {
+            updateUser();
+            router.reload();
+          }} className="my-12 h-12 rounded-lg bg-blue-600 text-white w-full shadow-xl">Save Edits</button>
         </div>
       </div>
     </Layout>

@@ -35,7 +35,7 @@ function Home() {
     variables: { getCallsToUserId: getUserId() }
   })
 
-  if (loading) return null;
+  if (loading) console.log("loading");
   if (error) {
     saveUserId("");
     router.push("/login");
