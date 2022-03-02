@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useRouter } from "next/router";
 import LayoutItem from "./LayoutItem";
 import { MdNotificationsNone, MdPayment, MdOutlineFeedback } from "react-icons/md";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 function Layout(props: Props) {
+  const { saveUserId } = useContext(AuthContext);
   const [title, setTitle] = useState<string>("");
   const router = useRouter();
   const [visibleDrawer, setVisibleDrawer] = useState(false);
@@ -68,7 +70,10 @@ function Layout(props: Props) {
             <LayoutItem title="Feedback" icon={<MdOutlineFeedback className="h-5 w-5" />} />
             <LayoutItem title="Help" icon={<IoMdHelp className="h-5 w-5" />} />
             <hr className="mb-2" />
-            <button onClick={() => router.push("/login")} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 hover:text-blue-600 hover:font-poppins-semibold">
+            <button onClick={() => {
+              saveUserId("");
+              router.push("/login");
+            }} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 hover:text-blue-600 hover:font-poppins-semibold">
               <BiLogOut className="h-5 w-5" />
               <div className="text-sm">Logout</div>
             </button>

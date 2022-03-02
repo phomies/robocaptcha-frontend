@@ -1,7 +1,14 @@
 import { useRouter } from "next/router";
+import { AuthContext } from "../components/context/AuthContext";
+import { useEffect, useContext } from "react";
 
 export default function Login() {
   const router = useRouter();
+  const { getUserId, saveUserId } = useContext(AuthContext);
+
+  useEffect(() => {
+    getUserId() && router.push("/home");
+  }, [])
 
   return (
     <div className="flex flex-col h-screen overflow-y-hidden">
@@ -28,7 +35,10 @@ export default function Login() {
               placeholder="Password"
               type="password"
             />
-            <button className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl" onClick={() => router.push("/home")}>Login</button>
+            <button className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl" onClick={() => {
+              saveUserId("6215b6f7836783021a4a585c");
+              router.push("/home");
+            }}>Login</button>
           </form>
           <h1 className="text-gray-400 sm:my-8 mt-8 mb-4 text-center lg:w-10/12 w-full">or continue with</h1>
           <div className="flex lg:w-10/12 w-full">
