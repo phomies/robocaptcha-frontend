@@ -81,7 +81,12 @@ function Profile() {
                     <AiFillEdit className="my-auto mx-4" />
                     <h1>Edit profile</h1>
                   </div> :
-                  <div className="text-red-500 hover:text-red-600 cursor-pointer flex justify-self-end" onClick={() => setEditProfile(false)}>
+                  <div className="text-red-500 hover:text-red-600 cursor-pointer flex justify-self-end" onClick={() => {
+                    setEditProfile(false);
+                    setName(data?.getUser.name);
+                    setEmail(data?.getUser.email);
+                    setPhoneNumber(data?.getUser.phoneNumber);
+                  }}>
                     <ImCross className="my-auto mx-4 h-3 w-3" />
                     <h1>Discard edit</h1>
                   </div>
@@ -89,8 +94,8 @@ function Profile() {
             </div>
             <hr className="mb-5" />
 
-            <div className="grid grid-cols-4 gap-x-20">
-              <div className={`col-span-1 ${editProfile && "h-48 justify-between flex flex-col"}`}>
+            <div className={`grid grid-cols-4 ${editProfile ? "gap-x-16" : "ml-5 gap-x-20"}`}>
+              <div className={`col-span-1 ${editProfile && "h-44 justify-between flex flex-col"}`}>
                 <h1 className="text-right text-sm py-4">Name</h1>
                 <h1 className="text-right text-sm py-4">Email</h1>
                 <h1 className="text-right text-sm py-4">Contact Number</h1>
@@ -107,7 +112,7 @@ function Profile() {
             <button onClick={() => {
               updateUser();
               router.reload();
-            }} className="my-12 h-12 rounded-lg bg-blue-600 hover:bg-blue-700 text-white w-full shadow-xl">
+            }} className="my-8 h-12 rounded-lg bg-blue-600 hover:bg-blue-700 text-white w-full shadow-xl">
               Save Edit
             </button>
           }
