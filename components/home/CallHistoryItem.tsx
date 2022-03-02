@@ -16,7 +16,7 @@ function CallHistoryItem(props: Props) {
     <div className="text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
       <h3 className="col-span-2 flex items-center gap-x-2">
         <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
-        {phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)}
+        {phoneNumber.includes("Anonymous") ? "Anonymous" : phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)}
       </h3>
       <h3 className="hidden lg:block lg:col-span-2">{contactName || "-"}</h3>
       <h3 className="hidden md:block md:col-span-2">{location}</h3>

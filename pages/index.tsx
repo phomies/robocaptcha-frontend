@@ -7,12 +7,10 @@ import { AuthContext } from '../components/context/AuthContext'
 const Index: NextPage = () => {
   const router = useRouter();
   const { getUserId } = useContext(AuthContext);
-  const id = getUserId();
 
   useEffect(() => {
-    console.log("id:", id)
-    router.push(id ? "/home" : "/login");
-  }, [])
+    router.push(getUserId() ? "/home" : "/login");
+  }, [getUserId()])
 
   return (
     <div>

@@ -1,16 +1,16 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 interface Props {
   children: React.ReactNode;
 }
 
 interface AuthContextInterface {
-  getUserId: () => string;
-  saveUserId: (s: string) => void;
+  getUserId: () => string | null | undefined;
+  saveUserId: (id: string) => void;
 }
 
 const authContextDefaults: AuthContextInterface = {
-  getUserId: () => "",
+  getUserId: () => null,
   saveUserId: () => null,
 };
 
@@ -18,21 +18,23 @@ export const AuthContext = createContext<AuthContextInterface>(authContextDefaul
 export const useAuthContext = () => useContext(AuthContext);
 
 function AuthProvider(props: Props) {
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    let id = localStorage.getItem("id");
-    id && setUserId(id);
-  });
+    if (localStorage.getItem("id") !== null) {
+      const id = localStorage.getItem("id");
+      setUserId(id);
+    }
+  }, []);
 
   const getUserId = () => {
     return userId;
   };
 
-  const saveUserId = (id: string) => {
+  const saveUserId = useCallback((id: string) => {
     localStorage.setItem("id", id);
     setUserId(id);
-  };
+  }, [])
 
   return (
     <AuthContext.Provider

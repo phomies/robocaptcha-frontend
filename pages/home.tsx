@@ -8,6 +8,7 @@ import CallHistoryItem from "../components/home/CallHistoryItem";
 import { useQuery, gql } from "@apollo/client";
 import { useContext } from "react";
 import { AuthContext } from "../components/context/AuthContext";
+import { useRouter } from "next/router";
 
 const GET_CALLS_TO_USER_ID = gql`
   query getCalls($getCallsToUserId: ID) {
@@ -27,14 +28,19 @@ const getAction = (action: string) => {
 }
 
 function Home() {
-  const { getUserId } = useContext(AuthContext);
+  const { getUserId, saveUserId } = useContext(AuthContext);
+  const router = useRouter();
 
   const { loading, error, data } = useQuery(GET_CALLS_TO_USER_ID, {
     variables: { getCallsToUserId: getUserId() }
   })
 
   if (loading) return null;
-  if (error) console.log("error");
+  if (error) {
+    saveUserId("");
+    router.push("/login");
+  };
+
   if (data) console.log(data);
 
   return (
@@ -56,7 +62,7 @@ function Home() {
             <h3 className="hidden md:block md:col-span-2">Time</h3>
           </div>
           {
-            data?.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from.includes("Anonymous") ? "Anonymous" : item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} action={getAction(item.action)} />)
+            data?.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} action={getAction(item.action)} />)
           }
         </div>
       </div>
