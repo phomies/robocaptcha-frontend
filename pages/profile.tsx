@@ -21,7 +21,7 @@ function Profile() {
     variables: { getUserId: getUserId() }
   })
 
-  if (loading) console.log("loading");
+  if (loading) return null;
   if (error) console.log("error");
   if (data) console.log(data);
 
