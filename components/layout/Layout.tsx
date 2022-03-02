@@ -37,9 +37,9 @@ function Layout(props: Props) {
   return (
     <div className="font-poppins-medium text-gray-700">
       <div className={`xl:hidden z-50 py-10 absolute w-screen h-screen bg-white ${!visibleDrawer && "hidden"}`}>
-        <div className="flex items-center px-12 mb-7 gap-x-10">
-          <ImCross className="xl:hidden h-5 w-5" onClick={() => setVisibleDrawer(false)} />
-          <h1 className="font-poppins-semibold text-secondary text-2xl">Menu</h1>
+        <div className="flex items-center px-12 mb-7 gap-x-8">
+          <ImCross className="xl:hidden h-4 w-4" onClick={() => setVisibleDrawer(false)} />
+          <h1 className="font-poppins-semibold text-secondary text-xl">Menu</h1>
         </div>
         <LayoutItem title="Home" icon={<FiHome className="h-5 w-5" />} />
         <LayoutItem title="Profile" icon={<CgUserList className="h-6 w-6" />} />
@@ -76,13 +76,13 @@ function Layout(props: Props) {
         </div>
         <div className="xl:ml-72 bg-background w-full">
           <div className="bg-background z-40 sticky top-0 px-12 pt-9 pb-5 justify-between flex items-center">
-            <div className="flex items-center gap-x-10">
-              <TiThMenu className="xl:hidden h-6 w-6" onClick={() => setVisibleDrawer(true)} />
-              <h1 className="font-poppins-semibold text-secondary text-2xl">{title}</h1>
+            <div className="flex items-center gap-x-8">
+              <TiThMenu className="xl:hidden h-5 w-5" onClick={() => setVisibleDrawer(true)} />
+              <h1 className="font-poppins-semibold text-secondary text-xl xl:text-2xl">{title}</h1>
             </div>
-            <div className="flex items-center gap-x-9 -mt-1 mb-1">
-              <MdNotificationsNone className="h-8 w-8 text-gray-700 hover:text-blue-600 cursor-pointer" />
-              <button className="w-10 h-10 bg-blue-600 rounded-full" onClick={() => router.push("/profile")} />
+            <div className="flex items-center gap-x-7 xl:gap-x-9 xl:-mt-1 xl:mb-1">
+              <MdNotificationsNone className="w-6 h-6 xl:h-8 xl:w-8 text-gray-700 hover:text-blue-600 cursor-pointer" />
+              <button className="w-8 h-8 xl:w-10 xl:h-10 bg-blue-600 rounded-full" onClick={() => router.push("/profile")} />
             </div>
           </div>
           <div className="-mt-5 bg-background2 overflow-y-scroll">{props.children}</div>

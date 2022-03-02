@@ -9,14 +9,14 @@ interface Props {
 
 function HomeItem(props: Props) {
   return (
-    <div className="bg-white shadow-lg rounded-lg w-full flex py-4 px-6 items-center gap-x-6">
+    <div className="bg-white shadow-lg rounded-lg w-full flex py-3 md:py-4 px-7 md:px-6 items-center gap-x-7 md:gap-x-6">
       {props.icon}
       <div className="w-full flex flex-col gap-y-1">
         <h2 className="text-xs font-poppins-medium">
           {props.title}
         </h2>
         <div className="w-full flex items-center justify-between">
-          <h2 className="text-blue-700 text-lg">
+          <h2 className="text-blue-700 text-base xl:text-lg">
             {props.stats}
           </h2>
           {

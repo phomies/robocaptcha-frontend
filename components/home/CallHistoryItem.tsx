@@ -13,16 +13,16 @@ interface Props {
 function CallHistoryItem(props: Props) {
   const { phoneNumber, contactName, location, date, time, blocked } = props;
   return (
-    <div className="text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
+    <div className="text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
       <h3 className="col-span-2 flex items-center gap-x-2">
-        <BiUserCircle className="md:hidden lg:block h-6 w-6 text-gray-500" />
+        <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
         {phoneNumber}
       </h3>
       <h3 className="hidden lg:block lg:col-span-2">{contactName || "-"}</h3>
       <h3 className="hidden md:block md:col-span-2">{location}</h3>
-      <h3 className="col-span-2">{date}</h3>
+      <h3 className="col-span-2 self-center">{date}</h3>
       <h3 className="hidden md:block md:col-span-2">{time}</h3>
-      <h3 className="md:col-span-1 flex items-center gap-x-8">
+      <h3 className="md:col-span-1 flex items-center gap-x-3 md:gap-x-8">
         {
           blocked ? <BiCheckShield className="w-6 h-6 text-green-400" /> : <BiShieldX className="w-6 h-6 text-red-400" />
         }
