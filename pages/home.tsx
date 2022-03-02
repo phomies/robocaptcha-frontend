@@ -5,8 +5,32 @@ import { FaRegClock } from "react-icons/fa";
 import { FiPhoneCall } from "react-icons/fi";
 import { MdOutlineSubscriptions } from "react-icons/md";
 import CallHistoryItem from "../components/home/CallHistoryItem";
+import { useQuery, gql } from "@apollo/client";
+import { useContext } from "react";
+import { AuthContext } from "../components/context/AuthContext";
+
+const GET_CALLS_TO_USER_ID = gql`
+  query getCalls($getCallsToUserId: ID) {
+    getCallsToUser(id: $getCallsToUserId) {
+      dateTime
+      from
+      action
+      _id
+    }
+  }
+`;
 
 function Home() {
+  const { getUserId } = useContext(AuthContext);
+
+  const { loading, error, data } = useQuery(GET_CALLS_TO_USER_ID, {
+    variables: { getCallsToUserId: getUserId() }
+  })
+
+  if (loading) return;
+  if (error) console.log("error");
+  if (data) console.log(data);
+
   return (
     <Layout>
       <div className="bg-background w-full px-12 pt-6 pb-12">
@@ -25,10 +49,9 @@ function Home() {
             <h3 className="col-span-2">Date</h3>
             <h3 className="hidden md:block md:col-span-2">Time</h3>
           </div>
-          <CallHistoryItem phoneNumber="+65 8123 4567" contactName="John Doe" location="Singapore" date="10/10/2020" time="09:15-09:45am" blocked={true} />
-          <CallHistoryItem phoneNumber="+65 8123 4567" contactName="John Doe" location="Singapore" date="10/10/2020" time="09:15-09:45am" blocked={true} />
-          <CallHistoryItem phoneNumber="+65 8123 4568" location="Singapore" date="10/10/2020" time="09:15-09:45am" blocked={false} />
-          <CallHistoryItem phoneNumber="+65 8123 4568" location="Singapore" date="10/10/2020" time="09:15-09:45am" blocked={false} />
+          {
+            data?.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} blocked={item.action === "accept"} />)
+          }
         </div>
       </div>
     </Layout>
