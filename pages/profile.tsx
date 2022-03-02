@@ -3,6 +3,7 @@ import { useQuery, useMutation, gql } from "@apollo/client";
 import { AuthContext } from "../components/context/AuthContext";
 import { useState, useContext, useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 import { useRouter } from "next/router";
 
 const GET_USER_BY_ID = gql`
@@ -74,31 +75,42 @@ function Profile() {
           <div className="bg-white w-full px-8 p-6 shadow-sm">
             <div className="grid grid-cols-2 mb-6">
               <h1>Profile details</h1>
-              <div className="flex justify-self-end" onClick={() => { setEditProfile(true) }}>
-                <AiFillEdit className="my-auto mx-4" />
-                <h1>Edit profile</h1>
-              </div>
-
+              {
+                !editProfile ?
+                  <div className="text-blue-500 hover:text-blue-600 cursor-pointer flex justify-self-end" onClick={() => setEditProfile(true)}>
+                    <AiFillEdit className="my-auto mx-4" />
+                    <h1>Edit profile</h1>
+                  </div> :
+                  <div className="text-red-500 hover:text-red-600 cursor-pointer flex justify-self-end" onClick={() => setEditProfile(false)}>
+                    <ImCross className="my-auto mx-4 h-3 w-3" />
+                    <h1>Discard edit</h1>
+                  </div>
+              }
             </div>
             <hr className="mb-5" />
 
             <div className="grid grid-cols-4 gap-x-20">
-              <div className="col-span-1">
+              <div className={`col-span-1 ${editProfile && "h-48 justify-between flex flex-col"}`}>
                 <h1 className="text-right text-sm py-4">Name</h1>
                 <h1 className="text-right text-sm py-4">Email</h1>
                 <h1 className="text-right text-sm py-4">Contact Number</h1>
               </div>
-              <div className="col-span-3">
-                <input className="focus:outline-none flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue" value={name} onChange={e => setName(e.target.value)} />
-                <input className="focus:outline-none flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue" value={email} onChange={e => setEmail(e.target.value)} />
-                <input className="focus:outline-none flex text-sm py-4 font-poppins-regular w-full text-blue-darkBlue" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
+              <div className={`col-span-3 ${editProfile && "py-2 h-full justify-between flex flex-col"}`}>
+                <input className={`focus:outline-none flex text-sm font-poppins-regular w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
+                <input className={`focus:outline-none flex text-sm font-poppins-regular w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
+                <input className={`focus:outline-none flex text-sm font-poppins-regular w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
               </div>
             </div>
           </div>
-          <button onClick={() => {
-            updateUser();
-            router.reload();
-          }} className="my-12 h-12 rounded-lg bg-blue-600 text-white w-full shadow-xl">Save Edit</button>
+          {
+            editProfile &&
+            <button onClick={() => {
+              updateUser();
+              router.reload();
+            }} className="my-12 h-12 rounded-lg bg-blue-600 hover:bg-blue-700 text-white w-full shadow-xl">
+              Save Edit
+            </button>
+          }
         </div>
       </div>
     </Layout>
