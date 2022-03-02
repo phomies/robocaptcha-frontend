@@ -21,7 +21,7 @@ export default function Login() {
           <form>
             <h1 className="text-black hidden lg:block font-poppins-semibold text-2xl mb-4">Sign in</h1>
             <input className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-10 mb-6"
-              placeholder="Email or username"
+              placeholder="Email or contact number"
               type="email"
             />
             <input className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-11 mb-10"
