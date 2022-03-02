@@ -9,8 +9,8 @@ export default function Login() {
         <img className="h-8 my-8 sm:mx-32 mx-10" alt="icon" src="/logo.png" />
       </nav>
       <div className="grid lg:grid-cols-2 xl:grid-cols-3 sm:mx-32 mx-10 h-full">
-        <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44 ">
-          <h1 className="font-poppins-semibold text-secondary lg:text-5xl text-3xl lg:mb-6 mb-2 mt-8">Sign in to</h1>
+        <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44">
+          <h1 className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8">Sign in to</h1>
           <h1 className="font-poppins-medium text-secondary lg:text-3xl text-xl lg:mb-12 mb-5">our user platform</h1>
           <h1 className="font-poppins-regular text-sm sm:mb-10">If you don't have an account registered, <br /> You can register <a className="font-poppins-semibold text-blue-600 hover:underline" href="/register">here!</a></h1>
         </div>
