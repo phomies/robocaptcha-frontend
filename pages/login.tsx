@@ -24,9 +24,9 @@ export default function Login() {
 
         <img className="hidden xl:block w-7/12 mt-48" alt="login" src="/images/login.png" />
 
-        <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end xl:self-center lg:mt-32 xl:-mt-44">
+        <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end lg:self-center -mt-10 md:-mt-12 lg:mt-0 xl:-mt-32">
           <form>
-            <h1 className="text-black hidden lg:block font-poppins-semibold text-2xl mb-4">Sign in</h1>
+            <h1 className="text-black hidden lg:block font-poppins-semibold text-2xl mb-8">Sign in</h1>
             <input className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-10 mb-6"
               placeholder="Email or contact number"
               type="email"
@@ -43,8 +43,8 @@ export default function Login() {
           <h1 className="text-gray-400 sm:my-8 mt-8 mb-4 text-center lg:w-10/12 w-full">or continue with</h1>
           <div className="flex lg:w-10/12 w-full">
             <div className="flex mx-auto">
-              <img className="h-10 mr-6" alt="icon" src="/images/apple.png" />
-              <img className="h-10" alt="icon" src="/images/google.png" />
+              <img className="cursor-pointer h-10 mr-6" alt="icon" src="/images/apple.png" />
+              <img className="cursor-pointer h-10" alt="icon" src="/images/google.png" />
             </div>
           </div>
         </div>
