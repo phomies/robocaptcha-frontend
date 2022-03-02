@@ -20,6 +20,12 @@ const GET_CALLS_TO_USER_ID = gql`
   }
 `;
 
+const getAction = (action: string) => {
+  if (action === "success") return 0;
+  if (action === "in-progress") return 1;
+  return 2;
+}
+
 function Home() {
   const { getUserId } = useContext(AuthContext);
 
@@ -50,7 +56,7 @@ function Home() {
             <h3 className="hidden md:block md:col-span-2">Time</h3>
           </div>
           {
-            data?.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from.includes("Anonymous") ? "Anonymous" : item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} blocked={item.action === "accept"} />)
+            data?.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from.includes("Anonymous") ? "Anonymous" : item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} action={getAction(item.action)} />)
           }
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { BiCheckShield, BiShieldX, BiUserCircle } from "react-icons/bi";
+import { BiCheckShield, BiShield, BiShieldX, BiUserCircle } from "react-icons/bi";
 import { VscCallOutgoing } from "react-icons/vsc";
 
 interface Props {
@@ -7,16 +7,16 @@ interface Props {
   location: string
   date: string
   time: string
-  blocked: boolean
+  action: number
 }
 
 function CallHistoryItem(props: Props) {
-  const { phoneNumber, contactName, location, date, time, blocked } = props;
+  const { phoneNumber, contactName, location, date, time, action } = props;
   return (
     <div className="text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
       <h3 className="col-span-2 flex items-center gap-x-2">
         <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
-        {phoneNumber}
+        {phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)}
       </h3>
       <h3 className="hidden lg:block lg:col-span-2">{contactName || "-"}</h3>
       <h3 className="hidden md:block md:col-span-2">{location}</h3>
@@ -24,7 +24,10 @@ function CallHistoryItem(props: Props) {
       <h3 className="hidden md:block md:col-span-2">{time}</h3>
       <h3 className="md:col-span-1 flex items-center gap-x-3 md:gap-x-8">
         {
-          blocked ? <BiCheckShield className="w-6 h-6 text-green-400" /> : <BiShieldX className="w-6 h-6 text-red-400" />
+          action === 0 ?
+            <BiCheckShield className="w-6 h-6 text-green-400" /> :
+            action === 1 ? <BiShield className="w-6 h-6 text-yellow-400" /> :
+              <BiShieldX className="w-6 h-6 text-red-400" />
         }
         <VscCallOutgoing className="cursor-pointer w-5 h-5 text-gray-400 hover:text-gray-700" />
       </h3>
