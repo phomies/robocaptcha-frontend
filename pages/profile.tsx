@@ -61,11 +61,11 @@ function Profile() {
   return (
     <Layout>
       <div className="flex items-center gap-x-8 bg-background w-full px-12 py-3 pb-12">
-        <div className="items-center gap-x-8 first-letter:bg-background w-full px-24 py-7 pb-12">
-          <div className="grid grid-cols-5 mb-12">
-            <div className="col-span-1 w-32 h-32 bg-blue-600 rounded-full" />
+        <div className="items-center gap-x-8 first-letter:bg-background w-full lg:px-24 py-4">
+          <div className="grid lg:grid-cols-5 grid-cols-3 mb-12 gap-x-20">
+            <div className="lg:col-span-1 col-span-1 lg:w-32 lg:h-32 w-24 h-24 bg-blue-600 rounded-full" />
 
-            <div className="col-span-4 my-auto">
+            <div className="lg:col-span-4 col-span-2 my-auto">
               <h2 className="flex font-poppins-semibold mb-2 text-xl">{data?.getUser.name}</h2>
               <h2 className="flex font-poppins-regular text-sm text-gray-600">Update your photo and personal details</h2>
             </div>
@@ -98,7 +98,7 @@ function Profile() {
           <button onClick={() => {
             updateUser();
             router.reload();
-          }} className="my-12 h-12 rounded-lg bg-blue-600 text-white w-full shadow-xl">Save Edits</button>
+          }} className="my-12 h-12 rounded-lg bg-blue-600 text-white w-full shadow-xl">Save Edit</button>
         </div>
       </div>
     </Layout>
