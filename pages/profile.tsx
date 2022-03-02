@@ -98,7 +98,7 @@ function Profile() {
                 <h1 className="text-right py-4">Name</h1>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
+                <input readOnly={!editProfile} className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
               </div>
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
@@ -106,7 +106,7 @@ function Profile() {
                 <h1 className="text-right py-4">Email</h1>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
+                <input readOnly={!editProfile} className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
               </div>
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
@@ -114,7 +114,7 @@ function Profile() {
                 <h1 className="text-right py-4">Contact Number</h1>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={editProfile ? phoneNumber : phoneNumber?.slice(0, 3) + " " + phoneNumber?.slice(3, 7) + " " + phoneNumber?.slice(7)} onChange={e => setPhoneNumber(e.target.value)} />
+                <input readOnly={!editProfile} className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={editProfile ? phoneNumber : phoneNumber?.slice(0, 3) + " " + phoneNumber?.slice(3, 7) + " " + phoneNumber?.slice(7)} onChange={e => setPhoneNumber(e.target.value)} />
               </div>
             </div>
           </div>
