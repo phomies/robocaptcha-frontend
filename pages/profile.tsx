@@ -73,7 +73,7 @@ function Profile() {
 
           <div className="bg-white shadow-lg rounded-lg w-full px-8 p-6">
             <div className="grid grid-cols-2 mb-6">
-              <h1>Profile details</h1>
+              <h1 className="text-base font-poppins-semibold">Profile Details</h1>
               {
                 !editProfile ?
                   <div className="items-center text-blue-500 hover:text-blue-600 cursor-pointer flex justify-self-end" onClick={() => setEditProfile(true)}>
