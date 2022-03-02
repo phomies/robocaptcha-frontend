@@ -9,7 +9,7 @@ import CallHistoryItem from "../components/home/CallHistoryItem";
 function Home() {
   return (
     <Layout>
-      <div className="bg-background w-full px-12 py-6">
+      <div className="bg-background w-full px-12 pt-6 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-5 md:gap-6">
           <HomeItem title="Weekly Blocked Calls" stats="213" icon={<RiCalendarCheckLine className="text-blue-600 h-7 w-7" />} />
           <HomeItem title="Total Blocked Calls" stats="4,000" icon={<FaRegClock className="text-blue-600 h-7 w-7" />} />

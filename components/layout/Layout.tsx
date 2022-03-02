@@ -74,7 +74,7 @@ function Layout(props: Props) {
             </button>
           </div>
         </div>
-        <div className="xl:ml-72 bg-background w-full">
+        <div className={`xl:ml-72 bg-background w-full ${visibleDrawer && "hidden xl:block"}`}>
           <div className="bg-background z-40 sticky top-0 px-12 pt-9 pb-5 justify-between flex items-center">
             <div className="flex items-center gap-x-8">
               <TiThMenu className="xl:hidden h-5 w-5" onClick={() => setVisibleDrawer(true)} />

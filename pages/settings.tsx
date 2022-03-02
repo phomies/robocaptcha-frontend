@@ -3,7 +3,7 @@ import Layout from "../components/layout/Layout";
 function Settings() {
   return (
     <Layout>
-      <div className="flex gap-x-4 px-12 py-6">
+      <div className="bg-background w-full px-12 pt-6 pb-12">
 
       </div>
     </Layout>
