@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { AuthContext } from "../components/context/AuthContext";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { useState } from "react";
 
 export default function Register() {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const { getUserId, saveUserId } = useContext(AuthContext);
+  const { saveUserId } = useContext(AuthContext);
 
   return (
     <div className="flex flex-col h-screen overflow-y-hidden">

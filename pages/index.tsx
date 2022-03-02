@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import { useEffect, useContext } from 'react'
 import { AuthContext } from '../components/context/AuthContext'
 
 const Index: NextPage = () => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { getUserId } = useContext(AuthContext);
 
   useEffect(() => {

@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { AuthContext } from "../components/context/AuthContext";
 import { useEffect, useContext } from "react";
 
 export default function Login() {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { getUserId, saveUserId } = useContext(AuthContext);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import LayoutItem from "./LayoutItem";
 import { MdNotificationsNone, MdPayment, MdOutlineFeedback } from "react-icons/md";
 import { FiHome, FiSettings } from "react-icons/fi";
@@ -17,8 +17,8 @@ interface Props {
 function Layout(props: Props) {
   const { saveUserId } = useContext(AuthContext);
   const [title, setTitle] = useState<string>("");
-  const router = useRouter();
-  const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const router: NextRouter = useRouter();
+  const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
 
   useEffect(() => {
     if (router.pathname.includes("home")) {

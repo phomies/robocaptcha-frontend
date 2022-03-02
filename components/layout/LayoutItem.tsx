@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { ReactElement } from "react";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 function LayoutItem(props: Props) {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const focused = router.pathname == `/${props.title.toLowerCase()}`;
 
   return (

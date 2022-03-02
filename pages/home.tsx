@@ -8,7 +8,7 @@ import CallHistoryItem from "../components/home/CallHistoryItem";
 import { useQuery, gql } from "@apollo/client";
 import { useContext } from "react";
 import { AuthContext } from "../components/context/AuthContext";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 
 const GET_CALLS_TO_USER_ID = gql`
   query getCalls($getCallsToUserId: ID) {
@@ -29,17 +29,16 @@ const getAction = (action: string) => {
 
 function Home() {
   const { getUserId, saveUserId } = useContext(AuthContext);
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
-  const { loading, error, data } = useQuery(GET_CALLS_TO_USER_ID, {
+  const { error, data } = useQuery(GET_CALLS_TO_USER_ID, {
     variables: { getCallsToUserId: getUserId() }
   })
 
-  if (loading) console.log("loading");
   if (error) {
     saveUserId("");
     router.push("/login");
-  };
+  }
 
   if (data) console.log(data);
 

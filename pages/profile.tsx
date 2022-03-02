@@ -4,7 +4,7 @@ import { AuthContext } from "../components/context/AuthContext";
 import { useState, useContext, useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 
 const GET_USER_BY_ID = gql`
   query getUser($getUserId: ID) {
@@ -27,14 +27,14 @@ const EDIT_USER_BY_ID = gql`
 
 function Profile() {
   const { getUserId } = useContext(AuthContext);
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
-  const [editProfile, setEditProfile] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [editProfile, setEditProfile] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
-  const { loading, error, data } = useQuery(GET_USER_BY_ID, {
+  const { error, data } = useQuery(GET_USER_BY_ID, {
     variables: { getUserId: getUserId() },
   })
 
@@ -49,7 +49,6 @@ function Profile() {
     }
   })
 
-  if (loading) console.log("loading");
   if (error) console.log("error");
   if (data) console.log(data);
 
@@ -103,7 +102,7 @@ function Profile() {
               <div className={`col-span-3 ${editProfile && "py-2 h-full justify-between flex flex-col"}`}>
                 <input className={`focus:outline-none flex text-sm font-poppins-regular w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
                 <input className={`focus:outline-none flex text-sm font-poppins-regular w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
-                <input className={`focus:outline-none flex text-sm font-poppins-regular w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
+                <input className={`focus:outline-none flex text-sm font-poppins-regular w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={editProfile ? phoneNumber : phoneNumber?.slice(0, 3) + " " + phoneNumber?.slice(3, 7) + " " + phoneNumber?.slice(7)} onChange={e => setPhoneNumber(e.target.value)} />
               </div>
             </div>
           </div>
