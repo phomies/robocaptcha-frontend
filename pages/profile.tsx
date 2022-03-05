@@ -7,10 +7,10 @@ import { ImCross } from "react-icons/im";
 import { NextRouter, useRouter } from "next/router";
 
 const GET_USER_BY_ID = gql`
-  query getUser($getUserId: ID) {
-    getUser(id: $getUserId) {
+  query getUser($id: String){
+    getUser(_id: $id) {
+      _id
       name
-      password
       email
       phoneNumber
     }
@@ -20,7 +20,7 @@ const GET_USER_BY_ID = gql`
 const EDIT_USER_BY_ID = gql`
   mutation updateUser($userInput: UserInput) {
     updateUser(userInput: $userInput) {
-      name
+      _id
     }
   }
 `
@@ -35,7 +35,7 @@ function Profile() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { error, data } = useQuery(GET_USER_BY_ID, {
-    variables: { getUserId: getUserId() },
+    variables: { id: getUserId() },
   })
 
   const [updateUser] = useMutation(EDIT_USER_BY_ID, {

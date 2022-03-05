@@ -16,6 +16,7 @@ export default function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        console.log("id: ", user.uid)
         saveUserId(user.uid);
       })
       .then(() => router.push("/home"))
