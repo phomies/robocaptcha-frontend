@@ -11,16 +11,18 @@ import { AuthContext } from "../components/context/AuthContext";
 import { NextRouter, useRouter } from "next/router";
 import CallHistoryGraph from "../components/home/CallHistoryGraph";
 
-// const GET_CALLS_TO_USER_ID = gql`
-//   query getCalls($getCallsToUserId: ID) {
-//     getCallsToUser(id: $getCallsToUserId) {
-//       dateTime
-//       from
-//       action
-//       _id
-//     }
-//   }
-// `;
+const GET_CALLS_BY_ID = gql`
+  query getUser($id: String){
+    getUser(_id: $id) {
+      calls {
+        _id
+        action
+        dateTime
+        from
+      }
+    }
+  }
+`;
 
 const getAction = (action: string) => {
   if (action === "success") return 0;
@@ -32,23 +34,23 @@ function Home() {
   const { getUserId, saveUserId } = useContext(AuthContext);
   const router: NextRouter = useRouter();
 
-  // const { error, data } = useQuery(GET_CALLS_TO_USER_ID, {
-  //   variables: { getCallsToUserId: getUserId() }
-  // })
+  const { error, data } = useQuery(GET_CALLS_BY_ID, {
+    variables: { id: getUserId() }
+  })
 
-  // if (error) {
-  //   saveUserId("");
-  //   router.push("/login");
-  // }
+  if (error) {
+    saveUserId("");
+    router.push("/login");
+  }
 
-  // if (data) console.log(data);
+  if (data) console.log(data);
 
   return (
     <Layout>
       <div className="bg-background w-full px-12 pt-6 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-5 md:gap-6">
           <HomeItem title="Weekly Blocked Calls" stats="-" icon={<RiCalendarCheckLine className="text-blue-600 h-7 w-7" />} />
-          {/* <HomeItem title="Total Blocked Calls" stats={data?.getCallsToUser.length} icon={<FaRegClock className="text-blue-600 h-7 w-7" />} /> */}
+          <HomeItem title="Total Blocked Calls" stats={data?.getUser.calls.length} icon={<FaRegClock className="text-blue-600 h-7 w-7" />} />
           <HomeItem title="New Callers (Weekly)" stats="-" increase={10} icon={<FiPhoneCall className="text-blue-600 h-7 w-7" />} />
           <HomeItem title="Subscription Renewal" stats="12 Dec 2022" icon={<MdOutlineSubscriptions className="text-blue-600 h-7 w-7" />} />
         </div>
@@ -62,11 +64,11 @@ function Home() {
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
           </div>
-          {/* {
-            data?.getCallsToUser.length > 0 ?
-              data.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} action={getAction(item.action)} />) :
+          {
+            data?.getUser.calls.length > 0 ?
+              data.getUser.calls.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} action={getAction(item.action)} />) :
               <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">No records found</div>
-          } */}
+          }
         </div>
       </div>
     </Layout>
