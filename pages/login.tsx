@@ -4,28 +4,27 @@ import { useEffect, useContext, useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from '../firebase/clientApp';
 
-const auth = getAuth();
-
-const onSubmit = async (email: string, password: string) => {
-  signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    console.log("user: ", user)
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log("error: ", errorMessage)
-  });
-}
+const auth = getAuth(app);
 
 export default function Login() {
   const router: NextRouter = useRouter();
   const { getUserId, saveUserId } = useContext(AuthContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const onSubmit = async (email: string, password: string) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        saveUserId(user.uid);
+      })
+      .then(() => router.push("/home"))
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("error: ", errorMessage)
+      });
+  }
 
   useEffect(() => {
     getUserId() && router.push("/home");
@@ -50,7 +49,7 @@ export default function Login() {
             <h1 className="text-black hidden lg:block font-poppins-semibold text-2xl mb-8">Sign in</h1>
             <input className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-10 mb-6"
               placeholder="Email or contact number"
-              value={email} 
+              value={email}
               onChange={e => setEmail(e.target.value)}
               type="email"
             />
@@ -60,10 +59,9 @@ export default function Login() {
               onChange={e => setPassword(e.target.value)}
               type="password"
             />
-            <button className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl" onClick={() => {
+            <button className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl" onClick={e => {
+              e.preventDefault();
               onSubmit(email, password);
-              // saveUserId("6215b6f7836783021a4a585c");
-              // router.push("/home");
             }}>Login</button>
           </form>
           <h1 className="text-gray-400 sm:my-8 mt-8 mb-4 text-center lg:w-10/12 w-full">or continue with</h1>
