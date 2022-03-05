@@ -63,7 +63,9 @@ function Home() {
             <h3 className="hidden md:block md:col-span-2">Time</h3>
           </div>
           {
-            data?.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} action={getAction(item.action)} />)
+            data?.getCallsToUser.length > 0 ?
+              data.getCallsToUser.map((item: any) => <CallHistoryItem key={item._id} phoneNumber={item.from} contactName="-" location={item.from.includes("+65") ? "Singapore" : "Overseas"} date={new Date(item.dateTime).toDateString()} time={new Date(item.dateTime).toLocaleTimeString()} action={getAction(item.action)} />) :
+              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">No records found</div>
           }
         </div>
       </div>

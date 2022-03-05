@@ -56,7 +56,6 @@ const options = {
   plugins: {
     legend: {
       display: false,
-      // position: 'top' as const,
     },
     title: {
       display: false,
