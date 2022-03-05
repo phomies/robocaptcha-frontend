@@ -7,10 +7,10 @@ import { ImCross } from "react-icons/im";
 import { NextRouter, useRouter } from "next/router";
 
 const GET_USER_BY_ID = gql`
-  query getUser($getUserId: ID) {
-    getUser(id: $getUserId) {
+  query getUser($id: String){
+    getUser(_id: $id) {
+      _id
       name
-      password
       email
       phoneNumber
     }
@@ -20,7 +20,7 @@ const GET_USER_BY_ID = gql`
 const EDIT_USER_BY_ID = gql`
   mutation updateUser($userInput: UserInput) {
     updateUser(userInput: $userInput) {
-      name
+      _id
     }
   }
 `
@@ -35,7 +35,7 @@ function Profile() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { error, data } = useQuery(GET_USER_BY_ID, {
-    variables: { getUserId: getUserId() },
+    variables: { id: getUserId() },
   })
 
   const [updateUser] = useMutation(EDIT_USER_BY_ID, {
@@ -66,19 +66,19 @@ function Profile() {
             <div className="flex-none w-14 h-14 lg:w-24 lg:h-24 bg-blue-600 rounded-full" />
 
             <div>
-              <h2 className="flex font-poppins-semibold mb-2 text-lg md:text-xl">{data?.getUser.name}</h2>
-              <h2 className="flex font-poppins-regular text-sm md:text-base text-gray-500">Update your photo and personal details</h2>
+              <div className="flex font-poppins-semibold mb-2 text-lg md:text-xl">{data?.getUser.name}</div>
+              <div className="flex font-poppins-regular text-sm md:text-base text-gray-500">Update your photo and personal details</div>
             </div>
           </div>
 
           <div className="bg-white shadow-lg rounded-lg w-full px-8 p-6">
-            <div className="grid grid-cols-2 mb-6">
-              <h1 className="text-base font-poppins-semibold">Profile Details</h1>
+            <div className="grid grid-cols-2 mb-5">
+              <div className="text-base font-poppins-semibold">Profile Details</div>
               {
                 !editProfile ?
                   <div className="items-center text-blue-500 hover:text-blue-600 cursor-pointer flex justify-self-end" onClick={() => setEditProfile(true)}>
-                    <AiFillEdit className="my-auto mx-4" />
-                    <h3 className="text-sm lg:text-base">Edit</h3>
+                    <AiFillEdit className="h-4 w-4 md:h-5 md:w-5 mx-4" />
+                    <div className="text-sm lg:text-base">Edit</div>
                   </div> :
                   <div className="items-center text-red-500 hover:text-red-600 cursor-pointer flex justify-self-end" onClick={() => {
                     setEditProfile(false);
@@ -86,8 +86,8 @@ function Profile() {
                     setEmail(data?.getUser.email);
                     setPhoneNumber(data?.getUser.phoneNumber);
                   }}>
-                    <ImCross className="my-auto mx-4 h-3 w-3" />
-                    <h3 className="text-sm lg:text-base">Discard</h3>
+                    <ImCross className="mx-4 h-3 w-3" />
+                    <div className="text-sm lg:text-base">Discard</div>
                   </div>
               }
             </div>
@@ -95,7 +95,7 @@ function Profile() {
 
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
               <div className={`w-1/4 flex text-xs sm:text-sm flex-col font-poppins-semibold ${editProfile ? "gap-y-2" : "gap-y-1"}`}>
-                <h1 className="text-right py-4">Name</h1>
+                <div className="text-right py-4">Name</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
                 <input readOnly={!editProfile} className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
@@ -103,7 +103,7 @@ function Profile() {
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
               <div className={`w-1/4 flex text-xs sm:text-sm flex-col font-poppins-semibold ${editProfile ? "gap-y-2" : "gap-y-1"}`}>
-                <h1 className="text-right py-4">Email</h1>
+                <div className="text-right py-4">Email</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
                 <input readOnly={!editProfile} className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
@@ -111,7 +111,7 @@ function Profile() {
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
               <div className={`w-1/4 flex text-xs sm:text-sm flex-col font-poppins-semibold ${editProfile ? "gap-y-2" : "gap-y-1"}`}>
-                <h1 className="text-right py-4">Contact Number</h1>
+                <div className="text-right py-4">Contact Number</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
                 <input readOnly={!editProfile} className={`focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue ${editProfile ? "h-10 border px-6 py-2 rounded-full" : "py-4"}`} value={editProfile ? phoneNumber : phoneNumber?.slice(0, 3) + " " + phoneNumber?.slice(3, 7) + " " + phoneNumber?.slice(7)} onChange={e => setPhoneNumber(e.target.value)} />

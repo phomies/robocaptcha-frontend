@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '~antd/dist/antd.css';
 
 @font-face {
     font-family: 'Poppins-Regular';
@@ -15,4 +16,8 @@
 @font-face {
     font-family: 'Poppins-SemiBold';
     src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+}
+
+.ant-drawer-body {
+    padding: 0
 }

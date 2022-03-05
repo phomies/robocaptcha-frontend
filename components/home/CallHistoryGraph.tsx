@@ -29,7 +29,7 @@ const data = {
   datasets: [
     {
       label: 'Calls Accepted',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 20 })),
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 10 })),
       borderColor: 'rgba(74, 222, 128, 0.7)',
       backgroundColor: 'rgba(74, 222, 128, 0.3)',
       borderWidth: 2,
@@ -39,7 +39,7 @@ const data = {
     },
     {
       label: 'Calls Blocked',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 20 })),
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 10 })),
       borderColor: 'rgba(248, 113, 113, 0.7)',
       backgroundColor: 'rgba(248, 113, 113, 0.1)',
       borderWidth: 2,
@@ -67,7 +67,7 @@ const options = {
 function CallHistoryGraph() {
   return (
     <div className="py-5 px-7 flex flex-col gap-y-4 mt-7 bg-white shadow-lg rounded-lg w-full">
-      <h2 className="text-sm md:text-base font-poppins-semibold">Calls Received (Past 7 days)</h2>
+      <div className="text-sm md:text-base font-poppins-semibold">Calls Received (Past 7 days)</div>
       <div className="w-full h-60">
         <Line options={options} data={data} />
       </div>
