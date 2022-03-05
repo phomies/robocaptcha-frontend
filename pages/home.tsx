@@ -54,13 +54,13 @@ function Home() {
         </div>
         <CallHistoryGraph />
         <div className="mt-7 py-1 bg-white shadow-lg rounded-lg w-full">
-          <h2 className="py-4 px-7 text-sm md:text-base font-poppins-semibold">Call History</h2>
-          <div className="font-poppins-semibold bg-gray-50 text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
-            <h3 className="col-span-2">Phone Number</h3>
-            <h3 className="hidden lg:block lg:col-span-2">Contact Name</h3>
-            <h3 className="hidden md:block md:col-span-2">Location</h3>
-            <h3 className="col-span-2">Date</h3>
-            <h3 className="hidden md:block md:col-span-2">Time</h3>
+          <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold">Call History</div>
+          <div className="font-poppins-semibold bg-gray-50 text-xs md:text-sm py-4 px-7 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
+            <div className="col-span-2">Phone Number</div>
+            <div className="hidden lg:block lg:col-span-2">Contact Name</div>
+            <div className="hidden md:block md:col-span-2">Location</div>
+            <div className="col-span-2">Date</div>
+            <div className="hidden md:block md:col-span-2">Time</div>
           </div>
           {/* {
             data?.getCallsToUser.length > 0 ?
