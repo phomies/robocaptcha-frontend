@@ -17,3 +17,7 @@
     font-family: 'Poppins-SemiBold';
     src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
 }
+
+.ant-drawer-body {
+    padding: 0
+}

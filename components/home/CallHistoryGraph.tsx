@@ -29,7 +29,7 @@ const data = {
   datasets: [
     {
       label: 'Calls Accepted',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 20 })),
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 10 })),
       borderColor: 'rgba(74, 222, 128, 0.7)',
       backgroundColor: 'rgba(74, 222, 128, 0.3)',
       borderWidth: 2,
@@ -39,7 +39,7 @@ const data = {
     },
     {
       label: 'Calls Blocked',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 20 })),
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 10 })),
       borderColor: 'rgba(248, 113, 113, 0.7)',
       backgroundColor: 'rgba(248, 113, 113, 0.1)',
       borderWidth: 2,
