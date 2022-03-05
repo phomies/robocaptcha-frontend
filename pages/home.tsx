@@ -9,6 +9,7 @@ import { useQuery, gql } from "@apollo/client";
 import { useContext } from "react";
 import { AuthContext } from "../components/context/AuthContext";
 import { NextRouter, useRouter } from "next/router";
+import CallHistoryGraph from "../components/home/CallHistoryGraph";
 
 const GET_CALLS_TO_USER_ID = gql`
   query getCalls($getCallsToUserId: ID) {
@@ -51,8 +52,9 @@ function Home() {
           <HomeItem title="New Callers (Weekly)" stats="-" increase={10} icon={<FiPhoneCall className="text-blue-600 h-7 w-7" />} />
           <HomeItem title="Subscription Renewal" stats="12 Dec 2022" icon={<MdOutlineSubscriptions className="text-blue-600 h-7 w-7" />} />
         </div>
-        <div className="mt-7 bg-white shadow-lg rounded-lg w-full">
-          <h2 className="py-4 px-6 text-sm md:text-base font-poppins-semibold">Call History</h2>
+        <CallHistoryGraph />
+        <div className="mt-7 py-1 bg-white shadow-lg rounded-lg w-full">
+          <h2 className="py-4 px-7 text-sm md:text-base font-poppins-semibold">Call History</h2>
           <div className="font-poppins-semibold bg-gray-50 text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
             <h3 className="col-span-2">Phone Number</h3>
             <h3 className="hidden lg:block lg:col-span-2">Contact Name</h3>
