@@ -4,22 +4,22 @@ interface Props {
   children: React.ReactNode;
 }
 
-interface AuthContextInterface {
+interface AppContextInterface {
   getUserId: () => string | null | undefined;
   saveUserId: (id: string) => void;
   getTheme: () => string | null | undefined;
   saveTheme: (id: string) => void;
 }
 
-const authContextDefaults: AuthContextInterface = {
+const appContextDefaults: AppContextInterface = {
   getUserId: () => null,
   saveUserId: () => null,
   getTheme: () => null,
   saveTheme: () => null,
 };
 
-export const AuthContext = createContext<AuthContextInterface>(authContextDefaults);
-export const useAuthContext = () => useContext(AuthContext);
+export const AppContext = createContext<AppContextInterface>(appContextDefaults);
+export const useAppContext = () => useContext(AppContext);
 
 function AuthProvider(props: Props) {
   const [userId, setUserId] = useState<string | null>(null);
@@ -31,8 +31,8 @@ function AuthProvider(props: Props) {
       setUserId(id);
     }
     if (localStorage.getItem("theme") !== null) {
-      const theme = localStorage.getItem("theme");
-      setTheme(theme);
+      const th = localStorage.getItem("theme");
+      setTheme(th);
     }
   }, []);
 
@@ -49,13 +49,13 @@ function AuthProvider(props: Props) {
     return theme;
   };
 
-  const saveTheme = useCallback((theme: string) => {
-    localStorage.setItem("theme", theme);
-    setTheme(theme);
+  const saveTheme = useCallback((th: string) => {
+    localStorage.setItem("theme", th);
+    setTheme(th);
   }, [])
 
   return (
-    <AuthContext.Provider
+    <AppContext.Provider
       value={{
         getUserId,
         saveUserId,
@@ -63,7 +63,7 @@ function AuthProvider(props: Props) {
         saveTheme
       }}>
       {props.children}
-    </AuthContext.Provider>
+    </AppContext.Provider>
   );
 }
 

@@ -7,7 +7,7 @@ import { MdOutlineSubscriptions } from "react-icons/md";
 import CallHistoryItem from "../components/home/CallHistoryItem";
 import { useQuery, gql } from "@apollo/client";
 import { useContext } from "react";
-import { AuthContext } from "../components/context/AuthContext";
+import { AppContext } from "../components/context/AppContext";
 import { NextRouter, useRouter } from "next/router";
 import CallHistoryGraph from "../components/home/CallHistoryGraph";
 
@@ -31,7 +31,7 @@ const getAction = (action: string) => {
 }
 
 function Home() {
-  const { getUserId, saveUserId } = useContext(AuthContext);
+  const { getUserId, saveUserId } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
   const { error, data } = useQuery(GET_CALLS_BY_ID, {

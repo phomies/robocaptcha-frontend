@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AppContext } from "../context/AppContext";
 import { NextRouter, useRouter } from "next/router";
 import LayoutItem from "./LayoutItem";
 import { FaUserCircle } from "react-icons/fa";
@@ -19,7 +19,7 @@ interface Props {
 }
 
 function Layout(props: Props) {
-  const { saveUserId, getTheme, saveTheme } = useContext(AuthContext);
+  const { saveUserId, getTheme, saveTheme } = useContext(AppContext);
   const [title, setTitle] = useState<string>("");
   const router: NextRouter = useRouter();
   const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);

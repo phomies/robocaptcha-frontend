@@ -1,5 +1,5 @@
 import { NextRouter, useRouter } from "next/router";
-import { AuthContext } from "../components/context/AuthContext";
+import { AppContext } from "../components/context/AppContext";
 import { Fragment, useEffect, useContext, useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from '../firebase/clientApp';
@@ -9,7 +9,7 @@ const auth = getAuth(app);
 
 export default function Login() {
   const router: NextRouter = useRouter();
-  const { getUserId, saveUserId } = useContext(AuthContext);
+  const { getUserId, saveUserId } = useContext(AppContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);

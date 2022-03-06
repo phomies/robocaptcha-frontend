@@ -1,5 +1,5 @@
 import { NextRouter, useRouter } from "next/router";
-import { AuthContext } from "../components/context/AuthContext";
+import { AppContext } from "../components/context/AppContext";
 import { useContext } from "react";
 import { useState } from "react";
 
@@ -7,7 +7,7 @@ export default function Register() {
   const router: NextRouter = useRouter();
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const { saveUserId } = useContext(AuthContext);
+  const { saveUserId } = useContext(AppContext);
 
   return (
     <div className="flex flex-col h-screen overflow-y-scroll">

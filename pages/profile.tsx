@@ -1,6 +1,6 @@
 import Layout from "../components/layout/Layout";
 import { useQuery, useMutation, gql } from "@apollo/client";
-import { AuthContext } from "../components/context/AuthContext";
+import { AppContext } from "../components/context/AppContext";
 import { useState, useContext, useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
@@ -27,7 +27,7 @@ const EDIT_USER_BY_ID = gql`
 `
 
 function Profile() {
-  const { getUserId } = useContext(AuthContext);
+  const { getUserId } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
   const [editProfile, setEditProfile] = useState<boolean>(false);

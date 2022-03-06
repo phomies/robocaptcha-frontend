@@ -2,11 +2,11 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { NextRouter, useRouter } from 'next/router'
 import { useEffect, useContext } from 'react'
-import { AuthContext } from '../components/context/AuthContext'
+import { AppContext } from '../components/context/AppContext'
 
 const Index: NextPage = () => {
   const router: NextRouter = useRouter();
-  const { getUserId } = useContext(AuthContext);
+  const { getUserId } = useContext(AppContext);
 
   useEffect(() => {
     router.push(getUserId() ? "/home" : "/login");
