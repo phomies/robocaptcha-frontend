@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { NextRouter, useRouter } from "next/router";
 import LayoutItem from "./LayoutItem";
+import { FaUserCircle } from "react-icons/fa";
 import { MdNotificationsNone, MdPayment, MdOutlineFeedback } from "react-icons/md";
 import { FiHome, FiSettings } from "react-icons/fi";
 import { CgUserList } from "react-icons/cg";
@@ -9,6 +10,7 @@ import { IoMdHelp } from "react-icons/io";
 import { BiLogOut } from "react-icons/bi";
 import { TiThMenu } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
+import DayNightToggle from 'react-day-and-night-toggle'
 import { Drawer } from 'antd';
 import useDeviceSize from "../../utils/useDeviceSize";
 
@@ -17,7 +19,7 @@ interface Props {
 }
 
 function Layout(props: Props) {
-  const { saveUserId } = useContext(AuthContext);
+  const { saveUserId, getTheme, saveTheme } = useContext(AuthContext);
   const [title, setTitle] = useState<string>("");
   const router: NextRouter = useRouter();
   const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
@@ -40,7 +42,7 @@ function Layout(props: Props) {
   }, [router.pathname]);
 
   return (
-    <div className="font-poppins-medium text-gray-700">
+    <div className={`font-poppins-medium text-gray-700 dark:text-gray-50 ${getTheme() === 'dark' && 'dark'}`}>
 
       <Drawer placement="left" visible={width < 1280 && visibleDrawer} width="100%" closable={false}>
         <div className="mt-9 flex items-center px-12 mb-7 gap-x-8">
@@ -64,7 +66,7 @@ function Layout(props: Props) {
       </Drawer>
 
       <div className="flex h-screen w-screen">
-        <div className="hidden xl:flex z-50 h-screen fixed w-72 bg-white shadow-xl justify-center">
+        <div className="hidden xl:flex z-50 h-screen fixed w-72 bg-white dark:bg-secondary_dark dark:text-gray-50 shadow-xl justify-center">
           <div className="flex-col">
             <button
               className="flex my-8 self-start"
@@ -77,28 +79,29 @@ function Layout(props: Props) {
             <LayoutItem title="Settings" icon={<FiSettings className="h-5 w-5" />} />
             <LayoutItem title="Feedback" icon={<MdOutlineFeedback className="h-5 w-5" />} />
             <LayoutItem title="Help" icon={<IoMdHelp className="h-5 w-5" />} />
-            <hr className="mb-2" />
+            <hr className="mb-2 dark:opacity-30" />
             <button onClick={() => {
               saveUserId("");
               router.push("/login");
-            }} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 hover:text-blue-600 hover:font-poppins-semibold">
+            }} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 dark:text-gray-50 hover:text-blue-600 hover:font-poppins-semibold">
               <BiLogOut className="h-5 w-5" />
               <div className="text-sm">Logout</div>
             </button>
           </div>
         </div>
-        <div className={`xl:ml-72 bg-background w-full ${visibleDrawer && "hidden xl:block"}`}>
-          <div className="bg-background z-40 sticky top-0 px-12 pt-9 pb-5 justify-between flex items-center">
+        <div className={`xl:ml-72 bg-primary_light dark:bg-primary_dark dark:text-gray-50 w-full ${visibleDrawer && "hidden xl:block"}`}>
+          <div className="z-40 bg-primary_light dark:bg-primary_dark sticky top-0 px-12 pt-9 pb-5 justify-between flex items-center">
             <div className="flex items-center gap-x-8">
               <TiThMenu className="xl:hidden h-5 w-5" onClick={() => setVisibleDrawer(true)} />
               <div className="font-poppins-semibold text-secondary text-xl xl:text-2xl">{title}</div>
             </div>
             <div className="flex items-center gap-x-7 xl:gap-x-9 xl:-mt-1 xl:mb-1">
-              <MdNotificationsNone className="w-6 h-6 xl:h-8 xl:w-8 text-gray-700 hover:text-blue-600 cursor-pointer" />
-              <button className="w-8 h-8 xl:w-10 xl:h-10 bg-blue-600 rounded-full" onClick={() => router.push("/profile")} />
+              <DayNightToggle size={18} checked={getTheme() === "dark"} onChange={() => saveTheme(getTheme() === "dark" ? "light" : "dark")} />
+              <MdNotificationsNone className="w-6 h-6 xl:h-8 xl:w-8 text-gray-600 dark:text-gray-50 hover:text-blue-600 dark:hover:text-blue-2 cursor-pointer" />
+              <FaUserCircle className="w-7 h-7 xl:w-8 xl:h-8 text-blue-600 hover:text-blue-700 dark:text-blue-200 dark:hover:text-blue-300 cursor-pointer" onClick={() => router.push("/profile")} />
             </div>
           </div>
-          <div className="-mt-5 bg-background2 overflow-y-scroll">{props.children}</div>
+          <div className="bg-primary_light dark:bg-primary_dark -mt-5 overflow-y-scroll">{props.children}</div>
         </div>
       </div>
     </div>

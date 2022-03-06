@@ -65,7 +65,7 @@ const options = {
 
 function CallHistoryGraph() {
   return (
-    <div className="py-5 px-7 flex flex-col gap-y-4 mt-7 bg-white shadow-lg rounded-lg w-full">
+    <div className="py-5 px-7 flex flex-col gap-y-4 mt-7 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full">
       <div className="text-sm md:text-base font-poppins-semibold">Calls Received (Past 7 days)</div>
       <div className="w-full h-40">
         <Line options={options} data={data} />

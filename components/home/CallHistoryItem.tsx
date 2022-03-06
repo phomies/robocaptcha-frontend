@@ -13,7 +13,7 @@ interface Props {
 function CallHistoryItem(props: Props) {
   const { phoneNumber, contactName, location, date, time, action } = props;
   return (
-    <div className="text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
+    <div className="dark:bg-secondary_dark text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
       <div className="col-span-2 flex items-center gap-x-2">
         <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
         {phoneNumber.includes("Anonymous") ? "Anonymous" : phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)}
