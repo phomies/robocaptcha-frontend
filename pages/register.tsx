@@ -16,7 +16,7 @@ export default function Register() {
       </nav>
       <div className="grid lg:grid-cols-2 xl:grid-cols-3 sm:mx-32 mx-10 h-full">
         <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44">
-          <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8 md:mt-5 lg:mt-10">Sign up for</div>
+          <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8 md:mt-5 lg:mt-0">Sign up for</div>
           <div className="font-poppins-medium text-secondary lg:text-3xl text-xl lg:mb-12 mb-5">our user platform</div>
           <div className="font-poppins-regular text-sm">If you already have an account, <br /> You can login <a className="font-poppins-semibold text-blue-600 hover:underline" href="/login">here!</a></div>
         </div>

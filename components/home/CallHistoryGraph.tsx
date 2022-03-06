@@ -9,7 +9,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-//TODO: delete faker
 import faker from '@faker-js/faker';
 
 ChartJS.register(
@@ -68,7 +67,7 @@ function CallHistoryGraph() {
   return (
     <div className="py-5 px-7 flex flex-col gap-y-4 mt-7 bg-white shadow-lg rounded-lg w-full">
       <div className="text-sm md:text-base font-poppins-semibold">Calls Received (Past 7 days)</div>
-      <div className="w-full h-60">
+      <div className="w-full h-40">
         <Line options={options} data={data} />
       </div>
     </div>

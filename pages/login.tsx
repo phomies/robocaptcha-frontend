@@ -18,7 +18,7 @@ export default function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("id: ", user.uid);
+        console.log(user);
         saveUserId(user.uid);
       })
       .then(() => router.push("/home"))
@@ -34,7 +34,7 @@ export default function Login() {
   return (
     <Fragment>
       <Modal title="Error" visible={isModalVisible} closable={false} centered={true} footer={null}>
-        <div className="font-poppins-regular text-sm">Incorrect email or password entered. Please try again.</div>
+        <div className="font-poppins-regular text-sm">Invalid email or password entered. Please try again.</div>
         <button className="mt-6 py-2 px-7 rounded-lg shadow-lg bg-blue-600 hover:bg-blue-700 text-white" onClick={() => setIsModalVisible(false)}>OK</button>
       </Modal>
       <div className="flex flex-col h-screen overflow-y-hidden">
