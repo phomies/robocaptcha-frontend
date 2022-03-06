@@ -38,8 +38,9 @@ export default function Login() {
         <button className="mt-6 py-2 px-7 rounded-lg shadow-lg bg-blue-600 hover:bg-blue-700 text-white" onClick={() => setIsModalVisible(false)}>OK</button>
       </Modal>
       <div className="flex flex-col h-screen overflow-y-hidden">
-        <nav className="h-12">
-          <img className="h-8 my-8 sm:mx-32 mx-10" alt="icon" src="/logo.png" />
+        <nav className="flex my-8 sm:mx-32 mx-10 gap-x-4 items-center mt-10 -mb-5">
+          <img src={`/images/logo_light.png`} alt="Logo" className="h-8 w-8" />
+          <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">robo<span className="text-blue-600 dark:text-blue-200">CAPTCHA</span></div>
         </nav>
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 sm:mx-32 mx-10 h-full">
           <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44">

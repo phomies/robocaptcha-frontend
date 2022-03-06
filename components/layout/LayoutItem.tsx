@@ -12,7 +12,7 @@ function LayoutItem(props: Props) {
 
   return (
     <button onClick={() => router.push(`/${props.title.toLowerCase()}`)}
-      className={`w-full px-10 flex items-center py-5 text-base gap-5 hover:bg-gray-100 hover:text-blue-600 dark:text-gray-50 dark:hover:bg-primary_dark dark:hover:text-blue-200 border-l-4 border-transparent hover:font-poppins-semibold hover:border-blue-600 dark:hover:border-blue-200 ${focused && "bg-gray-100 dark:bg-primary_dark text-blue-600 border-blue-600 dark:text-blue-200 dark:border-blue-200 font-poppins-semibold"}`}
+      className={`w-full px-10 flex items-center py-5 text-base gap-5 hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-primary_dark dark:hover:text-blue-200 border-l-4 border-transparent hover:font-poppins-semibold hover:border-blue-600 dark:hover:border-blue-200 ${focused ? "bg-gray-100 dark:bg-primary_dark text-blue-600 border-blue-600 dark:text-blue-200 dark:border-blue-200 font-poppins-semibold" : "dark:text-gray-50"}`}
     >
       {props.icon}
       <div className="text-sm">{props.title}</div>
