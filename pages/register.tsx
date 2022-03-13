@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import { NextRouter, useRouter } from "next/router";
 import { AppContext } from "../components/context/AppContext";
 import { useContext } from "react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -19,7 +21,7 @@ export default function Register() {
         <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44">
           <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8 md:mt-5 lg:mt-0">Sign up for</div>
           <div className="font-poppins-medium text-secondary lg:text-3xl text-xl lg:mb-12 mb-5">our user platform</div>
-          <div className="font-poppins-regular text-sm">If you already have an account, <br /> You can login <a className="font-poppins-semibold text-blue-600 hover:underline" href="/login">here!</a></div>
+          <div className="font-poppins-regular text-sm">If you already have an account, <br /> You can login <Link href="/login"><a className="font-poppins-semibold text-blue-600 hover:underline">here!</a></Link></div>
         </div>
 
         <img className="hidden xl:block w-7/12 mt-48" alt="login" src="/images/login.png" />

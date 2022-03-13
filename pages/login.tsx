@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { NextRouter, useRouter } from "next/router";
 import { AppContext } from "../components/context/AppContext";
 import { Fragment, useEffect, useContext, useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from '../firebase/clientApp';
 import { Modal } from 'antd';
+import Link from "next/link";
 
 const auth = getAuth(app);
 
@@ -46,7 +48,7 @@ export default function Login() {
           <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44">
             <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8">Sign in to</div>
             <div className="font-poppins-medium text-secondary lg:text-3xl text-xl lg:mb-12 mb-5">our user platform</div>
-            <div className="font-poppins-regular text-sm sm:mb-10">If you don't have an account registered, <br /> You can register <a className="font-poppins-semibold text-blue-600 hover:underline" href="/register">here!</a></div>
+            <div className="font-poppins-regular text-sm sm:mb-10">If you don&apos;t have an account registered, <br /> You can register <Link href="/register"><a className="font-poppins-semibold text-blue-600 hover:underline">here!</a></Link></div>
           </div>
 
           <img className="hidden xl:block w-7/12 mt-48" alt="login" src="/images/login.png" />
