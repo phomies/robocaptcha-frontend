@@ -9,6 +9,7 @@ const Index: NextPage = () => {
   const { getUserId } = useContext(AppContext);
 
   useEffect(() => {
+      console.log(getUserId())
     router.push(getUserId() ? "/home" : "/login");
   }, [getUserId()])
 

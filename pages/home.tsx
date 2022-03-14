@@ -39,7 +39,8 @@ function Home() {
   })
 
   if (error) {
-    saveUserId("");
+      console.log(error);
+    saveUserId(""); // TODO - update this error catching?
     router.push("/login");
   }
 

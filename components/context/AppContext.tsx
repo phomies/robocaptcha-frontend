@@ -1,29 +1,32 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client';
 import {
   getAuth,
   GoogleAuthProvider,
   onIdTokenChanged,
   signInWithCredential,
-} from 'firebase/auth'
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
+import { useRouter } from 'next/router';
 import {
   createContext,
   useContext,
   useEffect,
   useState,
   useCallback,
-} from 'react'
-import app from '../../firebase/clientApp'
+  useRef,
+} from 'react';
+import app from '../../firebase/clientApp';
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 interface AppContextInterface {
-  getUserId: () => string | null | undefined
-  saveUserId: (id: string) => void
-  getTheme: () => string | null | undefined
-  saveTheme: (id: string) => void
-  signOut: () => void
+  getUserId: () => string | null | undefined;
+  saveUserId: (id: string) => void;
+  getTheme: () => string | null | undefined;
+  saveTheme: (id: string) => void;
+  signOut: () => void;
 }
 
 const appContextDefaults: AppContextInterface = {
@@ -32,161 +35,191 @@ const appContextDefaults: AppContextInterface = {
   getTheme: () => null,
   saveTheme: () => null,
   signOut: () => null,
-}
+};
 
-export const AppContext = createContext<AppContextInterface>(appContextDefaults)
-export const useAppContext = () => useContext(AppContext)
+export const AppContext =
+  createContext<AppContextInterface>(appContextDefaults);
+export const useAppContext = () => useContext(AppContext);
 
 const LOGIN_USER = gql`
   query loginUser($token: String) {
     loginUser(token: $token)
   }
-`
-const firebaseAuth = getAuth(app)
+`;
+const firebaseAuth = getAuth(app);
 
 function AuthProvider(props: Props) {
-  const [userId, setUserId] = useState<string | null>(null)
-  const [theme, setTheme] = useState<string | null>(null)
-  const [firebaseToken, setFirebaseToken] = useState<string | null>(null)
-  const [googleToken, setGoogleToken] = useState<string | null>(null)
-  const [gapiModule, setGapiModule] = useState<any>(null)
-
-  const googleProvider = new GoogleAuthProvider()
-  //   googleProvider.addScope('https://www.googleapis.com/auth/contacts')
-  //   googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly')
-
+  const [userId, setUserId] = useState<string | null>(null);
+  const [theme, setTheme] = useState<string | null>(null);
+  const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
+  const [googleToken, setGoogleToken] = useState<object | null>(null);
+  const [gapiModule, setGapiModule] = useState<any>(null);
+  const router = useRouter();
   const { refetch } = useQuery(LOGIN_USER, {
     variables: { token: firebaseToken },
-  })
+  });
 
+  // Google API handlers
   useEffect(() => {
     const initGapi = async () => {
       // Dynamic imports
-      const gapi = await import('gapi-script').then((pack) => pack.gapi)
+      const gapi = await import('gapi-script').then((pack) => pack.gapi);
       const loadAuth2 = await import('gapi-script').then(
         (pack) => pack.loadAuth2
-      )
+      );
 
       const gapiAuth = await loadAuth2(
         gapi,
         process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
         'https://www.googleapis.com/auth/contacts.readonly'
-      )
-      console.log(gapiAuth.isSignedIn)
-      gapiAuth.isSignedIn.listen((isSignedIn: boolean) => {
-        if (isSignedIn) {
-          getGoogleToken()
-        }
-      })
+      );
+      setGapiModule(gapiAuth);
 
-      setGapiModule(gapiAuth)
+      //   gapiAuth.currentUser.listen(async (currentUser: any) => {
+      //     if (currentUser) {
+      //       await refreshGoogleToken(currentUser);
+      //     }
+      //   });
 
       if (gapiAuth.isSignedIn.get()) {
-        updateUser(gapiAuth.currentUser.get())
+        await refreshGoogleToken(gapiAuth.currentUser.get());
       } else {
-        attachSignIn(document.getElementById('google-sign-in'), gapiAuth)
+        console.log('attaching new');
+        attachSignIn(document.getElementById('google-sign-in'), gapiAuth);
       }
-    }
-    initGapi()
-  }, [])
+    };
+    initGapi();
+  }, []);
 
   useEffect(() => {
     if (!googleToken && gapiModule) {
-      attachSignIn(document.getElementById('google-sign-in'), gapiModule)
+      console.log('here reloading');
+      attachSignIn(document.getElementById('google-sign-in'), gapiModule);
     }
-  }, [googleToken])
+  }, [googleToken]);
 
-  //   useEffect(() => {
-  //     const unsubscribe = onIdTokenChanged(firebaseAuth, handleUser)
+  // Firebase handler
+  useEffect(() => {
+    const unsubscribe = onIdTokenChanged(firebaseAuth, handleUser);
 
-  //     return () => unsubscribe()
-  //   }, [])
+    return () => unsubscribe();
+  }, []);
 
+  // Theme handler
   useEffect(() => {
     if (localStorage.getItem('id') !== null) {
-      const id = localStorage.getItem('id')
-      setUserId(id)
+      const id = localStorage.getItem('id');
+      setUserId(id);
     }
     if (localStorage.getItem('theme') !== null) {
-      const th = localStorage.getItem('theme')
-      setTheme(th)
+      const th = localStorage.getItem('theme');
+      setTheme(th);
     }
-  }, [])
-
-  const getGoogleToken = () => {
-    const googleUser = gapiModule.currentUser.get()
-    const authResponse = googleUser.getAuthResponse(true) // True -> Get access token
-    console.log(authResponse)
-  }
+  }, []);
 
   const attachSignIn = (element: HTMLElement | null, auth: any) => {
     auth.attachClickHandler(
       element,
       {},
-      (googleUser: any) => {
-        // TODO - handle user here or listener state
+      (user: any) => {
+        refreshGoogleToken(user);
       },
       (error: any) => {
-        console.log(JSON.stringify(error))
+        // TODO - fix mounting issue
+        console.log(JSON.stringify(error));
       }
-    )
-  }
+    );
+  };
 
-  const updateUser = (user: any) => {
-    console.log('updating user', user)
-  }
+  const refreshGoogleToken = async (user: any) => {
+    const authResponse = user.getAuthResponse(true); // True -> Get access token
+    console.log('refresh google', authResponse);
 
-  const signOut = () => {
+    if (authResponse) {
+      setGoogleToken({
+        idToken: authResponse.id_token,
+        accessToken: authResponse.access_token,
+      });
+
+      await loginToFirebase(authResponse.id_token, authResponse.access_token);
+    }
+  };
+
+  const loginToFirebase = async (idToken: string, accessToken: string) => {
+    const credential = GoogleAuthProvider.credential(idToken, accessToken);
+
+    // Users already linked to Firebase
+    const response = await signInWithCredential(firebaseAuth, credential);
+    handleUser(response.user);
+    console.log('Signed in with credentials', response);
+    // if (firebaseAuth && firebaseAuth.currentUser) {
+    //   try {
+    //     // Link provider to Firebase
+    //     const response = await linkWithCredential(
+    //       firebaseAuth.currentUser,
+    //       credential
+    //     );
+    //     console.log('Linked provider', response);
+    //   } catch (error) {
+    //   }
+    // }
+    await router.push('/');
+  };
+
+  const resetProvider = () => {
+    setFirebaseToken(null);
+    setGoogleToken(null);
+    setGapiModule(null);
+    setUserId('');
+    localStorage.removeItem('id');
+    localStorage.removeItem('accessToken');
+  };
+
+  const signOut = async () => {
     try {
       if (gapiModule) {
-        gapiModule.signOut()
+        // Push to login page first, otherwise HTML element will not be found after attaching gAPI clicker
+        await router.push('/login');
+        await firebaseSignOut(firebaseAuth);
+        await gapiModule.signOut();
+        resetProvider();
       }
     } catch (error) {
-      console.log('Error logging out', error)
+      console.log('Error logging out', error);
     }
-  }
+  };
 
   const handleUser = async (rawUser: any) => {
     if (rawUser) {
-      console.log(rawUser)
-      const idToken = await rawUser.getIdToken(true)
-      localStorage.setItem('accessToken', idToken)
+      saveUserId(rawUser.uid);
+      const idToken = await rawUser.getIdToken(true);
+      localStorage.setItem('accessToken', idToken);
 
-      setFirebaseToken(idToken) // Set firebase access token for communications with backend
-      console.log('New access token', idToken, '\n', rawUser.accessToken)
-      const credential = GoogleAuthProvider.credential(null, idToken)
-      const googleOAuthToken = await signInWithCredential(
-        firebaseAuth,
-        credential
-      )
-
-      refetch() // Update user claims from backend server
-      console.log('New google oauth token', googleOAuthToken)
+      setFirebaseToken(idToken); // Set firebase access token for communications with backend
+      refetch(); // Update user claims from backend server
     } else {
-      localStorage.removeItem('accessToken')
-      setFirebaseToken(null)
-      setGoogleToken(null)
-      setUserId(null)
+      localStorage.removeItem('accessToken');
+      resetProvider();
     }
-  }
+  };
 
   const getUserId = () => {
-    return userId
-  }
+    return userId;
+  };
 
   const saveUserId = useCallback((id: string) => {
-    localStorage.setItem('id', id)
-    setUserId(id)
-  }, [])
+    localStorage.setItem('id', id);
+    setUserId(id);
+  }, []);
 
   const getTheme = () => {
-    return theme
-  }
+    return theme;
+  };
 
   const saveTheme = useCallback((th: string) => {
-    localStorage.setItem('theme', th)
-    setTheme(th)
-  }, [])
+    localStorage.setItem('theme', th);
+    setTheme(th);
+  }, []);
 
   return (
     <AppContext.Provider
@@ -200,7 +233,7 @@ function AuthProvider(props: Props) {
     >
       {props.children}
     </AppContext.Provider>
-  )
+  );
 }
 
-export default AuthProvider
+export default AuthProvider;
