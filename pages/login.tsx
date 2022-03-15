@@ -1,40 +1,57 @@
 /* eslint-disable @next/next/no-img-element */
-import { NextRouter, useRouter } from 'next/router'
-import { AppContext } from '../components/context/AppContext'
-import { Fragment, useEffect, useContext, useState } from 'react'
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from 'firebase/auth'
-import app from '../firebase/clientApp'
-import { Modal } from 'antd'
-import Link from 'next/link'
+import { NextRouter, useRouter } from 'next/router';
+import { AppContext } from '../components/context/AppContext';
+import { Fragment, useEffect, useContext, useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import app from '../firebase/clientApp';
+import { Modal } from 'antd';
+import Link from 'next/link';
 
-const auth = getAuth(app)
+const auth = getAuth(app);
 
 export default function Login() {
-  const router: NextRouter = useRouter()
-  const { getUserId, saveUserId } = useContext(AppContext)
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-
-  const onSubmit = async (email: string, password: string) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-        console.log(user)
-        saveUserId(user.uid)
-      })
-      .then(() => router.push('/home'))
-      .catch((error) => {
-        setIsModalVisible(true)
-      })
-  }
+  const router: NextRouter = useRouter();
+  const {
+    getUserId,
+    saveUserId,
+    getCaptchaRef,
+    loginWithEmailPassword,
+    loginWithPhoneNumber,
+    validatePhoneToken,
+  } = useContext(AppContext);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [token, setToken] = useState<string>('');
 
   useEffect(() => {
-    getUserId() && router.push('/home')
-  }, [])
+    getUserId() && router.push('/home');
+  }, []);
+
+  const onSubmit = async (email: string, password: string) => {
+    try {
+      if (isDisabled) {
+        await loginWithPhoneNumber(email);
+        router.push('/home');
+      } else {
+        await loginWithEmailPassword(email, password);
+      }
+    } catch (error) {
+      console.log('Error with logging in', error);
+      setIsModalVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!isNaN(parseInt(email))) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [email]);
+
+  const handlePhoneLogin = () => {};
 
   return (
     <Fragment>
@@ -106,16 +123,35 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
+                disabled={isDisabled}
               />
-              <button
-                className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
-                onClick={(e) => {
-                  e.preventDefault()
-                  onSubmit(email, password)
-                }}
-              >
-                Login
-              </button>
+              <input
+                className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-11 mb-10"
+                placeholder="Token"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                type="string"
+              />
+              <div className="flex">
+                <button
+                  className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSubmit(email, password);
+                  }}
+                >
+                  Login
+                </button>
+                <button
+                  className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await validatePhoneToken(token);
+                  }}
+                >
+                  Token
+                </button>
+              </div>
             </form>
             <div className="text-gray-400 sm:my-8 mt-8 mb-4 text-center lg:w-10/12 w-full">
               or continue with
@@ -134,11 +170,16 @@ export default function Login() {
                     src="/images/google.png"
                   />
                 </div>
+                <div
+                  id="recaptcha-container"
+                  ref={getCaptchaRef()}
+                  className="w-3 h-3 bg-slate-500"
+                ></div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </Fragment>
-  )
+  );
 }

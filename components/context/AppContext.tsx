@@ -5,6 +5,9 @@ import {
   onIdTokenChanged,
   signInWithCredential,
   signOut as firebaseSignOut,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import {
@@ -14,8 +17,15 @@ import {
   useState,
   useCallback,
   useRef,
+  MutableRefObject,
 } from 'react';
 import app from '../../firebase/clientApp';
+
+declare global {
+  interface Window {
+    recaptchaVerifier: any;
+  }
+}
 
 interface Props {
   children: React.ReactNode;
@@ -27,6 +37,10 @@ interface AppContextInterface {
   getTheme: () => string | null | undefined;
   saveTheme: (id: string) => void;
   signOut: () => void;
+  getCaptchaRef: () => null | MutableRefObject<null>;
+  loginWithPhoneNumber: (phoneNumber: string) => void;
+  loginWithEmailPassword: (email: string, password: string) => void;
+  validatePhoneToken: (token: string) => void;
 }
 
 const appContextDefaults: AppContextInterface = {
@@ -35,6 +49,10 @@ const appContextDefaults: AppContextInterface = {
   getTheme: () => null,
   saveTheme: () => null,
   signOut: () => null,
+  getCaptchaRef: () => null,
+  loginWithPhoneNumber: () => null,
+  loginWithEmailPassword: () => null,
+  validatePhoneToken: () => null,
 };
 
 export const AppContext =
@@ -54,6 +72,10 @@ function AuthProvider(props: Props) {
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
   const [googleToken, setGoogleToken] = useState<object | null>(null);
   const [gapiModule, setGapiModule] = useState<any>(null);
+  const [appVerifier, setAppVerifier] = useState<any>(null);
+  const [tokenVerification, setTokenVerification] = useState<any>(null);
+  const captchaRef = useRef(null);
+
   const router = useRouter();
   const { refetch } = useQuery(LOGIN_USER, {
     variables: { token: firebaseToken },
@@ -88,6 +110,24 @@ function AuthProvider(props: Props) {
         attachSignIn(document.getElementById('google-sign-in'), gapiAuth);
       }
     };
+
+    const verifier = new RecaptchaVerifier(
+      captchaRef && captchaRef.current ? captchaRef.current : '',
+      {
+        size: 'normal',
+        callback: (captchaToken: any) => {
+          // TODO - send token to Be
+          console.log(captchaToken);
+        },
+        'expired-callback': () => {
+          // Response expired. Ask user to solve reCAPTCHA again.
+          // ...
+        },
+      },
+      firebaseAuth
+    );
+    setAppVerifier(verifier);
+
     initGapi();
   }, []);
 
@@ -150,7 +190,7 @@ function AuthProvider(props: Props) {
 
     // Users already linked to Firebase
     const response = await signInWithCredential(firebaseAuth, credential);
-    handleUser(response.user);
+    await handleUser(response.user);
     console.log('Signed in with credentials', response);
     // if (firebaseAuth && firebaseAuth.currentUser) {
     //   try {
@@ -164,6 +204,32 @@ function AuthProvider(props: Props) {
     //   }
     // }
     await router.push('/');
+  };
+
+  const loginWithPhoneNumber = async (number: string) => {
+    const confirmationResult = await signInWithPhoneNumber(
+      firebaseAuth,
+      number,
+      appVerifier
+    );
+    setTokenVerification(confirmationResult);
+  };
+
+  const validatePhoneToken = async (token: string) => {
+    if (tokenVerification) {
+      const response = await tokenVerification.confirm(token);
+      await handleUser(response.user);
+      console.log('Validated token', response.user);
+    }
+  };
+
+  const loginWithEmailPassword = async (email: string, password: string) => {
+    const response = await signInWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
+    await handleUser(response.user);
   };
 
   const resetProvider = () => {
@@ -221,6 +287,10 @@ function AuthProvider(props: Props) {
     setTheme(th);
   }, []);
 
+  const getCaptchaRef = () => {
+    return captchaRef;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -229,6 +299,10 @@ function AuthProvider(props: Props) {
         getTheme,
         saveTheme,
         signOut,
+        getCaptchaRef,
+        loginWithPhoneNumber,
+        loginWithEmailPassword,
+        validatePhoneToken,
       }}
     >
       {props.children}
