@@ -19,7 +19,7 @@ interface Props {
 }
 
 function Layout(props: Props) {
-  const { saveUserId, getTheme, saveTheme, signOut } = useContext(AppContext);
+  const { getTheme, saveTheme, signOut } = useContext(AppContext);
   const [title, setTitle] = useState<string>("");
   const router: NextRouter = useRouter();
   const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);

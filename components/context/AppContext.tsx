@@ -64,7 +64,6 @@ const LOGIN_USER = gql`
     loginUser(token: $token)
   }
 `;
-const firebaseAuth = getAuth(app);
 
 function AuthProvider(props: Props) {
   const [userId, setUserId] = useState<string | null>(null);
@@ -75,6 +74,7 @@ function AuthProvider(props: Props) {
   const [appVerifier, setAppVerifier] = useState<any>(null);
   const [tokenVerification, setTokenVerification] = useState<any>(null);
   const captchaRef = useRef(null);
+  const firebaseAuth = getAuth(app);
 
   const router = useRouter();
   const { refetch } = useQuery(LOGIN_USER, {
@@ -111,27 +111,29 @@ function AuthProvider(props: Props) {
       }
     };
 
-    if (!appVerifier) {
+    initGapi();
+  }, []);
+
+  useEffect(() => {
+    if (firebaseAuth && !appVerifier && captchaRef.current) {
       const verifier = new RecaptchaVerifier(
-        captchaRef && captchaRef.current ? captchaRef.current : '',
+        captchaRef && captchaRef.current
+          ? captchaRef.current
+          : 'recaptcha-container',
         {
           size: 'normal',
-          callback: (captchaToken: any) => {
-            // TODO - send token to Be
-            console.log(captchaToken);
+          callback: (response: any) => {
+            // Success response
           },
           'expired-callback': () => {
             // Response expired. Ask user to solve reCAPTCHA again.
-            // ...
           },
         },
         firebaseAuth
       );
       setAppVerifier(verifier);
     }
-
-    initGapi();
-  }, []);
+  }, [captchaRef]);
 
   useEffect(() => {
     if (!googleToken && gapiModule) {
@@ -167,7 +169,7 @@ function AuthProvider(props: Props) {
         refreshGoogleToken(user);
       },
       (error: any) => {
-        // TODO - fix mounting issue
+        // TODO - Fix mounting issue
         console.log(JSON.stringify(error));
       }
     );
@@ -193,7 +195,7 @@ function AuthProvider(props: Props) {
     // Users already linked to Firebase
     const response = await signInWithCredential(firebaseAuth, credential);
     await handleUser(response.user);
-    console.log('Signed in with credentials', response);
+    console.log('Signed in with credentials');
     // if (firebaseAuth && firebaseAuth.currentUser) {
     //   try {
     //     // Link provider to Firebase
@@ -221,7 +223,7 @@ function AuthProvider(props: Props) {
     if (tokenVerification) {
       const response = await tokenVerification.confirm(token);
       await handleUser(response.user);
-      console.log('Validated token', response.user);
+      console.log('Validated phone token');
     }
   };
 

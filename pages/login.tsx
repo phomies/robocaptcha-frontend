@@ -130,17 +130,16 @@ export default function Login() {
                 onChange={(e) => setToken(e.target.value)}
                 type="string"
               />
-              <div className="flex">
-                <button
-                  className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    await onSubmit(email, password);
-                  }}
-                >
-                  Login
-                </button>
-                <button
+              <button
+                className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await onSubmit(email, password);
+                }}
+              >
+                Login
+              </button>
+              {/* <button
                   className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
                   onClick={async (e) => {
                     e.preventDefault();
@@ -148,8 +147,7 @@ export default function Login() {
                   }}
                 >
                   Token
-                </button>
-              </div>
+                </button> */}
             </form>
             <div className="text-gray-400 sm:my-8 mt-8 mb-4 text-center lg:w-10/12 w-full">
               or continue with
