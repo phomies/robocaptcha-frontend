@@ -21,35 +21,44 @@ export default function Login() {
   } = useContext(AppContext);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [contactNumber, setContactNumber] = useState<string>('');
+  const [token, setToken] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [token, setToken] = useState<string>('');
+  const [isEmailLogin, setIsEmailLogin] = useState<boolean>(false);
+  const [isTokenLogin, setIsTokenLogin] = useState<boolean>(false);
 
   useEffect(() => {
     getUserId() && router.push('/home');
   }, []);
 
-  const onSubmit = async (email: string, password: string) => {
+  const handleEmailLogin = async () => {
     try {
-      if (isDisabled) {
-        await loginWithPhoneNumber(email);
-        router.push('/home');
-      } else {
-        await loginWithEmailPassword(email, password);
-      }
+      await loginWithEmailPassword(email, password);
+      router.push('/home');
     } catch (error) {
       console.log('Error with logging in', error);
       setIsModalVisible(true);
     }
   };
 
-  useEffect(() => {
-    if (!isNaN(parseInt(email))) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
+  const handlePhoneLogin = async () => {
+    try {
+      await loginWithPhoneNumber(contactNumber);
+      setIsTokenLogin(true);
+    } catch (error) {
+      console.log('Error with logging in with phone', error);
     }
-  }, [email]);
+  };
+
+  const handleTokenLogin = async () => {
+    try {
+      await validatePhoneToken(token);
+      router.push('/home');
+    } catch (error) {
+      console.log('Error with logging in with token', error);
+    }
+  };
 
   return (
     <Fragment>
@@ -108,46 +117,79 @@ export default function Login() {
               <div className="text-black hidden lg:block font-poppins-semibold text-2xl mb-8">
                 Sign in
               </div>
-              <input
-                className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-10 mb-6"
-                placeholder="Email or contact number"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-              />
-              <input
-                className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-11 mb-10"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                disabled={isDisabled}
-              />
-              <input
-                className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-11 mb-10"
-                placeholder="Token"
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-                type="string"
-              />
-              <button
-                className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
-                onClick={async (e) => {
-                  e.preventDefault();
-                  await onSubmit(email, password);
-                }}
-              >
-                Login
-              </button>
-              {/* <button
-                  className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    await validatePhoneToken(token);
-                  }}
+              <div className="flex lg:w-10/12 justify-around">
+                <div
+                  className="cursor-pointer"
+                  onClick={() => setIsEmailLogin(true)}
                 >
-                  Token
-                </button> */}
+                  Email
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => setIsEmailLogin(false)}
+                >
+                  Phone
+                </div>
+              </div>
+              {isEmailLogin ? (
+                <Fragment>
+                  <input
+                    className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-10 mb-6"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                  />
+                  <input
+                    className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-11 mb-10"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="password"
+                  />
+                  <button
+                    className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      await handleEmailLogin();
+                    }}
+                  >
+                    Login
+                  </button>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  {isTokenLogin ? (
+                    <input
+                      className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-11 mb-10"
+                      placeholder="Token"
+                      value={token}
+                      onChange={(e) => setToken(e.target.value)}
+                    />
+                  ) : (
+                    <input
+                      className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-14 rounded-lg bg-blue-lightBlue lg:mb-10 mb-6"
+                      placeholder="Contact Number"
+                      value={contactNumber}
+                      onChange={(e) => setContactNumber(e.target.value)}
+                    />
+                  )}
+
+                  <button
+                    className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      if (isTokenLogin) {
+                        await handleTokenLogin();
+                      } else {
+                        await handlePhoneLogin();
+                      }
+                    }}
+                  >
+                    Token
+                  </button>
+                </Fragment>
+              )}
             </form>
             <div className="text-gray-400 sm:my-8 mt-8 mb-4 text-center lg:w-10/12 w-full">
               or continue with
