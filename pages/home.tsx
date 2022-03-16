@@ -12,8 +12,8 @@ import { NextRouter, useRouter } from "next/router";
 import CallHistoryGraph from "../components/home/CallHistoryGraph";
 
 const GET_CALLS_BY_ID = gql`
-  query getUser($id: String){
-    getUser(_id: $id) {
+  query getUser {
+    getUser {
       calls {
         _id
         action
@@ -31,19 +31,25 @@ const getAction = (action: string) => {
 }
 
 function Home() {
-  const { getUserId, saveUserId } = useContext(AppContext);
+  const { getFirebaseToken, resetProvider } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
   const { error, data } = useQuery(GET_CALLS_BY_ID, {
-    variables: { id: getUserId() }
+    context: { 
+      headers: {
+        'fbToken': getFirebaseToken()
+      }
+    }
   })
 
-  if (error) {
-      console.log(error);
-    saveUserId(""); // TODO - update this error catching?
-    router.push("/login");
-  }
+  console.log("fbtoken: ", getFirebaseToken());
 
+  // if (error) {
+  //   resetProvider(); // TODO - update this error catching?
+  //   router.push("/login");
+  // }
+
+  if (error) console.log(error);
   if (data) console.log(data);
 
   return (

@@ -32,20 +32,21 @@ interface Props {
 }
 
 interface AppContextInterface {
-  getUserId: () => string | null | undefined;
-  saveUserId: (id: string) => void;
+  getFirebaseToken: () => string | null | undefined;
+  saveFirebaseToken: (token: string) => void;
   getTheme: () => string | null | undefined;
-  saveTheme: (id: string) => void;
+  saveTheme: (theme: string) => void;
   signOut: () => void;
   getCaptchaRef: () => null | MutableRefObject<null>;
   loginWithPhoneNumber: (phoneNumber: string) => void;
   loginWithEmailPassword: (email: string, password: string) => void;
   validatePhoneToken: (token: string) => void;
+  resetProvider: () => void,
 }
 
 const appContextDefaults: AppContextInterface = {
-  getUserId: () => null,
-  saveUserId: () => null,
+  getFirebaseToken: () => null,
+  saveFirebaseToken: () => null,
   getTheme: () => null,
   saveTheme: () => null,
   signOut: () => null,
@@ -53,6 +54,7 @@ const appContextDefaults: AppContextInterface = {
   loginWithPhoneNumber: () => null,
   loginWithEmailPassword: () => null,
   validatePhoneToken: () => null,
+  resetProvider: () => null,
 };
 
 export const AppContext =
@@ -66,7 +68,6 @@ const LOGIN_USER = gql`
 `;
 
 function AuthProvider(props: Props) {
-  const [userId, setUserId] = useState<string | null>(null);
   const [theme, setTheme] = useState<string | null>(null);
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
   const [googleToken, setGoogleToken] = useState<object | null>(null);
@@ -151,9 +152,9 @@ function AuthProvider(props: Props) {
 
   // Theme handler
   useEffect(() => {
-    if (localStorage.getItem('id') !== null) {
-      const id = localStorage.getItem('id');
-      setUserId(id);
+    if (localStorage.getItem('firebaseToken') !== null) {
+      const firebaseToken = localStorage.getItem('firebaseToken');
+      setFirebaseToken(firebaseToken);
     }
     if (localStorage.getItem('theme') !== null) {
       const th = localStorage.getItem('theme');
@@ -182,15 +183,15 @@ function AuthProvider(props: Props) {
     if (authResponse) {
       setGoogleToken({
         idToken: authResponse.id_token,
-        accessToken: authResponse.access_token,
+        firebaseToken: authResponse.access_token,
       });
 
       await loginToFirebase(authResponse.id_token, authResponse.access_token);
     }
   };
 
-  const loginToFirebase = async (idToken: string, accessToken: string) => {
-    const credential = GoogleAuthProvider.credential(idToken, accessToken);
+  const loginToFirebase = async (idToken: string, firebaseToken: string) => {
+    const credential = GoogleAuthProvider.credential(idToken, firebaseToken);
 
     // Users already linked to Firebase
     const response = await signInWithCredential(firebaseAuth, credential);
@@ -233,27 +234,28 @@ function AuthProvider(props: Props) {
       email,
       password
     );
-    await handleUser(response.user);
+    // await handleUser(response.user);
   };
 
   const resetProvider = () => {
     setFirebaseToken(null);
     setGoogleToken(null);
     setGapiModule(null);
-    setUserId('');
-    localStorage.removeItem('id');
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('firebaseToken');
   };
 
   const signOut = async () => {
     try {
+      // Push to login page first, otherwise HTML element will not be found after attaching gAPI clicker
+      resetProvider();
+      await router.push('/login');
       if (gapiModule) {
-        // Push to login page first, otherwise HTML element will not be found after attaching gAPI clicker
-        await router.push('/login');
-        await firebaseSignOut(firebaseAuth);
         await gapiModule.signOut();
-        resetProvider();
       }
+      if (firebaseAuth) {
+        await firebaseSignOut(firebaseAuth);
+      }
+
     } catch (error) {
       console.log('Error logging out', error);
     }
@@ -261,25 +263,24 @@ function AuthProvider(props: Props) {
 
   const handleUser = async (rawUser: any) => {
     if (rawUser) {
-      saveUserId(rawUser.uid);
       const idToken = await rawUser.getIdToken(true);
-      localStorage.setItem('accessToken', idToken);
+      localStorage.setItem('firebaseToken', idToken);
 
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
+      saveFirebaseToken(idToken);
       refetch(); // Update user claims from backend server
     } else {
-      localStorage.removeItem('accessToken');
       resetProvider();
     }
   };
 
-  const getUserId = () => {
-    return userId;
+  const getFirebaseToken = () => {
+    return firebaseToken;
   };
 
-  const saveUserId = useCallback((id: string) => {
-    localStorage.setItem('id', id);
-    setUserId(id);
+  const saveFirebaseToken = useCallback((firebaseToken: string) => {
+    localStorage.setItem('firebaseToken', firebaseToken);
+    setFirebaseToken(firebaseToken);
   }, []);
 
   const getTheme = () => {
@@ -298,8 +299,8 @@ function AuthProvider(props: Props) {
   return (
     <AppContext.Provider
       value={{
-        getUserId,
-        saveUserId,
+        getFirebaseToken,
+        saveFirebaseToken,
         getTheme,
         saveTheme,
         signOut,
@@ -307,6 +308,7 @@ function AuthProvider(props: Props) {
         loginWithPhoneNumber,
         loginWithEmailPassword,
         validatePhoneToken,
+        resetProvider
       }}
     >
       {props.children}

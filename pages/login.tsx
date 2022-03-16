@@ -2,7 +2,7 @@
 import { NextRouter, useRouter } from 'next/router';
 import { AppContext } from '../components/context/AppContext';
 import { Fragment, useEffect, useContext, useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import app from '../firebase/clientApp';
 import { Modal } from 'antd';
 import Link from 'next/link';
@@ -12,8 +12,7 @@ const auth = getAuth(app);
 export default function Login() {
   const router: NextRouter = useRouter();
   const {
-    getUserId,
-    saveUserId,
+    getFirebaseToken,
     getCaptchaRef,
     loginWithEmailPassword,
     loginWithPhoneNumber,
@@ -29,7 +28,7 @@ export default function Login() {
   const [isTokenLogin, setIsTokenLogin] = useState<boolean>(false);
 
   useEffect(() => {
-    getUserId() && router.push('/home');
+    getFirebaseToken() && router.push('/home');
   }, []);
 
   const handleEmailLogin = async () => {
