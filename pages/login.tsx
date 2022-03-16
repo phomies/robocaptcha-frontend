@@ -51,8 +51,6 @@ export default function Login() {
     }
   }, [email]);
 
-  const handlePhoneLogin = () => {};
-
   return (
     <Fragment>
       <Modal
@@ -135,9 +133,9 @@ export default function Login() {
               <div className="flex">
                 <button
                   className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.preventDefault();
-                    onSubmit(email, password);
+                    await onSubmit(email, password);
                   }}
                 >
                   Login

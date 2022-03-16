@@ -111,22 +111,24 @@ function AuthProvider(props: Props) {
       }
     };
 
-    const verifier = new RecaptchaVerifier(
-      captchaRef && captchaRef.current ? captchaRef.current : '',
-      {
-        size: 'normal',
-        callback: (captchaToken: any) => {
-          // TODO - send token to Be
-          console.log(captchaToken);
+    if (!appVerifier) {
+      const verifier = new RecaptchaVerifier(
+        captchaRef && captchaRef.current ? captchaRef.current : '',
+        {
+          size: 'normal',
+          callback: (captchaToken: any) => {
+            // TODO - send token to Be
+            console.log(captchaToken);
+          },
+          'expired-callback': () => {
+            // Response expired. Ask user to solve reCAPTCHA again.
+            // ...
+          },
         },
-        'expired-callback': () => {
-          // Response expired. Ask user to solve reCAPTCHA again.
-          // ...
-        },
-      },
-      firebaseAuth
-    );
-    setAppVerifier(verifier);
+        firebaseAuth
+      );
+      setAppVerifier(verifier);
+    }
 
     initGapi();
   }, []);
