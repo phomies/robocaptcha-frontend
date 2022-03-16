@@ -2,21 +2,23 @@
 import { NextRouter, useRouter } from 'next/router';
 import { AppContext } from '../components/context/AppContext';
 import { Fragment, useEffect, useContext, useState } from 'react';
-import { getAuth } from 'firebase/auth';
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import app from '../firebase/clientApp';
 import { Modal } from 'antd';
 import Link from 'next/link';
-
-const auth = getAuth(app);
 
 export default function Login() {
   const router: NextRouter = useRouter();
   const {
     getFirebaseToken,
-    getCaptchaRef,
+    getGapiModule,
     loginWithEmailPassword,
     loginWithPhoneNumber,
     validatePhoneToken,
+    refreshGoogleToken,
+    getGoogleToken,
+    initGapiModule,
+    setAppVerifier,
   } = useContext(AppContext);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -26,10 +28,57 @@ export default function Login() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isEmailLogin, setIsEmailLogin] = useState<boolean>(false);
   const [isTokenLogin, setIsTokenLogin] = useState<boolean>(false);
+  const firebaseAuth = getAuth(app);
 
   useEffect(() => {
     getFirebaseToken() && router.push('/home');
+
+    const initAuthDoms = async () => {
+      if (firebaseAuth) {
+        // Instantiate recaptcha
+        const verifier = new RecaptchaVerifier(
+          'recaptcha-container',
+          {
+            size: 'invisible',
+            callback: (response: any) => {
+              // Success response -> move on to token validation
+              setIsTokenLogin(true);
+            },
+            'expired-callback': () => {
+              // Response expired. Ask user to solve reCAPTCHA again.
+            },
+          },
+          firebaseAuth
+        );
+
+        setAppVerifier(verifier);
+
+        // Recreate google login API
+        if (!getGoogleToken()) {
+          let gapiModule = getGapiModule();
+          if (!gapiModule) {
+            gapiModule = await initGapiModule();
+          }
+          attachSignIn(document.getElementById('google-sign-in'), gapiModule);
+        }
+      }
+    };
+    initAuthDoms();
   }, []);
+
+  const attachSignIn = (element: HTMLElement | null, auth: any) => {
+    auth.attachClickHandler(
+      element,
+      {},
+      (user: any) => {
+        refreshGoogleToken(user);
+      },
+      (error: any) => {
+        // TODO - Fix mounting issue
+        console.log(JSON.stringify(error));
+      }
+    );
+  };
 
   const handleEmailLogin = async () => {
     try {
@@ -44,7 +93,6 @@ export default function Login() {
   const handlePhoneLogin = async () => {
     try {
       await loginWithPhoneNumber(contactNumber);
-      setIsTokenLogin(true);
     } catch (error) {
       console.log('Error with logging in with phone', error);
     }
@@ -53,7 +101,6 @@ export default function Login() {
   const handleTokenLogin = async () => {
     try {
       await validatePhoneToken(token);
-      router.push('/home');
     } catch (error) {
       console.log('Error with logging in with token', error);
     }
@@ -185,7 +232,7 @@ export default function Login() {
                       }
                     }}
                   >
-                    Token
+                    {isTokenLogin ? 'Token' : 'Phone'}
                   </button>
                 </Fragment>
               )}
@@ -207,11 +254,7 @@ export default function Login() {
                     src="/images/google.png"
                   />
                 </div>
-                <div
-                  id="recaptcha-container"
-                  ref={getCaptchaRef()}
-                  className="w-3 h-3 bg-slate-500"
-                ></div>
+                <div id="recaptcha-container" />
               </div>
             </div>
           </div>

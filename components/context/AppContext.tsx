@@ -5,7 +5,6 @@ import {
   onIdTokenChanged,
   signInWithCredential,
   signOut as firebaseSignOut,
-  RecaptchaVerifier,
   signInWithPhoneNumber,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
@@ -16,8 +15,6 @@ import {
   useEffect,
   useState,
   useCallback,
-  useRef,
-  MutableRefObject,
 } from 'react';
 import app from '../../firebase/clientApp';
 
@@ -37,11 +34,15 @@ interface AppContextInterface {
   getTheme: () => string | null | undefined;
   saveTheme: (theme: string) => void;
   signOut: () => void;
-  getCaptchaRef: () => null | MutableRefObject<null>;
   loginWithPhoneNumber: (phoneNumber: string) => void;
   loginWithEmailPassword: (email: string, password: string) => void;
   validatePhoneToken: (token: string) => void;
-  resetProvider: () => void,
+  resetProvider: () => void;
+  refreshGoogleToken: (user: any) => void;
+  getGoogleToken: () => string | null;
+  getGapiModule: () => any;
+  initGapiModule: () => any;
+  setAppVerifier: (appVerifier: any) => void;
 }
 
 const appContextDefaults: AppContextInterface = {
@@ -50,11 +51,15 @@ const appContextDefaults: AppContextInterface = {
   getTheme: () => null,
   saveTheme: () => null,
   signOut: () => null,
-  getCaptchaRef: () => null,
   loginWithPhoneNumber: () => null,
   loginWithEmailPassword: () => null,
   validatePhoneToken: () => null,
   resetProvider: () => null,
+  refreshGoogleToken: () => null,
+  getGoogleToken: () => null,
+  getGapiModule: () => null,
+  initGapiModule: () => null,
+  setAppVerifier: () => null,
 };
 
 export const AppContext =
@@ -62,86 +67,40 @@ export const AppContext =
 export const useAppContext = () => useContext(AppContext);
 
 const LOGIN_USER = gql`
-  query loginUser($token: String) {
-    loginUser(token: $token)
+  query loginUser {
+    loginUser
   }
 `;
 
 function AuthProvider(props: Props) {
   const [theme, setTheme] = useState<string | null>(null);
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
-  const [googleToken, setGoogleToken] = useState<object | null>(null);
+  const [googleToken, setGoogleToken] = useState<any>(null);
   const [gapiModule, setGapiModule] = useState<any>(null);
   const [appVerifier, setAppVerifier] = useState<any>(null);
   const [tokenVerification, setTokenVerification] = useState<any>(null);
-  const captchaRef = useRef(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const firebaseAuth = getAuth(app);
 
   const router = useRouter();
   const { refetch } = useQuery(LOGIN_USER, {
-    variables: { token: firebaseToken },
+    context: {
+      headers: {
+        fbToken: firebaseToken,
+      },
+    },
   });
 
   // Google API handlers
   useEffect(() => {
-    const initGapi = async () => {
-      // Dynamic imports
-      const gapi = await import('gapi-script').then((pack) => pack.gapi);
-      const loadAuth2 = await import('gapi-script').then(
-        (pack) => pack.loadAuth2
-      );
-
-      const gapiAuth = await loadAuth2(
-        gapi,
-        process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-        'https://www.googleapis.com/auth/contacts.readonly'
-      );
-      setGapiModule(gapiAuth);
-
-      //   gapiAuth.currentUser.listen(async (currentUser: any) => {
-      //     if (currentUser) {
-      //       await refreshGoogleToken(currentUser);
-      //     }
-      //   });
-
-      if (gapiAuth.isSignedIn.get()) {
-        await refreshGoogleToken(gapiAuth.currentUser.get());
-      } else {
-        console.log('attaching new');
-        attachSignIn(document.getElementById('google-sign-in'), gapiAuth);
+    if (gapiModule) {
+      if (gapiModule.isSignedIn.get()) {
+        refreshGoogleToken(gapiModule.currentUser.get());
       }
-    };
-
-    initGapi();
+    } else {
+      initGapiModule();
+    }
   }, []);
-
-  useEffect(() => {
-    if (firebaseAuth && !appVerifier && captchaRef.current) {
-      const verifier = new RecaptchaVerifier(
-        captchaRef && captchaRef.current
-          ? captchaRef.current
-          : 'recaptcha-container',
-        {
-          size: 'normal',
-          callback: (response: any) => {
-            // Success response
-          },
-          'expired-callback': () => {
-            // Response expired. Ask user to solve reCAPTCHA again.
-          },
-        },
-        firebaseAuth
-      );
-      setAppVerifier(verifier);
-    }
-  }, [captchaRef]);
-
-  useEffect(() => {
-    if (!googleToken && gapiModule) {
-      console.log('here reloading');
-      attachSignIn(document.getElementById('google-sign-in'), gapiModule);
-    }
-  }, [googleToken]);
 
   // Firebase handler
   useEffect(() => {
@@ -149,6 +108,18 @@ function AuthProvider(props: Props) {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const loginUser = async () => {
+      if (firebaseToken && !isLoggedIn) {
+        setIsLoggedIn(true);
+        console.log('Creating account if not exist');
+        await refetch();
+      }
+    };
+
+    loginUser();
+  }, [firebaseToken]);
 
   // Theme handler
   useEffect(() => {
@@ -162,23 +133,26 @@ function AuthProvider(props: Props) {
     }
   }, []);
 
-  const attachSignIn = (element: HTMLElement | null, auth: any) => {
-    auth.attachClickHandler(
-      element,
-      {},
-      (user: any) => {
-        refreshGoogleToken(user);
-      },
-      (error: any) => {
-        // TODO - Fix mounting issue
-        console.log(JSON.stringify(error));
-      }
+  const initGapiModule = async () => {
+    // Dynamic imports
+    const gapi = await import('gapi-script').then((pack) => pack.gapi);
+    const loadAuth2 = await import('gapi-script').then(
+      (pack) => pack.loadAuth2
     );
+
+    const gapiAuth = await loadAuth2(
+      gapi,
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+      'https://www.googleapis.com/auth/contacts.readonly'
+    );
+    setGapiModule(gapiAuth);
+
+    return gapiAuth;
   };
 
   const refreshGoogleToken = async (user: any) => {
     const authResponse = user.getAuthResponse(true); // True -> Get access token
-    console.log('refresh google', authResponse);
+    console.log('Refreshing google token');
 
     if (authResponse) {
       setGoogleToken({
@@ -194,20 +168,9 @@ function AuthProvider(props: Props) {
     const credential = GoogleAuthProvider.credential(idToken, firebaseToken);
 
     // Users already linked to Firebase
-    const response = await signInWithCredential(firebaseAuth, credential);
-    await handleUser(response.user);
+    await signInWithCredential(firebaseAuth, credential);
     console.log('Signed in with credentials');
-    // if (firebaseAuth && firebaseAuth.currentUser) {
-    //   try {
-    //     // Link provider to Firebase
-    //     const response = await linkWithCredential(
-    //       firebaseAuth.currentUser,
-    //       credential
-    //     );
-    //     console.log('Linked provider', response);
-    //   } catch (error) {
-    //   }
-    // }
+
     await router.push('/');
   };
 
@@ -224,51 +187,50 @@ function AuthProvider(props: Props) {
     if (tokenVerification) {
       const response = await tokenVerification.confirm(token);
       await handleUser(response.user);
-      console.log('Validated phone token');
+      console.log('Validated phone token', response.user);
+
+      await router.push('/');
     }
   };
 
   const loginWithEmailPassword = async (email: string, password: string) => {
-    const response = await signInWithEmailAndPassword(
-      firebaseAuth,
-      email,
-      password
-    );
-    // await handleUser(response.user);
+    await signInWithEmailAndPassword(firebaseAuth, email, password);
   };
 
   const resetProvider = () => {
     setFirebaseToken(null);
     setGoogleToken(null);
-    setGapiModule(null);
+    setIsLoggedIn(false);
     localStorage.removeItem('firebaseToken');
   };
 
   const signOut = async () => {
     try {
-      // Push to login page first, otherwise HTML element will not be found after attaching gAPI clicker
+      // Reset provider before pushing to /login, otherwise app will reroute back to home
       resetProvider();
       await router.push('/login');
+
       if (gapiModule) {
         await gapiModule.signOut();
       }
       if (firebaseAuth) {
         await firebaseSignOut(firebaseAuth);
       }
-
     } catch (error) {
       console.log('Error logging out', error);
     }
   };
 
   const handleUser = async (rawUser: any) => {
+    console.log('calling');
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
+      console.log('Received user', rawUser);
       localStorage.setItem('firebaseToken', idToken);
 
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
       saveFirebaseToken(idToken);
-      refetch(); // Update user claims from backend server
+      await refetch(); // Update user claims from backend server
     } else {
       resetProvider();
     }
@@ -292,8 +254,12 @@ function AuthProvider(props: Props) {
     setTheme(th);
   }, []);
 
-  const getCaptchaRef = () => {
-    return captchaRef;
+  const getGoogleToken = () => {
+    return googleToken;
+  };
+
+  const getGapiModule = () => {
+    return gapiModule;
   };
 
   return (
@@ -304,11 +270,15 @@ function AuthProvider(props: Props) {
         getTheme,
         saveTheme,
         signOut,
-        getCaptchaRef,
         loginWithPhoneNumber,
         loginWithEmailPassword,
         validatePhoneToken,
-        resetProvider
+        resetProvider,
+        refreshGoogleToken,
+        getGoogleToken,
+        getGapiModule,
+        initGapiModule,
+        setAppVerifier,
       }}
     >
       {props.children}
