@@ -96,9 +96,9 @@ function Layout(props: Props) {
           <div className="z-40 bg-primary_light dark:bg-primary_dark sticky top-0 px-12 pt-9 pb-5 justify-between flex items-center">
             <div className="flex items-center gap-x-8">
               <TiThMenu className="xl:hidden h-5 w-5 cursor-pointer hover:text-blue-600 dark:hover:text-blue-200" onClick={() => setVisibleDrawer(true)} />
-              <div className="font-poppins-semibold text-secondary text-xl xl:text-2xl">{title}</div>
+              <div className="font-poppins-semibold text-secondary text-lg xl:text-2xl pr-4">{title}</div>
             </div>
-            <div className="flex items-center gap-x-7 xl:gap-x-9 xl:-mt-1 xl:mb-1">
+            <div className="flex items-center gap-x-5 xl:gap-x-9 xl:-mt-1 xl:mb-1">
               <DayNightToggle size={18} checked={getTheme() === "dark"} onChange={() => saveTheme(getTheme() === "dark" ? "light" : "dark")} />
               <MdNotificationsNone className="w-6 h-6 xl:h-8 xl:w-8 text-gray-600 dark:text-gray-50 hover:text-blue-600 dark:hover:text-blue-200 cursor-pointer" />
               <FaUserCircle className="w-7 h-7 xl:w-8 xl:h-8 text-blue-600 hover:text-blue-700 dark:text-blue-200 dark:hover:text-blue-300 cursor-pointer" onClick={() => router.push("/profile")} />
