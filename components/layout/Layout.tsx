@@ -104,7 +104,7 @@ function Layout(props: Props) {
                 <div className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-9 py-5" onClick={() => { router.push(item.url) }}>
                   <div className="font-poppins-medium flex justify-between">
                     {item.content}
-                    <div className={`-mt-2 -mr-6 bg-red-400 w-2 h-2 rounded-full ${item.read && "hidden"}`} />
+                    <div className={`-mt-2 -mr-6 bg-red-400 w-[7px] h-[7px] rounded-full ${item.read && "hidden"}`} />
                   </div>
                   <div className="font-poppins-regular mt-2 text-sm text-gray-400">{new Date(item.dateTime).toDateString()} {new Date(item.dateTime).toLocaleTimeString()}</div>
                 </div>
