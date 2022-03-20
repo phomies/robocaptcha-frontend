@@ -1,6 +1,6 @@
 import Layout from "../components/layout/Layout";
 
-function Feedback() {
+function Lists() {
   return (
     <Layout>
       <div className="w-full px-12 pt-6 pb-12">
@@ -10,4 +10,4 @@ function Feedback() {
   );
 }
 
-export default Feedback;
+export default Lists;

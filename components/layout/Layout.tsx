@@ -3,10 +3,9 @@ import { AppContext } from "../context/AppContext";
 import { NextRouter, useRouter } from "next/router";
 import LayoutItem from "./LayoutItem";
 import { FaUserCircle } from "react-icons/fa";
-import { MdNotificationsNone, MdPayment, MdOutlineFeedback } from "react-icons/md";
+import { MdNotificationsNone, MdPayment, MdOutlineListAlt } from "react-icons/md";
 import { FiHome, FiSettings } from "react-icons/fi";
 import { CgUserList } from "react-icons/cg";
-import { IoMdHelp } from "react-icons/io";
 import { BiLogOut } from "react-icons/bi";
 import { TiThMenu } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
@@ -28,16 +27,16 @@ function Layout(props: Props) {
   useEffect(() => {
     if (router.pathname.includes("home")) {
       setTitle("Home");
+    } else if (router.pathname.includes("notifications")) {
+      setTitle("Notifications");
     } else if (router.pathname.includes("profile")) {
       setTitle("Profile");
+    } else if (router.pathname.includes("lists")) {
+      setTitle("Call Lists");
     } else if (router.pathname.includes("subscription")) {
       setTitle("Subscription");
     } else if (router.pathname.includes("settings")) {
       setTitle("Settings");
-    } else if (router.pathname.includes("feedback")) {
-      setTitle("Feedback");
-    } else if (router.pathname.includes("help")) {
-      setTitle("Help");
     }
   }, [router.pathname]);
 
@@ -55,11 +54,11 @@ function Layout(props: Props) {
             <div className="font-poppins-semibold text-secondary text-xl">Menu</div>
           </div>
           <LayoutItem title="Home" icon={<FiHome className="h-5 w-5" />} />
+          <LayoutItem title="Notifications" icon={<MdNotificationsNone className="h-6 w-6" />} />
           <LayoutItem title="Profile" icon={<CgUserList className="h-6 w-6" />} />
+          <LayoutItem title="Lists" icon={<MdOutlineListAlt className="h-6 w-6" />} />
           <LayoutItem title="Subscription" icon={<MdPayment className="h-5 w-5" />} />
           <LayoutItem title="Settings" icon={<FiSettings className="h-5 w-5" />} />
-          <LayoutItem title="Feedback" icon={<MdOutlineFeedback className="h-5 w-5" />} />
-          <LayoutItem title="Help" icon={<IoMdHelp className="h-5 w-5" />} />
           <hr className="mb-2 dark:opacity-30" />
           <button onClick={async () => await logout()} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 hover:text-blue-600 dark:text-gray-50 dark:hover:text-blue-200 hover:font-poppins-semibold">
             <BiLogOut className="h-5 w-5" />
@@ -78,11 +77,11 @@ function Layout(props: Props) {
               <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">robo<span className="text-blue-600 dark:text-blue-200">CAPTCHA</span></div>
             </button>
             <LayoutItem title="Home" icon={<FiHome className="h-5 w-5" />} />
+            <LayoutItem title="Notifications" icon={<MdNotificationsNone className="h-6 w-6" />} />
             <LayoutItem title="Profile" icon={<CgUserList className="h-6 w-6" />} />
+            <LayoutItem title="Lists" icon={<MdOutlineListAlt className="h-6 w-6" />} />
             <LayoutItem title="Subscription" icon={<MdPayment className="h-5 w-5" />} />
             <LayoutItem title="Settings" icon={<FiSettings className="h-5 w-5" />} />
-            <LayoutItem title="Feedback" icon={<MdOutlineFeedback className="h-5 w-5" />} />
-            <LayoutItem title="Help" icon={<IoMdHelp className="h-5 w-5" />} />
             <hr className="mb-2 dark:opacity-30" />
             <button onClick={async () => await logout()} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 dark:text-gray-50 dark:hover:text-blue-200 hover:text-blue-600 hover:font-poppins-semibold">
               <BiLogOut className="h-5 w-5" />

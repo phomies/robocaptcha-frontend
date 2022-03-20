@@ -22,3 +22,11 @@
     padding: 0;
     background-color: transparent;
 }
+
+.ant-switch.ant-switch-checked {
+    background-color: rgb(37, 99, 235);
+}
+
+.ant-switch {
+    background-color: rgb(210, 210, 210);
+}

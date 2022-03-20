@@ -5,13 +5,13 @@ function Subscription() {
   return (
     <Layout>
       <div className="w-full px-12 pt-6 pb-12">
-        <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 mb-12 md:w-72 w-full mt-5">
+        <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 mb-12 md:w-72 w-full mt-2">
           <h1 className="font-poppins-regular text-gray-500 dark:text-gray-400">Next payment</h1>
           <h1 className="font-poppins-semibold text-gray-700 dark:text-white">on 30 November 2020</h1>
           <button className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300  dark:text-gray-800 dark:border-0 w-full rounded-lg py-2  mt-5 shadow-sm">Manage payments</button>
         </div>
         
-        <h1 className="text-lg dark:text-white">Subscription models</h1>
+        <h1 className="text-lg dark:text-white font-poppins-medium">Subscription models</h1>
         <h1 className="font-poppins-regular text-sm mb-6 text-gray-500 dark:text-gray-400">Choose a plan that works best for you</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
