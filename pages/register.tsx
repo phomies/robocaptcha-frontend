@@ -1,7 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextRouter, useRouter } from "next/router";
-import { AppContext } from "../components/context/AppContext";
-import { useContext } from "react";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -9,7 +7,6 @@ export default function Register() {
   const router: NextRouter = useRouter();
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const { saveUserId } = useContext(AppContext);
 
   return (
     <div className="flex flex-col h-screen overflow-y-scroll">
@@ -56,7 +53,6 @@ export default function Register() {
               <div className="mt-2 -mb-2 text-red-400">The two passwords do not match.</div>
             }
             <button className="mt-7 h-12 lg:h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl" onClick={() => {
-              saveUserId("6215b6f7836783021a4a585c");
               router.push("/home");
             }}>Register</button>
 

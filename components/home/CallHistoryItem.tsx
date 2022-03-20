@@ -1,5 +1,6 @@
 import { BiCheckShield, BiShield, BiShieldX, BiUserCircle } from "react-icons/bi";
-import { VscCallOutgoing } from "react-icons/vsc";
+import { MdBlock } from "react-icons/md";
+import { Tooltip } from 'antd';
 
 interface Props {
   phoneNumber: string
@@ -26,10 +27,13 @@ function CallHistoryItem(props: Props) {
         {
           action === 0 ?
             <BiCheckShield className="w-6 h-6 text-green-400" /> :
-            action === 1 ? <BiShield className="w-6 h-6 text-yellow-400" /> :
+            action === 1 ?
+              <BiShield className="w-6 h-6 text-yellow-400" /> :
               <BiShieldX className="w-6 h-6 text-red-400" />
         }
-        <VscCallOutgoing className="cursor-pointer w-5 h-5 text-gray-400 hover:text-gray-700" />
+        <Tooltip title="Blacklist Caller" placement="bottom">
+          <MdBlock className="cursor-pointer w-5 h-5 text-gray-400 hover:text-red-400 dark:hover:text-red-400" />
+        </Tooltip>
       </div>
     </div>
   );

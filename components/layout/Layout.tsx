@@ -73,7 +73,7 @@ function Layout(props: Props) {
             <button
               className="flex my-8 self-start gap-x-4 items-center px-11"
               onClick={() => router.push("/home")}>
-              <img src={`/images/logo_${getTheme()}.png`} alt="Logo" className="h-8 w-8" />
+              <img src={`/images/logo_${getTheme() || "light"}.png`} alt="Logo" className="h-8 w-8" />
               <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">robo<span className="text-blue-600 dark:text-blue-200">CAPTCHA</span></div>
             </button>
             <LayoutItem title="Home" icon={<FiHome className="h-5 w-5" />} />
