@@ -43,7 +43,7 @@ function Subscription() {
             </div>
             <button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-200 dark:hover:bg-blue-300 text-white dark:text-gray-800 w-full rounded-lg py-3 mt-5 shadow-sm">Choose plan</button>
           </div>
-          <div className="bg-white dark:bg-secondary_dark rounded-lg p-6 h-full flex flex-col justify-between">
+          <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 h-full flex flex-col justify-between">
             <div>
               <div className="flex">
                 <div className="bg-blue-darkBlue h-12 w-12 rounded-xl mr-5"></div>

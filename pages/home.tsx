@@ -8,7 +8,6 @@ import CallHistoryItem from '../components/home/CallHistoryItem';
 import { useQuery, gql } from '@apollo/client';
 import { useContext } from 'react';
 import { AppContext } from '../components/context/AppContext';
-import { NextRouter, useRouter } from 'next/router';
 import CallHistoryGraph from '../components/home/CallHistoryGraph';
 
 const GET_CALLS_BY_ID = gql`
@@ -24,6 +23,21 @@ const GET_CALLS_BY_ID = gql`
   }
 `;
 
+const GET_CALL_SUMMARY = gql`
+  query CallsReceived {
+    getCallSummary {
+      callsReceived {
+        callsRejected
+        dateTime
+        callsAccepted
+      }
+      newCalls
+      totalBlockedCalls
+      weeklyBlockedCalls
+    }
+  }
+`;
+
 const getAction = (action: string) => {
   if (action === 'success') return 0;
   if (action === 'in-progress') return 1;
@@ -32,9 +46,8 @@ const getAction = (action: string) => {
 
 function Home() {
   const { getFirebaseToken, resetProvider } = useContext(AppContext);
-  const router: NextRouter = useRouter();
 
-  const { error, data } = useQuery(GET_CALLS_BY_ID, {
+  const { error: callsError, data: callsData } = useQuery(GET_CALLS_BY_ID, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),
@@ -42,13 +55,21 @@ function Home() {
     },
   });
 
-  if (error) {
-    // console.log(error);
-    // router.push('/login');
+  if (callsError) {
     resetProvider();
   }
 
-  if (data) console.log(data);
+  if (callsData) console.log(callsData);
+
+  const { data: callSummaryData } = useQuery(GET_CALL_SUMMARY, {
+    context: {
+      headers: {
+        fbToken: getFirebaseToken(),
+      },
+    },
+  });
+
+  if (callSummaryData) console.log(callSummaryData);
 
   return (
     <Layout>
@@ -56,21 +77,21 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-5 md:gap-6">
           <HomeItem
             title="Weekly Blocked Calls"
-            stats="-"
+            stats={callSummaryData?.getCallSummary.weeklyBlockedCalls}
             icon={
               <RiCalendarCheckLine className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
           />
           <HomeItem
             title="Total Blocked Calls"
-            stats={data?.getUser.calls.length}
+            stats={callSummaryData?.getCallSummary.totalBlockedCalls}
             icon={
               <FaRegClock className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
           />
           <HomeItem
-            title="New Callers (Weekly)"
-            stats="-"
+            title="New Calls (Weekly)"
+            stats={callSummaryData?.getCallSummary.newCalls}
             increase={10}
             icon={
               <FiPhoneCall className="text-blue-600 dark:text-blue-200 h-7 w-7" />
@@ -78,7 +99,7 @@ function Home() {
           />
           <HomeItem
             title="Subscription Renewal"
-            stats="12 Dec 2022"
+            stats="-"
             icon={
               <MdOutlineSubscriptions className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
@@ -96,8 +117,8 @@ function Home() {
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
           </div>
-          {data?.getUser.calls.length > 0 ? (
-            data.getUser.calls.map((item: any) => (
+          {callsData?.getUser.calls.length > 0 ? (
+            callsData.getUser.calls.map((item: any) => (
               <CallHistoryItem
                 key={item._id}
                 phoneNumber={item.from}

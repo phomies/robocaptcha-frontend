@@ -26,7 +26,7 @@ export default function Login() {
   const [token, setToken] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [isEmailLogin, setIsEmailLogin] = useState<boolean>(false);
+  const [isEmailLogin, setIsEmailLogin] = useState<boolean>(true);
   const [isTokenLogin, setIsTokenLogin] = useState<boolean>(false);
   const firebaseAuth = getAuth(app);
 
@@ -163,15 +163,16 @@ export default function Login() {
               <div className="text-black hidden lg:block font-poppins-semibold text-2xl mb-8">
                 Sign in
               </div>
-              <div className="flex lg:w-10/12 justify-around">
+              <div className="flex lg:w-10/12 items-center justify-evenly mb-9">
                 <div
-                  className="cursor-pointer"
+                  className={`cursor-pointer hover:font-poppins-semibold ${isEmailLogin && "font-poppins-semibold"}`}
                   onClick={() => setIsEmailLogin(true)}
                 >
                   Email
                 </div>
+                <div className="h-6 w-px bg-gray-300" />
                 <div
-                  className="cursor-pointer"
+                  className={`cursor-pointer hover:font-poppins-semibold ${!isEmailLogin && "font-poppins-semibold"}`}
                   onClick={() => setIsEmailLogin(false)}
                 >
                   Phone
@@ -232,7 +233,7 @@ export default function Login() {
                       }
                     }}
                   >
-                    {isTokenLogin ? 'Token' : 'Phone'}
+                    {isTokenLogin ? 'Login' : 'Send OTP'}
                   </button>
                 </Fragment>
               )}
