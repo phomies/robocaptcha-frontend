@@ -197,7 +197,8 @@ function AuthProvider(props: Props) {
     await signInWithEmailAndPassword(firebaseAuth, email, password);
   };
 
-  const resetProvider = () => {
+  const resetProvider = async () => {
+    await router.push('/login');
     setFirebaseToken(null);
     setGoogleToken(null);
     setIsLoggedIn(false);
@@ -207,8 +208,8 @@ function AuthProvider(props: Props) {
   const signOut = async () => {
     try {
       // Reset provider before pushing to /login, otherwise app will reroute back to home
-      resetProvider();
-      await router.push('/login');
+      await resetProvider();
+    //   await router.push('/login');
 
       if (gapiModule) {
         await gapiModule.signOut();
@@ -232,7 +233,7 @@ function AuthProvider(props: Props) {
       saveFirebaseToken(idToken);
       await refetch(); // Update user claims from backend server
     } else {
-      resetProvider();
+      await resetProvider();
     }
   };
 

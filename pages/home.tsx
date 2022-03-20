@@ -43,9 +43,9 @@ function Home() {
   });
 
   if (error) {
-    console.log(error);
-    // resetProvider();
+    // console.log(error);
     // router.push('/login');
+    resetProvider();
   }
 
   if (data) console.log(data);
