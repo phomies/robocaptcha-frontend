@@ -8,8 +8,8 @@ import { ImCross } from "react-icons/im";
 import { NextRouter, useRouter } from "next/router";
 
 const GET_USER_BY_ID = gql`
-  query getUser($id: String){
-    getUser(_id: $id) {
+  query getUser {
+    getUser {
       _id
       name
       email
@@ -27,7 +27,7 @@ const EDIT_USER_BY_ID = gql`
 `
 
 function Profile() {
-  const { getUserId } = useContext(AppContext);
+  const { getFirebaseToken } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
   const [editProfile, setEditProfile] = useState<boolean>(false);
@@ -36,13 +36,17 @@ function Profile() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { error, data } = useQuery(GET_USER_BY_ID, {
-    variables: { id: getUserId() },
+    context: { 
+      headers: {
+        'fbToken': getFirebaseToken()
+      }
+    }
   })
 
   const [updateUser] = useMutation(EDIT_USER_BY_ID, {
     variables: {
       userInput: {
-        _id: getUserId(),
+        _id: getFirebaseToken(),
         name: name,
         email: email,
         phoneNumber: phoneNumber

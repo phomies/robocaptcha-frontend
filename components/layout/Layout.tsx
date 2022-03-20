@@ -19,7 +19,7 @@ interface Props {
 }
 
 function Layout(props: Props) {
-  const { saveUserId, getTheme, saveTheme } = useContext(AppContext);
+  const { getTheme, saveTheme, signOut } = useContext(AppContext);
   const [title, setTitle] = useState<string>("");
   const router: NextRouter = useRouter();
   const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
@@ -41,6 +41,10 @@ function Layout(props: Props) {
     }
   }, [router.pathname]);
 
+  const logout = async () => {
+    await signOut();
+  }
+
   return (
     <div className={`font-poppins-medium text-gray-700 dark:text-gray-50 ${getTheme() === 'dark' && 'dark'}`}>
 
@@ -57,10 +61,7 @@ function Layout(props: Props) {
           <LayoutItem title="Feedback" icon={<MdOutlineFeedback className="h-5 w-5" />} />
           <LayoutItem title="Help" icon={<IoMdHelp className="h-5 w-5" />} />
           <hr className="mb-2 dark:opacity-30" />
-          <button onClick={() => {
-            saveUserId("");
-            router.push("/login");
-          }} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 hover:text-blue-600 dark:text-gray-50 dark:hover:text-blue-200 hover:font-poppins-semibold">
+          <button onClick={async () => await logout()} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 hover:text-blue-600 dark:text-gray-50 dark:hover:text-blue-200 hover:font-poppins-semibold">
             <BiLogOut className="h-5 w-5" />
             <div className="text-sm">Logout</div>
           </button>
@@ -83,10 +84,7 @@ function Layout(props: Props) {
             <LayoutItem title="Feedback" icon={<MdOutlineFeedback className="h-5 w-5" />} />
             <LayoutItem title="Help" icon={<IoMdHelp className="h-5 w-5" />} />
             <hr className="mb-2 dark:opacity-30" />
-            <button onClick={() => {
-              saveUserId("");
-              router.push("/login");
-            }} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 dark:text-gray-50 dark:hover:text-blue-200 hover:text-blue-600 hover:font-poppins-semibold">
+            <button onClick={async () => await logout()} className="w-full px-10 flex items-center py-4 text-base gap-5 text-gray-700 dark:text-gray-50 dark:hover:text-blue-200 hover:text-blue-600 hover:font-poppins-semibold">
               <BiLogOut className="h-5 w-5" />
               <div className="text-sm">Logout</div>
             </button>
