@@ -12,10 +12,10 @@ function Settings() {
     <Layout>
       <div className="w-full px-12 pt-6 pb-12">
         <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg mb-12 w-full mt-2 flex flex-col">
-          <div className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 px-10 pt-7 pb-6 flex justify-between items-center">
+          <div className="cursor-pointer hover:bg-gray-50 dark:hover:bg-tertiary_dark px-10 pt-7 pb-6 flex justify-between items-center">
             <div className="flex items-center">
               <MdNotificationsNone className="h-6 w-6" />
-              <div className="ml-7 font-poppins-semibold text-sm">Notifications: {isNotifsOn ? <span className="ml-8 font-poppins-medium text-blue-600 dark:text-blue-200">ON</span> : <span className="ml-8 font-poppins-medium text-gray-400">OFF</span>}</div>
+              <div className="ml-7 font-poppins-semibold text-sm">Notifications: {isNotifsOn ? <span className="ml-10 font-poppins-medium text-blue-600 dark:text-blue-200">ON</span> : <span className="ml-10 font-poppins-medium text-gray-400">OFF</span>}</div>
             </div>
             <Switch checked={isNotifsOn} onChange={() => setIsNotifsOn(!isNotifsOn)} />
           </div>

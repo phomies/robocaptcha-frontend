@@ -10,7 +10,7 @@ import { useContext } from 'react';
 import { AppContext } from '../components/context/AppContext';
 import CallHistoryGraph from '../components/home/CallHistoryGraph';
 
-const GET_CALLS_BY_ID = gql`
+const GET_CALLS_BY_TOKEN = gql`
   query getUser {
     getUser {
       calls {
@@ -18,6 +18,7 @@ const GET_CALLS_BY_ID = gql`
         action
         dateTime
         from
+        location
       }
     }
   }
@@ -26,11 +27,6 @@ const GET_CALLS_BY_ID = gql`
 const GET_CALL_SUMMARY = gql`
   query CallsReceived {
     getCallSummary {
-      callsReceived {
-        callsRejected
-        dateTime
-        callsAccepted
-      }
       newCalls
       totalBlockedCalls
       weeklyBlockedCalls
@@ -47,7 +43,7 @@ const getAction = (action: string) => {
 function Home() {
   const { getFirebaseToken, resetProvider } = useContext(AppContext);
 
-  const { error: callsError, data: callsData } = useQuery(GET_CALLS_BY_ID, {
+  const { error: callsError, data: callsData } = useQuery(GET_CALLS_BY_TOKEN, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),
@@ -59,7 +55,7 @@ function Home() {
     resetProvider();
   }
 
-  if (callsData) console.log(callsData);
+  // if (callsData) console.log(callsData);
 
   const { data: callSummaryData } = useQuery(GET_CALL_SUMMARY, {
     context: {
@@ -69,7 +65,7 @@ function Home() {
     },
   });
 
-  if (callSummaryData) console.log(callSummaryData);
+  // if (callSummaryData) console.log(callSummaryData);
 
   return (
     <Layout>
@@ -123,7 +119,7 @@ function Home() {
                 key={item._id}
                 phoneNumber={item.from}
                 contactName="-"
-                location={item.from.includes('+65') ? 'Singapore' : 'Overseas'}
+                location={item.location}
                 date={new Date(item.dateTime).toDateString()}
                 time={new Date(item.dateTime).toLocaleTimeString()}
                 action={getAction(item.action)}

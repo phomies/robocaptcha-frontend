@@ -7,7 +7,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import { NextRouter, useRouter } from "next/router";
 
-const GET_USER_BY_ID = gql`
+const GET_USER_BY_TOKEN = gql`
   query getUser {
     getUser {
       _id
@@ -18,7 +18,7 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
-const EDIT_USER_BY_ID = gql`
+const EDIT_USER_BY_TOKEN = gql`
   mutation updateUser($userInput: UserInput) {
     updateUser(userInput: $userInput) {
       _id
@@ -35,7 +35,7 @@ function Profile() {
   const [email, setEmail] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
-  const { error, data } = useQuery(GET_USER_BY_ID, {
+  const { error, data } = useQuery(GET_USER_BY_TOKEN, {
     context: { 
       headers: {
         'fbToken': getFirebaseToken()
@@ -43,7 +43,7 @@ function Profile() {
     }
   })
 
-  const [updateUser] = useMutation(EDIT_USER_BY_ID, {
+  const [updateUser] = useMutation(EDIT_USER_BY_TOKEN, {
     variables: {
       userInput: {
         _id: getFirebaseToken(),
