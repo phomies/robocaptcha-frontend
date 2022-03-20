@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 interface Props {
   title: string
   stats: string
-  increase?: number
+  increase?: string
   icon: ReactElement
 }
 
@@ -22,7 +22,7 @@ function HomeItem(props: Props) {
           {
             props.increase &&
             <div className="text-gray-400 text-xs">
-              {props.increase > 0 ? `+${props.increase}%` : `${props.increase}%`}
+              {props.increase}
             </div>
           }
         </div>

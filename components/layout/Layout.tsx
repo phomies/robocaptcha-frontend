@@ -98,7 +98,7 @@ function Layout(props: Props) {
             <ImCross className="h-4 w-4 cursor-pointer hover:text-blue-600 dark:hover:text-blue-200" onClick={() => setIsNotifsOpen(false)} />
             <div className="font-poppins-semibold text-secondary text-xl">Notifications</div>
           </div>
-          <div className="mt-24 mb-11 flex flex-col gap-y-5 px-12">
+          <div className="mt-24 mb-11 flex flex-col gap-y-4 px-12">
             {
               notifsData?.getUser.notifications.map((item: any) => (
                 <div className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-9 py-5" onClick={() => { router.push(item.url) }}>

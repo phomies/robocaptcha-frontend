@@ -30,6 +30,7 @@ const GET_CALL_SUMMARY = gql`
       newCalls
       totalBlockedCalls
       weeklyBlockedCalls
+      newCallsPercentage
     }
   }
 `;
@@ -65,11 +66,11 @@ function Home() {
     },
   });
 
-  // if (callSummaryData) console.log(callSummaryData);
+  if (callSummaryData) console.log(callSummaryData);
 
   return (
     <Layout>
-      <div className="w-full px-12 pt-6 pb-12">
+      <div className="w-full px-12 pt-8 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-5 md:gap-6">
           <HomeItem
             title="Weekly Blocked Calls"
@@ -88,7 +89,7 @@ function Home() {
           <HomeItem
             title="New Calls (Weekly)"
             stats={callSummaryData?.getCallSummary.newCalls}
-            increase={10}
+            increase={callSummaryData?.getCallSummary.newCallsPercentage}
             icon={
               <FiPhoneCall className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }

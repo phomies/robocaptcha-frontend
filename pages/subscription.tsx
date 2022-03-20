@@ -10,14 +10,14 @@ function Subscription() {
           <h1 className="font-poppins-semibold text-gray-700 dark:text-white">on 30 November 2020</h1>
           <button className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300  dark:text-gray-800 dark:border-0 w-full rounded-lg py-2  mt-5 shadow-sm">Manage payments</button>
         </div>
-        
+
         <h1 className="text-lg dark:text-white font-poppins-medium">Subscription models</h1>
         <h1 className="font-poppins-regular text-sm mb-6 text-gray-500 dark:text-gray-400">Choose a plan that works best for you</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
           <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6">
             <div className="flex">
-              <div className="bg-blue-darkBlue h-12 w-12 rounded-xl mr-5"></div>
+              <div className="bg-blue-darkBlue dark:bg-blue-200 h-12 w-12 rounded-xl mr-5"></div>
               <div className="my-auto">
                 <h1 className="text-base dark:text-white">Premium</h1>
                 <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-400">$7 / month</h1>
@@ -46,7 +46,7 @@ function Subscription() {
           <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 h-full flex flex-col justify-between">
             <div>
               <div className="flex">
-                <div className="bg-blue-darkBlue h-12 w-12 rounded-xl mr-5"></div>
+                <div className="bg-blue-darkBlue dark:bg-blue-200 h-12 w-12 rounded-xl mr-5"></div>
                 <div className="my-auto">
                   <h1 className="text-base dark:text-white">Beginner</h1>
                   <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-400">Free</h1>
