@@ -232,7 +232,7 @@ function AuthProvider(props: Props) {
       console.log('Received user', rawUser);
 
       localStorage.setItem('firebaseToken', idToken);
-      localStorage.set('userId', rawUser.uid);
+      localStorage.setItem('userId', rawUser.uid);
 
       setUserId(rawUser.uid);
       setFirebaseToken(idToken); // Set firebase access token for communications with backend

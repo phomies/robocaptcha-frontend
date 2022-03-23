@@ -8,30 +8,6 @@ import { useEffect } from 'react'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  const isBrowser = typeof window !== "undefined";
-  // const wsInstance = isBrowser ? new Websocket(...) : null;
-
-
-  useEffect(() => {
-    if (!isBrowser) {
-      return;
-    }
-
-    const ws = new WebSocket('ws://localhost:2999/1');
-
-    // ws.on('message', function message(data) {
-    //   console.log('received: %s', data);
-    // });
-    if (ws !== null) {
-
-      ws.onmessage = ((message:any) => {
-        console.log('received: ', message);
-
-      })
-    }
-
-  }, [])
-
   return (
     <ApolloProvider client={client}>
       <AuthProvider>

@@ -68,6 +68,26 @@ function Layout(props: Props) {
     await signOut();
   }
 
+  useEffect(() => {
+
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      return;
+    }
+
+    const ws = new WebSocket('ws://localhost:2999/' + userId);
+  
+    ws.onmessage = ((message: any) => {
+      console.log('received: ', message);
+    })
+
+    return () => {
+      ws.close();
+    }
+
+  }, [])
+
   return (
     <div className={`font-poppins-medium text-gray-700 dark:text-gray-50 ${getTheme() === 'dark' && 'dark'}`}>
 
