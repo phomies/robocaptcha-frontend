@@ -3,7 +3,7 @@ import { AppContext } from "../context/AppContext";
 import { NextRouter, useRouter } from "next/router";
 import LayoutItem from "./LayoutItem";
 import { FaUserCircle } from "react-icons/fa";
-import { MdNotificationsNone, MdPayment, MdOutlineListAlt } from "react-icons/md";
+import { MdNotificationsNone, MdPayment, MdOutlineListAlt, MdNotificationsActive } from "react-icons/md";
 import { FiHome, FiSettings } from "react-icons/fi";
 import { CgUserList } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
@@ -13,6 +13,7 @@ import DayNightToggle from 'react-day-and-night-toggle'
 import { Drawer } from 'antd';
 import useDeviceSize from "../../utils/useDeviceSize";
 import { useQuery, gql } from '@apollo/client';
+import toast, { Toaster } from "react-hot-toast";
 
 const GET_NOTIFS_BY_TOKEN = gql`
   query getUser {
@@ -68,6 +69,44 @@ function Layout(props: Props) {
     await signOut();
   }
 
+  const notify = (notification: any) => {
+    console.log(notification);
+    const dateTime = new Date(notification.dateTime);
+
+    toast.custom((t) => (
+      <div
+        className={`${t.visible ? 'animate-enter' : 'animate-leave'
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 pt-0.5">
+              <MdNotificationsActive
+                className="h-8 w-8 rounded-full"
+              />
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-gray-900">
+                {notification.content}
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                {dateTime.toDateString() + ' ' + dateTime.toLocaleTimeString()}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex border-l border-gray-200">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    ))
+  }
+
   useEffect(() => {
 
     const userId = localStorage.getItem('userId');
@@ -76,14 +115,35 @@ function Layout(props: Props) {
       return;
     }
 
-    const ws = new WebSocket('ws://localhost:2999/' + userId);
-  
-    ws.onmessage = ((message: any) => {
-      console.log('received: ', message);
-    })
+    let ws : (WebSocket | null) = null;
+
+    let autoReload = setInterval(() => {
+      console.log("checking connection");
+      
+      if (ws === null || ws.readyState !== ws.OPEN) {
+        ws = new WebSocket(process.env.NEXT_PUBLIC_NOTIFICATION_URL + '/' + userId);
+
+
+        ws.onmessage = ((message: any) => {
+          console.log('received: ', message);
+          notify(JSON.parse(message.data));
+        })
+      }
+
+    }, 1000)
+
+    // notify({
+    //   content: 'Successful call from +6597774381',
+    //   dateTime: new Date('2022-03-23T12:25:41.723Z'),
+    //   read: false,
+    //   url: 'https://google.com'
+    // });
 
     return () => {
-      ws.close();
+      if (ws) {
+        ws.close();
+      }
+      clearInterval(autoReload);
     }
 
   }, [])
@@ -170,6 +230,7 @@ function Layout(props: Props) {
           <div className="bg-primary_light dark:bg-primary_dark -mt-5 overflow-y-scroll">{props.children}</div>
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 }
