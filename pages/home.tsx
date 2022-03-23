@@ -27,6 +27,11 @@ const GET_CALLS_BY_TOKEN = gql`
 const GET_CALL_SUMMARY = gql`
   query CallsReceived {
     getCallSummary {
+      callsReceived {
+        callsAccepted
+        callsRejected
+        dateTime
+      }
       newCalls
       totalBlockedCalls
       weeklyBlockedCalls
@@ -52,9 +57,9 @@ function Home() {
     },
   });
 
-  if (callsError) {
-    resetProvider();
-  }
+  // if (callsError) {
+  //   resetProvider();
+  // }
 
   // if (callsData) console.log(callsData);
 
@@ -66,7 +71,19 @@ function Home() {
     },
   });
 
-  if (callSummaryData) console.log(callSummaryData);
+  const callsAcceptedArr: string[] = [];
+  const callsRejectedArr: string[] = [];
+  const dateTimeArr: string[] = [];
+
+  if (callSummaryData) {
+    console.log(callSummaryData);
+    console.log(getFirebaseToken())
+    callSummaryData.getCallSummary.callsReceived.map((item: any) => {
+      callsAcceptedArr.push(item.callsAccepted);
+      callsRejectedArr.push(item.callsRejected);
+      dateTimeArr.push(item.dateTime);
+    })
+  }
 
   return (
     <Layout>
@@ -102,7 +119,7 @@ function Home() {
             }
           />
         </div>
-        <CallHistoryGraph />
+        <CallHistoryGraph callsAcceptedArr={callsAcceptedArr} callsRejectedArr={callsRejectedArr} dateTimeArr={dateTimeArr} />
         <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold">
             Call History
