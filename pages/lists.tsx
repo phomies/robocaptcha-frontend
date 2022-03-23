@@ -20,7 +20,7 @@ function Lists() {
               +65 9123 4567
             </div>
             <div className="flex items-center">
-              <HiOutlineTrash className="cursor-pointer w-5 h-5 text-red-400 dark:hover:text-red-500" />
+              <HiOutlineTrash className="cursor-pointer w-5 h-5 text-red-400 hover:text-red-500" />
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@ function Lists() {
               +65 9123 4567
             </div>
             <div className="flex items-center">
-              <HiOutlineTrash className="cursor-pointer w-5 h-5 text-red-400 dark:hover:text-red-500" />
+              <HiOutlineTrash className="cursor-pointer w-5 h-5 text-red-400 hover:text-red-500" />
             </div>
           </div>
         </div>
