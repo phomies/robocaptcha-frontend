@@ -83,6 +83,7 @@ function AuthProvider(props: Props) {
   const [tokenVerification, setTokenVerification] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const firebaseAuth = getAuth(app);
 
   const router = useRouter();
@@ -118,6 +119,7 @@ function AuthProvider(props: Props) {
         setIsLoggedIn(true);
         console.log('Creating account if not exist');
         await refetch();
+        setIsLoaded(true);
       }
     };
 
@@ -229,7 +231,6 @@ function AuthProvider(props: Props) {
   const handleUser = async (rawUser: any) => {
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
-      console.log('Received user', rawUser);
 
       localStorage.setItem('firebaseToken', idToken);
       localStorage.setItem('userId', rawUser.uid);
@@ -238,6 +239,7 @@ function AuthProvider(props: Props) {
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
       saveFirebaseToken(idToken);
       await refetch(); // Update user claims from backend server
+      setIsLoaded(true);
     } else {
       await resetProvider();
     }
@@ -272,6 +274,10 @@ function AuthProvider(props: Props) {
   const getUserId = () => {
     return userId;
   };
+
+  if (!isLoaded) {
+      return <div>Is Loading</div>
+  }
 
   return (
     <AppContext.Provider
