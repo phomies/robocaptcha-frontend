@@ -44,9 +44,13 @@ function Profile() {
   })
 
   const [updateUser] = useMutation(EDIT_USER_BY_TOKEN, {
+    context: { 
+      headers: {
+        'fbToken': getFirebaseToken()
+      }
+    },
     variables: {
       userInput: {
-        _id: getFirebaseToken(),
         name: name,
         email: email,
         phoneNumber: phoneNumber
