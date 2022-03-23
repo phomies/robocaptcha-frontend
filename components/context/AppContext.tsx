@@ -43,6 +43,7 @@ interface AppContextInterface {
   getGapiModule: () => any;
   initGapiModule: () => any;
   setAppVerifier: (appVerifier: any) => void;
+  getUserId: () => string | null;
 }
 
 const appContextDefaults: AppContextInterface = {
@@ -60,6 +61,7 @@ const appContextDefaults: AppContextInterface = {
   getGapiModule: () => null,
   initGapiModule: () => null,
   setAppVerifier: () => null,
+  getUserId: () => null,
 };
 
 export const AppContext =
@@ -80,6 +82,8 @@ function AuthProvider(props: Props) {
   const [appVerifier, setAppVerifier] = useState<any>(null);
   const [tokenVerification, setTokenVerification] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const firebaseAuth = getAuth(app);
 
   const router = useRouter();
@@ -115,6 +119,7 @@ function AuthProvider(props: Props) {
         setIsLoggedIn(true);
         console.log('Creating account if not exist');
         await refetch();
+        setIsLoaded(true);
       }
     };
 
@@ -186,7 +191,7 @@ function AuthProvider(props: Props) {
   const validatePhoneToken = async (token: string) => {
     if (tokenVerification) {
       const response = await tokenVerification.confirm(token);
-      await handleUser(response.user);
+      //   await handleUser(response.user);
       console.log('Validated phone token', response.user);
 
       await router.push('/');
@@ -203,13 +208,14 @@ function AuthProvider(props: Props) {
     setGoogleToken(null);
     setIsLoggedIn(false);
     localStorage.removeItem('firebaseToken');
+    localStorage.removeItem('userId');
   };
 
   const signOut = async () => {
     try {
       // Reset provider before pushing to /login, otherwise app will reroute back to home
       await resetProvider();
-    //   await router.push('/login');
+      //   await router.push('/login');
 
       if (gapiModule) {
         await gapiModule.signOut();
@@ -223,15 +229,17 @@ function AuthProvider(props: Props) {
   };
 
   const handleUser = async (rawUser: any) => {
-    console.log('calling');
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
-      console.log('Received user', rawUser);
+      console.log(idToken);
       localStorage.setItem('firebaseToken', idToken);
+      localStorage.setItem('userId', rawUser.uid);
 
+      setUserId(rawUser.uid);
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
       saveFirebaseToken(idToken);
       await refetch(); // Update user claims from backend server
+      setIsLoaded(true);
     } else {
       await resetProvider();
     }
@@ -263,6 +271,14 @@ function AuthProvider(props: Props) {
     return gapiModule;
   };
 
+  const getUserId = () => {
+    return userId;
+  };
+
+  if (!isLoaded) {
+    return <div>Is Loading</div>;
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -280,6 +296,7 @@ function AuthProvider(props: Props) {
         getGapiModule,
         initGapiModule,
         setAppVerifier,
+        getUserId,
       }}
     >
       {props.children}

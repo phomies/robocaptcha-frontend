@@ -9,7 +9,6 @@ const Index: NextPage = () => {
   const { getFirebaseToken } = useContext(AppContext);
 
   useEffect(() => {
-      console.log(getFirebaseToken(), "here")
     router.push(getFirebaseToken() ? '/home' : '/login');
   }, [getFirebaseToken()]);
 

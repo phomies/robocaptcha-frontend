@@ -21,16 +21,16 @@ const GET_CALLS_BY_TOKEN = gql`
         location
       }
     }
-  }
-`;
-
-const GET_CALL_SUMMARY = gql`
-  query CallsReceived {
     getCallSummary {
+      callsReceived {
+        callsAccepted
+        callsRejected
+        dateTime
+      }
       newCalls
+      newCallsPercentage
       totalBlockedCalls
       weeklyBlockedCalls
-      newCallsPercentage
     }
   }
 `;
@@ -56,17 +56,18 @@ function Home() {
     resetProvider();
   }
 
-  // if (callsData) console.log(callsData);
+  const callsAcceptedArr: string[] = [];
+  const callsRejectedArr: string[] = [];
+  const dateTimeArr: string[] = [];
 
-  const { data: callSummaryData } = useQuery(GET_CALL_SUMMARY, {
-    context: {
-      headers: {
-        fbToken: getFirebaseToken(),
-      },
-    },
-  });
-
-  if (callSummaryData) console.log(callSummaryData);
+  if (callsData) {
+    console.log(callsData);
+    callsData.getCallSummary.callsReceived.map((item: any) => {
+      callsAcceptedArr.push(item.callsAccepted);
+      callsRejectedArr.push(item.callsRejected);
+      dateTimeArr.push(item.dateTime);
+    })
+  }
 
   return (
     <Layout>
@@ -74,22 +75,22 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-5 md:gap-6">
           <HomeItem
             title="Weekly Blocked Calls"
-            stats={callSummaryData?.getCallSummary.weeklyBlockedCalls}
+            stats={callsData?.getCallSummary.weeklyBlockedCalls}
             icon={
               <RiCalendarCheckLine className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
           />
           <HomeItem
             title="Total Blocked Calls"
-            stats={callSummaryData?.getCallSummary.totalBlockedCalls}
+            stats={callsData?.getCallSummary.totalBlockedCalls}
             icon={
               <FaRegClock className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
           />
           <HomeItem
             title="New Calls (Weekly)"
-            stats={callSummaryData?.getCallSummary.newCalls}
-            increase={callSummaryData?.getCallSummary.newCallsPercentage}
+            stats={callsData?.getCallSummary.newCalls}
+            increase={callsData?.getCallSummary.newCallsPercentage}
             icon={
               <FiPhoneCall className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
@@ -102,7 +103,7 @@ function Home() {
             }
           />
         </div>
-        <CallHistoryGraph />
+        <CallHistoryGraph callsAcceptedArr={callsAcceptedArr} callsRejectedArr={callsRejectedArr} dateTimeArr={dateTimeArr} />
         <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold">
             Call History

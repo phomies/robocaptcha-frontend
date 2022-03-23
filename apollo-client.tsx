@@ -1,13 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-let uri: string = "";
-if (process.env.NEXT_PUBLIC_ENVIRONMENT == "DEVELOPMENT") {
-  uri = process.env.NEXT_PUBLIC_LOCAL_URL + "/graphql";
-}
-
-if (process.env.NEXT_PUBLIC_ENVIRONMENT == "PRODUCTION") {
-  uri = process.env.NEXT_PUBLIC_PRODUCTION_URL + "/graphql";
-}
+let uri: string | undefined = process.env.NEXT_PUBLIC_PRODUCTION_URL;
 
 const client = new ApolloClient({
   uri: uri,

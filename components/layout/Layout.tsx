@@ -68,6 +68,26 @@ function Layout(props: Props) {
     await signOut();
   }
 
+  useEffect(() => {
+
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      return;
+    }
+
+    const ws = new WebSocket('ws://localhost:2999/' + userId);
+  
+    ws.onmessage = ((message: any) => {
+      console.log('received: ', message);
+    })
+
+    return () => {
+      ws.close();
+    }
+
+  }, [])
+
   return (
     <div className={`font-poppins-medium text-gray-700 dark:text-gray-50 ${getTheme() === 'dark' && 'dark'}`}>
 
@@ -100,8 +120,8 @@ function Layout(props: Props) {
           </div>
           <div className="mt-24 mb-11 flex flex-col gap-y-4 px-12">
             {
-              notifsData?.getUser.notifications.map((item: any) => (
-                <div className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-9 py-5" onClick={() => { router.push(item.url) }}>
+              notifsData?.getUser.notifications.map((index: number, item: any) => (
+                <div key={index} className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-9 py-5" onClick={() => { router.push(item.url) }}>
                   <div className="font-poppins-medium flex justify-between">
                     {item.content}
                     <div className={`-mt-2 -mr-6 bg-red-400 w-[7px] h-[7px] rounded-full ${item.read && "hidden"}`} />
