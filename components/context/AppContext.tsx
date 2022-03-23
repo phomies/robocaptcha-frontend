@@ -231,7 +231,7 @@ function AuthProvider(props: Props) {
   const handleUser = async (rawUser: any) => {
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
-
+      console.log(idToken);
       localStorage.setItem('firebaseToken', idToken);
       localStorage.setItem('userId', rawUser.uid);
 
@@ -276,7 +276,7 @@ function AuthProvider(props: Props) {
   };
 
   if (!isLoaded) {
-      return <div>Is Loading</div>
+    return <div>Is Loading</div>;
   }
 
   return (
