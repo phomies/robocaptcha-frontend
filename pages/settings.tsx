@@ -1,15 +1,61 @@
 import Layout from "../components/layout/Layout";
-import { Switch } from 'antd';
-import { useState } from 'react';
+import { Switch, Modal } from 'antd';
 import { MdNotificationsNone, MdArrowForwardIos, MdPayment, MdOutlineFeedback } from "react-icons/md";
 import { RiLockPasswordLine, RiFontSize } from "react-icons/ri";
 import { HiOutlineTrash } from "react-icons/hi";
 import { IoMdHelp } from "react-icons/io";
+import { useMutation, gql } from "@apollo/client";
+import { AppContext } from "../components/context/AppContext";
+import { useState, useContext } from "react";
+import { NextRouter, useRouter } from "next/router";
+
+const DELETE_USER = gql`
+  mutation deleteUser {
+    deleteUser
+  }
+`
 
 function Settings() {
   const [isNotifsOn, setIsNotifsOn] = useState<boolean>(true);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const { getFirebaseToken, resetProvider } = useContext(AppContext);
+  const router: NextRouter = useRouter();
+
+  const [deleteUser] = useMutation(DELETE_USER, {
+    context: {
+      headers: {
+        'fbToken': getFirebaseToken()
+      }
+    },
+  })
+
   return (
     <Layout>
+      <Modal
+        title="Confirm?"
+        visible={isModalVisible}
+        closable={false}
+        centered={true}
+        footer={null}
+      >
+        <div className="font-poppins-regular text-sm">
+          Confirm account deletion? This action cannot be undone.
+        </div>
+        <button
+          className="mt-6 py-2 px-7 rounded-lg shadow-lg bg-red-600 hover:bg-red-700 text-white font-poppins-medium"
+          onClick={() => {
+            deleteUser();
+            resetProvider();
+          }}>
+          DELETE
+        </button>
+        <button
+          className="mt-6 py-2 px-7 text-blue-600 hover:text-blue-700 font-poppins-regular hover:font-poppins-medium"
+          onClick={() => setIsModalVisible(false)}
+        >
+          CANCEL
+        </button>
+      </Modal>
       <div className="w-full px-12 pt-8 pb-12">
         <div className="flex flex-col gap-y-4">
           <div className="bg-white dark:bg-secondary_dark rounded-lg shadow-md w-full px-10 p-6 flex justify-between items-center">
@@ -54,7 +100,9 @@ function Settings() {
             </div>
             <MdArrowForwardIos className="text-gray-400 h-5 w-5" />
           </div>
-          <div className="bg-white dark:bg-secondary_dark rounded-lg shadow-md w-full cursor-pointer hover:bg-gray-100 dark:hover:bg-tertiary_dark px-10 p-6 flex items-center text-red-400">
+          <div className="bg-white dark:bg-secondary_dark rounded-lg shadow-md w-full cursor-pointer hover:bg-gray-100 dark:hover:bg-tertiary_dark px-10 p-6 flex items-center text-red-400"
+            onClick={() => setIsModalVisible(true)}
+          >
             <HiOutlineTrash className="h-6 w-6" />
             <div className="ml-7 font-poppins-semibold text-sm">Delete Account</div>
           </div>
