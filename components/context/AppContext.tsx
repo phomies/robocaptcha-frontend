@@ -108,8 +108,11 @@ function AuthProvider(props: Props) {
 
   // Firebase handler
   useEffect(() => {
-    const unsubscribe = onIdTokenChanged(firebaseAuth, handleUser);
+    const unsubscribe = onIdTokenChanged(firebaseAuth, handleUser, (error) =>
+      console.log('Token listener', error)
+    );
 
+    setIsLoaded(true);
     return () => unsubscribe();
   }, []);
 
@@ -238,6 +241,7 @@ function AuthProvider(props: Props) {
       setUserId(rawUser.uid);
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
       saveFirebaseToken(idToken);
+
       await refetch(); // Update user claims from backend server
       setIsLoaded(true);
     } else {
