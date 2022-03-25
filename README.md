@@ -1,15 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and Tailwind CSS.
+## RoboCaptcha Web Application
 
-## Local Deployment
+### Environment Variables
+| Name                                     | Description                             |
+| ---------------------------------------- | --------------------------------------- |
+| NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID      | Firebase measurement ID                 |
+| NEXT_PUBLIC_FIREBASE_APP_ID              | Firebase application ID                 |
+| NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID | Firebase messaging sender ID            |
+| NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET      | Firebase storage bucket URL             |
+| NEXT_PUBLIC_FIREBASE_PROJECT_ID          | Firebase project ID                     |
+| NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN         | Firebase auth domain URL                |
+| NEXT_PUBLIC_FIREBASE_API_KEY             | Firebase API key                        |
+| NEXT_PUBLIC_GOOGLE_CLIENT_ID             | Google OAuth client ID to sync contacts |
 
-Install node modules and run the local server by entering the following commands:
-
-```bash
-yarn
+### Local Deployment
 ```
+git clone https://github.com/phomies/callcaptcha-frontend.git
 
-```bash
+yarn install
 yarn dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
