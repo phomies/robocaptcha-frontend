@@ -127,11 +127,11 @@ function Home() {
                 action={getAction(item.action)}
               />
             ))
-          ) : (
+          ) :
             <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">
               No records found
             </div>
-          )}
+          }
         </div>
       </div>
     </Layout>
