@@ -1,30 +1,13 @@
 import Layout from "../components/layout/Layout";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
 import { useState, useContext, useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import { NextRouter, useRouter } from "next/router";
-
-const GET_USER_BY_TOKEN = gql`
-  query getUser {
-    getUser {
-      _id
-      name
-      email
-      phoneNumber
-    }
-  }
-`;
-
-const EDIT_USER_BY_TOKEN = gql`
-  mutation updateUser($userInput: UserInput) {
-    updateUser(userInput: $userInput) {
-      _id
-    }
-  }
-`;
+import { GET_USER } from "../data/queries";
+import { EDIT_USER } from "../data/mutations";
 
 function Profile() {
   const { getFirebaseToken } = useContext(AppContext);
@@ -35,7 +18,7 @@ function Profile() {
   const [email, setEmail] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
-  const { error, data } = useQuery(GET_USER_BY_TOKEN, {
+  const { error, data } = useQuery(GET_USER, {
     context: { 
       headers: {
         fbToken: getFirebaseToken()
@@ -43,7 +26,7 @@ function Profile() {
     }
   })
 
-  const [updateUser] = useMutation(EDIT_USER_BY_TOKEN, {
+  const [updateUser] = useMutation(EDIT_USER, {
     context: { 
       headers: {
         fbToken: getFirebaseToken()

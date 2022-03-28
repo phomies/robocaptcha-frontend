@@ -12,22 +12,9 @@ import { ImCross } from "react-icons/im";
 import DayNightToggle from 'react-day-and-night-toggle'
 import { Drawer } from 'antd';
 import useDeviceSize from "../../utils/useDeviceSize";
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_NOTIFS } from "../../data/queries";
 import toast, { Toaster } from "react-hot-toast";
-
-const GET_NOTIFS_BY_TOKEN = gql`
-  query getUser {
-    getUser {
-      notifications {
-        _id
-        content
-        dateTime
-        read
-        url
-      }
-    }
-  }
-`;
 
 interface Props {
   children: React.ReactNode;
@@ -41,7 +28,7 @@ function Layout(props: Props) {
   const [isNotifsOpen, setIsNotifsOpen] = useState<boolean>(false);
   const [width] = useDeviceSize();
 
-  const { data: notifsData } = useQuery(GET_NOTIFS_BY_TOKEN, {
+  const { data: notifsData } = useQuery(GET_NOTIFS, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),

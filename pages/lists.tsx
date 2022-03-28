@@ -1,23 +1,11 @@
 import Layout from "../components/layout/Layout";
 import { HiPlusSm } from "react-icons/hi";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
 import { useState, useContext } from "react";
 import ListItem from "../components/lists/ListItem";
 import ModalItem from "../components/lists/ModalItem";
-
-const GET_CONTACTS = gql`
-  query getContacts {
-    getUser {
-      contacts {
-        _id
-        isBlacklisted
-        isWhitelisted
-        number
-      }
-    }
-  }
-`;
+import { GET_CONTACTS } from "../data/queries";
 
 function Lists() {
   const { getFirebaseToken } = useContext(AppContext);

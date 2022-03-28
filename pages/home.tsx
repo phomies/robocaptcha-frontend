@@ -5,35 +5,11 @@ import { FaRegClock } from 'react-icons/fa';
 import { FiPhoneCall } from 'react-icons/fi';
 import { MdOutlineSubscriptions } from 'react-icons/md';
 import CallHistoryItem from '../components/home/CallHistoryItem';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_CALLS } from '../data/queries';
 import { useContext } from 'react';
 import { AppContext } from '../components/context/AppContext';
 import CallHistoryGraph from '../components/home/CallHistoryGraph';
-
-const GET_CALLS_BY_TOKEN = gql`
-  query getUser {
-    getUser {
-      calls {
-        _id
-        action
-        dateTime
-        from
-        location
-      }
-    }
-    getCallSummary {
-      callsReceived {
-        callsAccepted
-        callsRejected
-        dateTime
-      }
-      newCalls
-      newCallsPercentage
-      totalBlockedCalls
-      weeklyBlockedCalls
-    }
-  }
-`;
 
 const getAction = (action: string) => {
   if (action === 'success') return 0;
@@ -44,7 +20,7 @@ const getAction = (action: string) => {
 function Home() {
   const { getFirebaseToken, resetProvider } = useContext(AppContext);
 
-  const { error: callsError, data: callsData } = useQuery(GET_CALLS_BY_TOKEN, {
+  const { error: callsError, data: callsData } = useQuery(GET_CALLS, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),

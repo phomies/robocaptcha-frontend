@@ -1,9 +1,10 @@
 import { BiCheckShield, BiShield, BiShieldX, BiUserCircle } from "react-icons/bi";
 import { MdBlock } from "react-icons/md";
 import { Tooltip, message } from 'antd';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import { BLACKLIST_CONTACT } from "../../data/mutations";
 
 interface Props {
   phoneNumber: string
@@ -13,14 +14,6 @@ interface Props {
   time: string
   action: number
 }
-
-const BLACKLIST_CONTACT = gql`
-  mutation Mutation($upsertContactInput: UpsertContactInput) {
-    upsertContact(upsertContactInput: $upsertContactInput) {
-      _id
-    }
-  }
-`;
 
 function CallHistoryItem(props: Props) {
   const { phoneNumber, contactName, location, date, time, action } = props;
@@ -66,7 +59,7 @@ function CallHistoryItem(props: Props) {
                   }
                 }
               });
-              message.success(`${phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)} has been added to blacklist.`);
+              message.success(`${phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)} added to blacklist`);
             }}
           />
         </Tooltip>

@@ -1,18 +1,10 @@
 import Layout from '../components/layout/Layout';
 import { MdDone } from 'react-icons/md';
 import StripeCheckout from 'react-stripe-checkout';
-import { useState, useEffect } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { useState, useContext } from 'react';
+import { useMutation } from '@apollo/client';
 import { AppContext } from '../components/context/AppContext';
-import { useContext } from 'react';
-
-const UPSERT_PAYMENT = gql`
-  mutation upsertPayment($upsertPaymentInput: UpsertPaymentInput) {
-    upsertPayment(upsertPaymentInput: $upsertPaymentInput) {
-      _id
-    }
-  }
-`;
+import { UPSERT_PAYMENT } from '../data/mutations';
 
 function Subscription() {
   const { getFirebaseToken } = useContext(AppContext);

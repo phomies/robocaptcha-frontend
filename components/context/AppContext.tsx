@@ -1,4 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { LOGIN_USER } from '../../data/queries';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -67,12 +68,6 @@ const appContextDefaults: AppContextInterface = {
 export const AppContext =
   createContext<AppContextInterface>(appContextDefaults);
 export const useAppContext = () => useContext(AppContext);
-
-const LOGIN_USER = gql`
-  query loginUser {
-    loginUser
-  }
-`;
 
 function AuthProvider(props: Props) {
   const [theme, setTheme] = useState<string | null>(null);

@@ -1,6 +1,5 @@
 import { BiUserCircle } from "react-icons/bi";
 import { HiOutlineTrash } from "react-icons/hi";
-import { useMutation, gql } from "@apollo/client";
 
 interface Props {
   isWhitelist: boolean

@@ -4,16 +4,11 @@ import { MdNotificationsNone, MdArrowForwardIos, MdPayment, MdOutlineFeedback } 
 import { RiLockPasswordLine, RiFontSize } from "react-icons/ri";
 import { HiOutlineTrash } from "react-icons/hi";
 import { IoMdHelp } from "react-icons/io";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
 import { useState, useContext } from "react";
 import { NextRouter, useRouter } from "next/router";
-
-const DELETE_USER = gql`
-  mutation deleteUser {
-    deleteUser
-  }
-`
+import { DELETE_USER } from "../data/mutations";
 
 function Settings() {
   const [isNotifsOn, setIsNotifsOn] = useState<boolean>(true);
