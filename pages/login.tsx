@@ -74,7 +74,6 @@ export default function Login() {
         refreshGoogleToken(user);
       },
       (error: any) => {
-        // TODO - Fix mounting issue
         console.log(JSON.stringify(error));
       }
     );
@@ -165,14 +164,18 @@ export default function Login() {
               </div>
               <div className="flex lg:w-10/12 items-center justify-evenly mb-9">
                 <div
-                  className={`cursor-pointer hover:font-poppins-semibold ${isEmailLogin && "font-poppins-semibold"}`}
+                  className={`cursor-pointer hover:font-poppins-semibold ${
+                    isEmailLogin && 'font-poppins-semibold'
+                  }`}
                   onClick={() => setIsEmailLogin(true)}
                 >
                   Email
                 </div>
                 <div className="h-6 w-px bg-gray-300" />
                 <div
-                  className={`cursor-pointer hover:font-poppins-semibold ${!isEmailLogin && "font-poppins-semibold"}`}
+                  className={`cursor-pointer hover:font-poppins-semibold ${
+                    !isEmailLogin && 'font-poppins-semibold'
+                  }`}
                   onClick={() => setIsEmailLogin(false)}
                 >
                   Phone

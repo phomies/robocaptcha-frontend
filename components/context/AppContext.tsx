@@ -8,6 +8,7 @@ import {
   signOut as firebaseSignOut,
   signInWithPhoneNumber,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
 } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import {
@@ -45,6 +46,7 @@ interface AppContextInterface {
   initGapiModule: () => any;
   setAppVerifier: (appVerifier: any) => void;
   getUserId: () => string | null;
+  registerWithEmailPassword: (email: string, password: string) => void;
 }
 
 const appContextDefaults: AppContextInterface = {
@@ -63,6 +65,7 @@ const appContextDefaults: AppContextInterface = {
   initGapiModule: () => null,
   setAppVerifier: () => null,
   getUserId: () => null,
+  registerWithEmailPassword: () => null,
 };
 
 export const AppContext =
@@ -274,6 +277,10 @@ function AuthProvider(props: Props) {
     return userId;
   };
 
+  const registerWithEmailPassword = async (email: string, password: string) => {
+    await createUserWithEmailAndPassword(firebaseAuth, email, password);
+  };
+
   if (!isLoaded) {
     return <div>Is Loading</div>;
   }
@@ -296,6 +303,7 @@ function AuthProvider(props: Props) {
         initGapiModule,
         setAppVerifier,
         getUserId,
+        registerWithEmailPassword,
       }}
     >
       {props.children}
