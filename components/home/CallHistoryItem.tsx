@@ -5,19 +5,20 @@ import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { UPSERT_CONTACT } from "../../data/mutations";
-import { formatPhoneNumberIntl } from 'react-phone-number-input';
+import { formatPhoneNumberIntl, parsePhoneNumber } from 'react-phone-number-input';
+
+const { getName } = require('country-list');
 
 interface Props {
   phoneNumber: string
   contactName?: string
-  location: string
   date: string
   time: string
   action: number
 }
 
 function CallHistoryItem(props: Props) {
-  const { phoneNumber, contactName, location, date, time, action } = props;
+  const { phoneNumber, contactName, date, time, action } = props;
   const { getFirebaseToken } = useContext(AppContext);
 
   const [blacklistContact] = useMutation(UPSERT_CONTACT, {
@@ -35,7 +36,7 @@ function CallHistoryItem(props: Props) {
         {phoneNumber.includes("Anonymous") ? "Anonymous" : formatPhoneNumberIntl(phoneNumber)}
       </div>
       <div className="hidden lg:block lg:col-span-2">{contactName || "-"}</div>
-      <div className="hidden md:block md:col-span-2">{location}</div>
+      <div className="hidden md:block md:col-span-2">{getName(parsePhoneNumber(phoneNumber)?.country) || "Unknown"}</div>
       <div className="col-span-2 self-center">{date}</div>
       <div className="hidden md:block md:col-span-2">{time}</div>
       <div className="md:col-span-1 flex items-center gap-x-3 md:gap-x-8">

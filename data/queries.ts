@@ -14,7 +14,6 @@ export const GET_CALLS = gql`
         action
         dateTime
         from
-        location
       }
     }
     getCallSummary {

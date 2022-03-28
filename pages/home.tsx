@@ -97,7 +97,6 @@ function Home() {
                 key={item._id}
                 phoneNumber={item.from}
                 contactName="-"
-                location={item.location}
                 date={new Date(item.dateTime).toDateString()}
                 time={new Date(item.dateTime).toLocaleTimeString()}
                 action={getAction(item.action)}
