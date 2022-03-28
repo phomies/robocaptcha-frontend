@@ -21,6 +21,7 @@
     "react-dom": "17.0.2",
     "react-hot-toast": "^2.2.0",
     "react-icons": "^4.3.1",
+    "react-phone-number-input": "^3.1.48",
     "react-stripe-checkout": "^2.6.3",
     "styled-components": "^5.3.3"
   },

@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { UPSERT_CONTACT } from "../../data/mutations";
+import { formatPhoneNumberIntl } from 'react-phone-number-input';
 
 interface Props {
   phoneNumber: string
@@ -31,7 +32,7 @@ function CallHistoryItem(props: Props) {
     <div className="dark:bg-secondary_dark text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
       <div className="col-span-2 flex items-center gap-x-2">
         <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
-        {phoneNumber.includes("Anonymous") ? "Anonymous" : phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)}
+        {phoneNumber.includes("Anonymous") ? "Anonymous" : formatPhoneNumberIntl(phoneNumber)}
       </div>
       <div className="hidden lg:block lg:col-span-2">{contactName || "-"}</div>
       <div className="hidden md:block md:col-span-2">{location}</div>
@@ -56,7 +57,7 @@ function CallHistoryItem(props: Props) {
                   }
                 }
               });
-              message.success(`${phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)} added to blacklist`);
+              message.success(`${formatPhoneNumberIntl(phoneNumber)} added to blacklist`);
             }}
           />
         </Tooltip>

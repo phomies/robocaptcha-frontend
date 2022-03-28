@@ -6,6 +6,7 @@ import { AppContext } from '../context/AppContext';
 import { useMutation } from '@apollo/client';
 import { NextRouter, useRouter } from "next/router";
 import { Tooltip } from "antd";
+import { formatPhoneNumberIntl } from 'react-phone-number-input';
 
 interface Props {
   isWhitelist: boolean
@@ -49,7 +50,7 @@ const ListItem = (props: Props) => {
     <div className="dark:bg-secondary_dark text-xs md:text-sm py-4 px-7 flex justify-between">
       <div className="flex items-center gap-x-3">
         <BiUserCircle className="h-6 w-6 text-gray-500" />
-        {number.slice(0, 3) + " " + number.slice(3, 7) + " " + number.slice(7)}
+        {formatPhoneNumberIntl(number)}
       </div>
       <Tooltip title={`Remove from ${isWhitelist ? "Whitelist" : "Blacklist"}`} placement="bottom">
         <div className="flex items-center">
