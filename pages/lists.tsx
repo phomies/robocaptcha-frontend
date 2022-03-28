@@ -1,9 +1,10 @@
 import Layout from "../components/layout/Layout";
 import { HiPlusSm } from "react-icons/hi";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import ListItem from "../components/lists/ListItem";
+import ModalItem from "../components/lists/ModalItem";
 
 const GET_CONTACTS = gql`
   query getContacts {
@@ -20,6 +21,8 @@ const GET_CONTACTS = gql`
 
 function Lists() {
   const { getFirebaseToken } = useContext(AppContext);
+  const [isBLModalVisible, setIsBLModalVisible] = useState<boolean>(false);
+  const [isWLModalVisible, setIsWLModalVisible] = useState<boolean>(false);
 
   const { error, data } = useQuery(GET_CONTACTS, {
     context: {
@@ -33,11 +36,15 @@ function Lists() {
 
   return (
     <Layout>
+      <ModalItem isVisible={isBLModalVisible} setIsVisible={setIsBLModalVisible} isWhitelist={false} />
+      <ModalItem isVisible={isWLModalVisible} setIsVisible={setIsWLModalVisible} isWhitelist={true} />
+
       <div className="w-full px-12 pt-6 pb-12 flex flex-col md:flex-row gap-x-10">
         <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full h-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold flex items-center justify-between">
             Blacklist
-            <HiPlusSm className="cursor-pointer h-6 w-6 text-gray-400 hover:text-blue-600 dark:hover:text-blue-200" />
+            <HiPlusSm className="cursor-pointer h-6 w-6 text-gray-400 hover:text-blue-600 dark:hover:text-blue-200"
+              onClick={() => setIsBLModalVisible(true)} />
           </div>
           <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7">
             <div className="col-span-3">Phone Number</div>
@@ -55,7 +62,8 @@ function Lists() {
         <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full h-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold flex items-center justify-between">
             Whitelist
-            <HiPlusSm className="cursor-pointer h-6 w-6 text-gray-400 hover:text-blue-600 dark:hover:text-blue-200" />
+            <HiPlusSm className="cursor-pointer h-6 w-6 text-gray-400 hover:text-blue-600 dark:hover:text-blue-200"
+              onClick={() => setIsWLModalVisible(true)} />
           </div>
           <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7">
             <div className="col-span-3">Phone Number</div>

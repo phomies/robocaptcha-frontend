@@ -38,19 +38,19 @@ function Settings() {
         centered={true}
         footer={null}
       >
-        <div className="font-poppins-regular text-sm">
+        <div className="font-poppins-regular text-sm mb-2">
           Confirm account deletion? This action cannot be undone.
         </div>
         <button
-          className="mt-6 py-2 px-7 rounded-lg shadow-lg bg-red-600 hover:bg-red-700 text-white font-poppins-medium"
-          onClick={() => {
-            deleteUser();
-            resetProvider();
+          className="mt-6 py-2 px-7 rounded-lg shadow-lg bg-red-500 hover:bg-red-600 text-white font-poppins-medium"
+          onClick={async () => {
+            await deleteUser();
+            await resetProvider();
           }}>
           DELETE
         </button>
         <button
-          className="mt-6 py-2 px-7 text-blue-600 hover:text-blue-700 font-poppins-regular hover:font-poppins-medium"
+          className="mt-6 py-2 px-7 text-gray-500 hover:text-gray-600 font-poppins-regular hover:font-poppins-medium"
           onClick={() => setIsModalVisible(false)}
         >
           CANCEL
