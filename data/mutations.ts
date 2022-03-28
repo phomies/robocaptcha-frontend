@@ -14,7 +14,7 @@ export const DELETE_USER = gql`
   }
 `;
 
-export const BLACKLIST_CONTACT = gql`
+export const UPSERT_CONTACT = gql`
   mutation upsertContact($upsertContactInput: UpsertContactInput) {
     upsertContact(upsertContactInput: $upsertContactInput) {
       _id

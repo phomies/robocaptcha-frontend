@@ -4,7 +4,7 @@ import { Tooltip, message } from 'antd';
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { BLACKLIST_CONTACT } from "../../data/mutations";
+import { UPSERT_CONTACT } from "../../data/mutations";
 
 interface Props {
   phoneNumber: string
@@ -19,14 +19,11 @@ function CallHistoryItem(props: Props) {
   const { phoneNumber, contactName, location, date, time, action } = props;
   const { getFirebaseToken } = useContext(AppContext);
 
-  const [blacklistContact] = useMutation(BLACKLIST_CONTACT, {
+  const [blacklistContact] = useMutation(UPSERT_CONTACT, {
     context: {
       headers: {
         fbToken: getFirebaseToken()
       }
-    },
-    variables: {
-
     }
   })
 
