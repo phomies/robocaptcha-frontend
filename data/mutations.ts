@@ -29,3 +29,9 @@ export const UPSERT_PAYMENT = gql`
     }
   }
 `;
+
+export const CREATE_USER = gql`
+  mutation Mutation($createUserInput: CreateUserInput) {
+    createUser(createUserInput: $createUserInput)
+  }
+`;

@@ -68,7 +68,8 @@ const appContextDefaults: AppContextInterface = {
   registerWithEmailPassword: () => null,
 };
 
-export const AppContext = createContext<AppContextInterface>(appContextDefaults);
+export const AppContext =
+  createContext<AppContextInterface>(appContextDefaults);
 export const useAppContext = () => useContext(AppContext);
 
 function AuthProvider(props: Props) {
@@ -191,7 +192,6 @@ function AuthProvider(props: Props) {
   const validatePhoneToken = async (token: string) => {
     if (tokenVerification) {
       const response = await tokenVerification.confirm(token);
-      //   await handleUser(response.user);
       console.log('Validated phone token', response.user);
 
       await router.push('/');
@@ -215,7 +215,6 @@ function AuthProvider(props: Props) {
     try {
       // Reset provider before pushing to /login, otherwise app will reroute back to home
       await resetProvider();
-      //   await router.push('/login');
 
       if (gapiModule) {
         await gapiModule.signOut();
