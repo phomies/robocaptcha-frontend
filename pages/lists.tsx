@@ -27,7 +27,7 @@ function Lists() {
   const { error, data } = useQuery(GET_CONTACTS, {
     context: {
       headers: {
-        'fbToken': getFirebaseToken()
+        fbToken: getFirebaseToken()
       }
     }
   })

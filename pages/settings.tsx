@@ -24,7 +24,7 @@ function Settings() {
   const [deleteUser] = useMutation(DELETE_USER, {
     context: {
       headers: {
-        'fbToken': getFirebaseToken()
+        fbToken: getFirebaseToken()
       }
     },
   })

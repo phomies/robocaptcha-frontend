@@ -1,6 +1,9 @@
 import { BiCheckShield, BiShield, BiShieldX, BiUserCircle } from "react-icons/bi";
 import { MdBlock } from "react-icons/md";
-import { Tooltip } from 'antd';
+import { Tooltip, message } from 'antd';
+import { useMutation, gql } from '@apollo/client';
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
 interface Props {
   phoneNumber: string
@@ -11,8 +14,29 @@ interface Props {
   action: number
 }
 
+const BLACKLIST_CONTACT = gql`
+  mutation Mutation($upsertContactInput: UpsertContactInput) {
+    upsertContact(upsertContactInput: $upsertContactInput) {
+      _id
+    }
+  }
+`;
+
 function CallHistoryItem(props: Props) {
   const { phoneNumber, contactName, location, date, time, action } = props;
+  const { getFirebaseToken } = useContext(AppContext);
+
+  const [blacklistContact] = useMutation(BLACKLIST_CONTACT, {
+    context: {
+      headers: {
+        fbToken: getFirebaseToken()
+      }
+    },
+    variables: {
+
+    }
+  })
+
   return (
     <div className="dark:bg-secondary_dark text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
       <div className="col-span-2 flex items-center gap-x-2">
@@ -32,7 +56,19 @@ function CallHistoryItem(props: Props) {
               <BiShieldX className="w-6 h-6 text-red-400" />
         }
         <Tooltip title="Blacklist Caller" placement="bottom">
-          <MdBlock className="cursor-pointer w-5 h-5 text-gray-400 hover:text-red-400 dark:hover:text-red-400" />
+          <MdBlock className="cursor-pointer w-5 h-5 text-gray-400 hover:text-red-400 dark:hover:text-red-400"
+            onClick={() => {
+              blacklistContact({
+                variables: {
+                  upsertContactInput: {
+                    isBlacklisted: true,
+                    number: phoneNumber
+                  }
+                }
+              });
+              message.success(`${phoneNumber.slice(0, 3) + " " + phoneNumber.slice(3, 7) + " " + phoneNumber.slice(7)} has been added to blacklist.`);
+            }}
+          />
         </Tooltip>
       </div>
     </div>

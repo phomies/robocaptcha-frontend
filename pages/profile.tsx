@@ -24,7 +24,7 @@ const EDIT_USER_BY_TOKEN = gql`
       _id
     }
   }
-`
+`;
 
 function Profile() {
   const { getFirebaseToken } = useContext(AppContext);
@@ -38,7 +38,7 @@ function Profile() {
   const { error, data } = useQuery(GET_USER_BY_TOKEN, {
     context: { 
       headers: {
-        'fbToken': getFirebaseToken()
+        fbToken: getFirebaseToken()
       }
     }
   })
@@ -46,7 +46,7 @@ function Profile() {
   const [updateUser] = useMutation(EDIT_USER_BY_TOKEN, {
     context: { 
       headers: {
-        'fbToken': getFirebaseToken()
+        fbToken: getFirebaseToken()
       }
     },
     variables: {

@@ -3,6 +3,8 @@
 @tailwind utilities;
 @import '~antd/dist/antd.css';
 
+svg { vertical-align: baseline; }
+
 @font-face {
     font-family: 'Poppins-Regular';
     src: url('/fonts/Poppins-Regular.ttf') format('truetype');
