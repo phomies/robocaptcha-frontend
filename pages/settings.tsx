@@ -95,7 +95,7 @@ function Settings() {
             </div>
             <MdArrowForwardIos className="text-gray-400 h-5 w-5" />
           </div>
-          <div className="bg-white dark:bg-secondary_dark rounded-lg shadow-md w-full cursor-pointer hover:bg-gray-100 dark:hover:bg-tertiary_dark px-10 p-6 flex items-center text-red-400"
+          <div className="bg-white dark:bg-secondary_dark rounded-lg shadow-md w-full cursor-pointer hover:bg-gray-100 dark:hover:bg-tertiary_dark px-10 p-6 flex items-center text-red-500 dark:text-red-400"
             onClick={() => setIsModalVisible(true)}
           >
             <HiOutlineTrash className="h-6 w-6" />

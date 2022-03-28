@@ -95,28 +95,22 @@ function Layout(props: Props) {
   }
 
   useEffect(() => {
-
     const userId = localStorage.getItem('userId');
-
     if (!userId) {
       return;
     }
 
     let ws : (WebSocket | null) = null;
-
     let autoReload = setInterval(() => {
       console.log("checking connection");
       
       if (ws === null || ws.readyState !== ws.OPEN) {
         ws = new WebSocket(process.env.NEXT_PUBLIC_NOTIFICATION_URL + '/' + userId);
-
-
         ws.onmessage = ((message: any) => {
           console.log('received: ', message);
           notify(JSON.parse(message.data));
         })
       }
-
     }, 1000)
 
     // notify({
@@ -132,7 +126,6 @@ function Layout(props: Props) {
       }
       clearInterval(autoReload);
     }
-
   }, [])
 
   return (
