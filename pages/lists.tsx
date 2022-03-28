@@ -42,7 +42,7 @@ function Lists() {
               data.getUser.contacts.filter((item: any) => item.isBlacklisted).map((item: any) =>
                 <ListItem key={item._id} isWhitelist={false} number={item.number as string} />
               ) :
-              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">
+              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14">
                 No records found
               </div>
           }
