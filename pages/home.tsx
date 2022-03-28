@@ -86,7 +86,7 @@ function Home() {
           </div>
           <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
             <div className="col-span-2">Phone Number</div>
-            <div className="hidden lg:block lg:col-span-2">Contact Name</div>
+            <div className="hidden lg:block lg:col-span-2">Name</div>
             <div className="hidden md:block md:col-span-2">Location</div>
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
@@ -96,7 +96,7 @@ function Home() {
               <CallHistoryItem
                 key={item._id}
                 phoneNumber={item.from}
-                contactName="-"
+                contactName="Anonymous"
                 date={new Date(item.dateTime).toDateString()}
                 time={new Date(item.dateTime).toLocaleTimeString()}
                 action={getAction(item.action)}

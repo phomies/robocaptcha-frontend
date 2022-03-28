@@ -68,8 +68,7 @@ const appContextDefaults: AppContextInterface = {
   registerWithEmailPassword: () => null,
 };
 
-export const AppContext =
-  createContext<AppContextInterface>(appContextDefaults);
+export const AppContext = createContext<AppContextInterface>(appContextDefaults);
 export const useAppContext = () => useContext(AppContext);
 
 function AuthProvider(props: Props) {
