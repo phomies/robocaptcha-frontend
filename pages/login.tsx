@@ -91,7 +91,6 @@ export default function Login() {
   const handlePhoneLogin = async () => {
     try {
       await loginWithPhoneNumber(contactNumber);
-      router.push('/home');
     } catch (error) {
       console.log('Error with logging in with phone', error);
     }
