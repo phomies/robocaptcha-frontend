@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { LOGIN_USER } from '../../data/queries';
 import {
   getAuth,
@@ -19,6 +19,7 @@ import {
   useCallback,
 } from 'react';
 import app from '../../firebase/clientApp';
+import { CREATE_USER } from '../../data/mutations';
 
 declare global {
   interface Window {
@@ -46,7 +47,12 @@ interface AppContextInterface {
   initGapiModule: () => any;
   setAppVerifier: (appVerifier: any) => void;
   getUserId: () => string | null;
-  registerWithEmailPassword: (email: string, password: string) => void;
+  registerWithEmailPassword: (
+    email: string,
+    password: string,
+    name: string,
+    phoneNumber: string
+  ) => void;
 }
 
 const appContextDefaults: AppContextInterface = {
@@ -85,6 +91,7 @@ function AuthProvider(props: Props) {
   const firebaseAuth = getAuth(app);
 
   const router = useRouter();
+  const [createUser] = useMutation(CREATE_USER);
   const { refetch } = useQuery(LOGIN_USER, {
     context: {
       headers: {
@@ -114,18 +121,18 @@ function AuthProvider(props: Props) {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    const loginUser = async () => {
-      if (firebaseToken && !isLoggedIn) {
-        console.log('Creating account if not exist');
-        await refetch();
-        setIsLoggedIn(true);
-        setIsLoaded(true);
-      }
-    };
+  //   useEffect(() => {
+  //     const loginUser = async () => {
+  //       if (firebaseToken && !isLoggedIn) {
+  //         console.log('Creating account if not exist');
+  //         await refetch();
+  //         setIsLoggedIn(true);
+  //         setIsLoaded(true);
+  //       }
+  //     };
 
-    loginUser();
-  }, [firebaseToken]);
+  //     loginUser();
+  //   }, [firebaseToken]);
 
   // Theme handler
   useEffect(() => {
@@ -232,7 +239,7 @@ function AuthProvider(props: Props) {
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
 
-      console.warn(idToken);
+      console.warn(idToken, rawUser);
       localStorage.setItem('firebaseToken', idToken);
       localStorage.setItem('userId', rawUser.uid);
 
@@ -286,8 +293,33 @@ function AuthProvider(props: Props) {
     return userId;
   };
 
-  const registerWithEmailPassword = async (email: string, password: string) => {
-    return await createUserWithEmailAndPassword(firebaseAuth, email, password);
+  const registerWithEmailPassword = async (
+    email: string,
+    password: string,
+    name: string,
+    phoneNumber: string
+  ) => {
+    const userCredential = await createUserWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
+    const token = await userCredential.user.getIdToken();
+
+    await createUser({
+      context: {
+        headers: {
+          fbToken: token,
+        },
+      },
+      variables: {
+        createUserInput: {
+          email,
+          name,
+          phoneNumber,
+        },
+      },
+    });
   };
 
   if (!isLoaded) {

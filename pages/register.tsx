@@ -3,8 +3,6 @@ import { NextRouter, useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
-import { useMutation } from '@apollo/client';
-import { CREATE_USER } from '../data/mutations';
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -13,28 +11,10 @@ export default function Register() {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const { registerWithEmailPassword, getFirebaseToken } =
-    useContext(AppContext);
-
-  const [createUser] = useMutation(CREATE_USER);
+  const { registerWithEmailPassword } = useContext(AppContext);
 
   const handleClick = async () => {
-    await registerWithEmailPassword(email, password);
-    await createUser({
-      context: {
-        headers: {
-          fbToken: getFirebaseToken(),
-        },
-      },
-      variables: {
-        createUserInput: {
-          email,
-          name,
-          phoneNumber,
-        },
-      },
-    });
-
+    await registerWithEmailPassword(email, password, name, phoneNumber);
     router.push('/home');
   };
 
