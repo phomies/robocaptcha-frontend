@@ -6,6 +6,7 @@ import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import app from '../firebase/clientApp';
 import { Modal } from 'antd';
 import Link from 'next/link';
+import Head from 'next/head';
 
 export default function Login() {
   const router: NextRouter = useRouter();
@@ -25,7 +26,6 @@ export default function Login() {
   const [contactNumber, setContactNumber] = useState<string>('');
   const [token, setToken] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isEmailLogin, setIsEmailLogin] = useState<boolean>(true);
   const [isTokenLogin, setIsTokenLogin] = useState<boolean>(false);
   const firebaseAuth = getAuth(app);
@@ -50,7 +50,6 @@ export default function Login() {
           },
           firebaseAuth
         );
-
         setAppVerifier(verifier);
 
         // Recreate google login API
@@ -72,6 +71,7 @@ export default function Login() {
       {},
       (user: any) => {
         refreshGoogleToken(user);
+        router.push('/home');
       },
       (error: any) => {
         console.log(JSON.stringify(error));
@@ -100,6 +100,7 @@ export default function Login() {
   const handleTokenLogin = async () => {
     try {
       await validatePhoneToken(token);
+      router.push('/home');
     } catch (error) {
       console.log('Error with logging in with token', error);
     }
@@ -107,6 +108,10 @@ export default function Login() {
 
   return (
     <Fragment>
+      <Head>
+        <title>roboCAPTCHA | Login</title>
+      </Head>
+
       <Modal
         title="Error"
         visible={isModalVisible}

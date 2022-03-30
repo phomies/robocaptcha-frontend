@@ -9,6 +9,7 @@ import { AppContext } from "../components/context/AppContext";
 import { useState, useContext } from "react";
 import { NextRouter, useRouter } from "next/router";
 import { DELETE_USER } from "../data/mutations";
+import Head from "next/head";
 
 function Settings() {
   const [isNotifsOn, setIsNotifsOn] = useState<boolean>(true);
@@ -26,6 +27,10 @@ function Settings() {
 
   return (
     <Layout>
+      <Head>
+        <title>roboCAPTCHA | Settings</title>
+      </Head>
+
       <Modal
         title="Confirm?"
         visible={isModalVisible}
@@ -51,7 +56,7 @@ function Settings() {
           CANCEL
         </button>
       </Modal>
-      <div className="w-full px-12 pt-8 pb-12">
+      <div className="w-full px-9 md:px-12 pt-8 pb-12">
         <div className="flex flex-col gap-y-4">
           <div className="bg-white dark:bg-secondary_dark rounded-lg shadow-md w-full px-10 p-6 flex justify-between items-center">
             <div className="flex items-center">

@@ -3,6 +3,7 @@ import { NextRouter, useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
+import Head from 'next/head';
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -20,6 +21,10 @@ export default function Register() {
 
   return (
     <div className="flex flex-col h-screen overflow-y-scroll">
+      <Head>
+        <title>roboCAPTCHA | Register</title>
+      </Head>
+
       <nav className="flex my-8 sm:mx-32 mx-10 gap-x-4 items-center mt-10 mb-0 sm:-mb-5">
         <img src={`/images/logo_light.png`} alt="Logo" className="h-8 w-8" />
         <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">
@@ -72,24 +77,22 @@ export default function Register() {
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
             <input
-              className={`placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${
-                password !== '' &&
+              className={`placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${password !== '' &&
                 confirmPassword !== '' &&
                 password !== confirmPassword &&
                 'border border-red-400'
-              }`}
+                }`}
               placeholder="Password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <input
-              className={`placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${
-                password !== '' &&
+              className={`placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
                 confirmPassword !== '' &&
                 password !== confirmPassword &&
                 'border border-red-400'
-              }`}
+                }`}
               placeholder="Confirm password"
               type="password"
               value={confirmPassword}

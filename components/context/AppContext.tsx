@@ -200,8 +200,6 @@ function AuthProvider(props: Props) {
     if (tokenVerification) {
       const response = await tokenVerification.confirm(token);
       console.log('Validated phone token', response.user);
-
-      return await router.push('/');
     }
   };
 

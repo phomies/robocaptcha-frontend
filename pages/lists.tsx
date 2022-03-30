@@ -6,6 +6,7 @@ import { useState, useContext } from "react";
 import ListItem from "../components/lists/ListItem";
 import ModalItem from "../components/lists/ModalItem";
 import { GET_CONTACTS } from "../data/queries";
+import Head from "next/head";
 
 function Lists() {
   const { getFirebaseToken } = useContext(AppContext);
@@ -24,10 +25,14 @@ function Lists() {
 
   return (
     <Layout>
+      <Head>
+        <title>roboCAPTCHA | Lists</title>
+      </Head>
+
       <ModalItem isVisible={isBLModalVisible} setIsVisible={setIsBLModalVisible} isWhitelist={false} />
       <ModalItem isVisible={isWLModalVisible} setIsVisible={setIsWLModalVisible} isWhitelist={true} />
 
-      <div className="w-full px-12 pt-6 pb-12 flex flex-col md:flex-row gap-x-10">
+      <div className="w-full px-9 md:px-12 pt-6 pb-12 flex flex-col md:flex-row gap-x-10">
         <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full h-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold flex items-center justify-between">
             Blacklist
