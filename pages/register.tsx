@@ -16,17 +16,16 @@ export default function Register() {
   const { registerWithEmailPassword, getFirebaseToken } =
     useContext(AppContext);
 
-  const [createUser] = useMutation(CREATE_USER, {
-    context: {
-      headers: {
-        fbToken: getFirebaseToken(),
-      },
-    },
-  });
+  const [createUser] = useMutation(CREATE_USER);
 
   const handleClick = async () => {
     await registerWithEmailPassword(email, password);
     await createUser({
+      context: {
+        headers: {
+          fbToken: getFirebaseToken(),
+        },
+      },
       variables: {
         createUserInput: {
           email,
@@ -35,6 +34,7 @@ export default function Register() {
         },
       },
     });
+
     router.push('/home');
   };
 

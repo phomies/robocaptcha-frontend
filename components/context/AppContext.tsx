@@ -117,9 +117,9 @@ function AuthProvider(props: Props) {
   useEffect(() => {
     const loginUser = async () => {
       if (firebaseToken && !isLoggedIn) {
-        setIsLoggedIn(true);
         console.log('Creating account if not exist');
         await refetch();
+        setIsLoggedIn(true);
         setIsLoaded(true);
       }
     };
@@ -194,16 +194,17 @@ function AuthProvider(props: Props) {
       const response = await tokenVerification.confirm(token);
       console.log('Validated phone token', response.user);
 
-      await router.push('/');
+      return await router.push('/');
     }
   };
 
   const loginWithEmailPassword = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(firebaseAuth, email, password);
+    return await signInWithEmailAndPassword(firebaseAuth, email, password);
   };
 
   const resetProvider = async () => {
     await router.push('/login');
+
     setFirebaseToken(null);
     setGoogleToken(null);
     setIsLoggedIn(false);
@@ -230,7 +231,8 @@ function AuthProvider(props: Props) {
   const handleUser = async (rawUser: any) => {
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
-      console.log(idToken);
+
+      console.warn(idToken);
       localStorage.setItem('firebaseToken', idToken);
       localStorage.setItem('userId', rawUser.uid);
 
@@ -238,7 +240,16 @@ function AuthProvider(props: Props) {
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
       saveFirebaseToken(idToken);
 
-      await refetch(); // Update user claims from backend server
+      // Update claims for existing users
+      if (rawUser.metadata.createdAt !== rawUser.metadata.lastLoginAt) {
+        await refetch({
+          context: {
+            headers: {
+              fbToken: idToken,
+            },
+          },
+        }); // Update user claims from backend server
+      }
       setIsLoaded(true);
     } else {
       await resetProvider();
@@ -276,7 +287,7 @@ function AuthProvider(props: Props) {
   };
 
   const registerWithEmailPassword = async (email: string, password: string) => {
-    await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    return await createUserWithEmailAndPassword(firebaseAuth, email, password);
   };
 
   if (!isLoaded) {
