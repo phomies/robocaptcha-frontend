@@ -46,7 +46,7 @@ function Subscription() {
         <title>roboCAPTCHA | Subscription</title>
       </Head>
 
-      <div className="w-full px-12 pt-6 pb-12">
+      <div className="w-full px-9 md:px-12 pt-6 pb-12">
         <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 mb-12 md:w-72 w-full mt-2">
           <h1 className="font-poppins-regular text-gray-500 dark:text-gray-400">
             Next payment

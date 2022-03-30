@@ -132,7 +132,7 @@ function Layout(props: Props) {
     <div className={`font-poppins-medium text-gray-700 dark:text-gray-50 ${getTheme() === 'dark' && 'dark'}`}>
 
       {/* menu drawer */}
-      <Drawer className={`${getTheme() === 'dark' && 'dark'}`} placement="left" visible={width < 1280 && visibleDrawer} width={width < 700 ? "55%" : "40%"} closable={false}>
+      <Drawer className={`${getTheme() === 'dark' && 'dark'}`} placement="left" visible={width < 1280 && visibleDrawer} width={width < 700 ? "70%" : "40%"} closable={false}>
         <div className="dark:bg-secondary_dark h-screen">
           <div className="dark:text-gray-50 pt-9 flex items-center px-12 mb-7 gap-x-8">
             <ImCross className="h-4 w-4 cursor-pointer hover:text-blue-600 dark:hover:text-blue-200" onClick={() => setVisibleDrawer(false)} />
@@ -196,7 +196,7 @@ function Layout(props: Props) {
           </div>
         </div>
         <div className="xl:ml-72 bg-primary_light dark:bg-primary_dark dark:text-gray-50 w-full">
-          <div className="z-40 bg-primary_light dark:bg-primary_dark sticky top-0 px-12 pt-9 pb-5 justify-between flex items-center">
+          <div className="z-40 bg-primary_light dark:bg-primary_dark sticky top-0 px-9 md:px-12 pt-9 pb-5 justify-between flex items-center">
             <div className="flex items-center gap-x-8">
               <TiThMenu className="xl:hidden h-5 w-5 cursor-pointer hover:text-blue-600 dark:hover:text-blue-200" onClick={() => setVisibleDrawer(true)} />
               <div className="font-poppins-semibold text-secondary text-lg xl:text-2xl pr-4">{title}</div>

@@ -51,7 +51,7 @@ function Home() {
       <Head>
         <title>roboCAPTCHA | Home</title>
       </Head>
-      <div className="w-full px-12 pt-8 pb-12">
+      <div className="w-full px-9 md:px-12 pt-8 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-5 md:gap-6">
           <HomeItem
             title="Weekly Blocked Calls"

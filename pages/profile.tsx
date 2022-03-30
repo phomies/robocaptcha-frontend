@@ -58,7 +58,7 @@ function Profile() {
         <title>roboCAPTCHA | Profile</title>
       </Head>
 
-      <div className="flex items-center gap-x-8 w-full px-12 py-3 pb-12">
+      <div className="flex items-center gap-x-8 w-full px-9 md:px-12 py-3 pb-12">
         <div className="items-center gap-x-8 w-full px-1 py-4">
           <div className="flex items-center mt-2 mb-12 gap-x-9 lg:gap-x-14">
             <FaUserCircle className="w-14 h-14 lg:w-24 lg:h-24 text-blue-600 dark:text-blue-200" />
