@@ -5,6 +5,7 @@ import { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
 import { AppContext } from '../components/context/AppContext';
 import { UPSERT_PAYMENT } from '../data/mutations';
+import Head from 'next/head';
 
 function Subscription() {
   const { getFirebaseToken } = useContext(AppContext);
@@ -41,6 +42,10 @@ function Subscription() {
 
   return (
     <Layout>
+      <Head>
+        <title>roboCAPTCHA | Subscription</title>
+      </Head>
+
       <div className="w-full px-12 pt-6 pb-12">
         <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 mb-12 md:w-72 w-full mt-2">
           <h1 className="font-poppins-regular text-gray-500 dark:text-gray-400">

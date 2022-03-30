@@ -9,6 +9,7 @@ import { AppContext } from "../components/context/AppContext";
 import { useState, useContext } from "react";
 import { NextRouter, useRouter } from "next/router";
 import { DELETE_USER } from "../data/mutations";
+import Head from "next/head";
 
 function Settings() {
   const [isNotifsOn, setIsNotifsOn] = useState<boolean>(true);
@@ -26,6 +27,10 @@ function Settings() {
 
   return (
     <Layout>
+      <Head>
+        <title>roboCAPTCHA | Settings</title>
+      </Head>
+
       <Modal
         title="Confirm?"
         visible={isModalVisible}

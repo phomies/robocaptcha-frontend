@@ -6,6 +6,7 @@ import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import app from '../firebase/clientApp';
 import { Modal } from 'antd';
 import Link from 'next/link';
+import Head from 'next/head';
 
 export default function Login() {
   const router: NextRouter = useRouter();
@@ -107,6 +108,10 @@ export default function Login() {
 
   return (
     <Fragment>
+      <Head>
+        <title>roboCAPTCHA | Login</title>
+      </Head>
+
       <Modal
         title="Error"
         visible={isModalVisible}
