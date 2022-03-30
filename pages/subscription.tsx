@@ -1,20 +1,28 @@
 import Layout from '../components/layout/Layout';
 import { MdDone } from 'react-icons/md';
 import StripeCheckout from 'react-stripe-checkout';
-import { useState, useContext } from 'react';
-import { useMutation } from '@apollo/client';
+import { useState, useContext, useEffect } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import { AppContext } from '../components/context/AppContext';
 import { UPSERT_PAYMENT } from '../data/mutations';
+import { GET_USER } from "../data/queries";
+import { Modal } from 'antd';
 
 function Subscription() {
   const { getFirebaseToken } = useContext(AppContext);
 
   const [amount, setAmount] = useState<number>(7);
-  const [token, setToken] = useState<any>();
-  const [dateStart, setDateStart] = useState<string>('');
   const [dateEnd, setDateEnd] = useState<string>('');
-  const [transactionId, setTransactionId] = useState<string>('');
   const [plan, setPlan] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const { error, data } = useQuery(GET_USER, {
+    context: {
+      headers: {
+        fbToken: getFirebaseToken()
+      }
+    }
+  })
 
   const [upsertPayment] = useMutation(UPSERT_PAYMENT, {
     context: {
@@ -37,7 +45,15 @@ function Subscription() {
         },
       },
     });
+
   };
+
+  useEffect(() => {
+    console.log(data)
+    setPlan(data?.getUser.payments[0].plan)
+    setDateEnd(data?.getUser.payments[0].dateEnd)
+  }, [data])
+
 
   return (
     <Layout>
@@ -47,7 +63,7 @@ function Subscription() {
             Next payment
           </h1>
           <h1 className="font-poppins-semibold text-gray-700 dark:text-white">
-            on 30 November 2020
+            {new Date(dateEnd).toDateString()}
           </h1>
 
           <StripeCheckout
@@ -78,6 +94,7 @@ function Subscription() {
                 <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-400">
                   ${amount} / month
                 </h1>
+
               </div>
             </div>
 
@@ -106,9 +123,38 @@ function Subscription() {
                 Call analysis
               </h1>
             </div>
-            <button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-200 dark:hover:bg-blue-300 text-white dark:text-gray-800 w-full rounded-lg py-3 mt-5 shadow-sm">
-              Choose plan
-            </button>
+            {plan === 'PREMIUM' ? (
+              <div>
+                <Modal
+                  title="Are you sure?"
+                  visible={isModalVisible}
+                  closable={false}
+                  centered={true}
+                  footer={null}
+                >
+                  <div className="font-poppins-regular text-sm flex">
+                    Your subscription will end on <p className="font-poppins-semibold">&nbsp; {new Date(dateEnd).toDateString()}</p>
+                  </div>
+                  <button onClick={() => setIsModalVisible(false)} className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-50 dark:hover:bg-blue-100  dark:text-gray-800 dark:border-0 w-full rounded-lg py-3 mt-5 shadow-sm">
+                    confirm
+                  </button>
+                </Modal>
+                <button onClick={() => setIsModalVisible(true)} className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-50 dark:hover:bg-blue-100  dark:text-gray-800 dark:border-0 w-full rounded-lg py-3 mt-5 shadow-sm">
+                  Cancel plan
+                </button>
+              </div>
+            ) : (
+              <StripeCheckout
+                token={handleToken}
+                stripeKey={process.env.NEXT_PUBLIC_STRIPE_API_KEY || ''}
+                amount={amount * 100}
+                name="Payment"
+              >
+                <button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-200 dark:hover:bg-blue-300 text-white dark:text-gray-800 w-full rounded-lg py-3 mt-5 shadow-sm">
+                  Choose plan
+                </button>
+              </StripeCheckout>
+            )}
           </div>
           <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 h-full flex flex-col justify-between">
             <div>
@@ -129,13 +175,19 @@ function Subscription() {
                 </h1>
               </div>
             </div>
-            <button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-200 dark:hover:bg-blue-300 text-white dark:text-gray-800 w-full rounded-lg py-3  mt-5 shadow-sm">
-              Choose plan
-            </button>
+            {plan === 'FREE' ? (
+              <button disabled className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue dark:bg-blue-50  dark:text-gray-800 dark:border-0 w-full rounded-lg py-3 mt-5 shadow-sm">
+                Current plan
+              </button>
+            ) : (
+              <button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-200 dark:hover:bg-blue-300 text-white dark:text-gray-800 w-full rounded-lg py-3 mt-5 shadow-sm">
+                Choose plan
+              </button>
+            )}
           </div>
         </div>
       </div>
-    </Layout>
+    </Layout >
   );
 }
 

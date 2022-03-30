@@ -64,6 +64,11 @@ export const GET_USER = gql`
       name
       email
       phoneNumber
+      payments {
+        dateEnd
+        dateStart
+        plan
+      }
     }
   }
 `;
