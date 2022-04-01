@@ -4,6 +4,7 @@ import { MdNotificationsNone, MdArrowForwardIos, MdPayment, MdOutlineFeedback } 
 import { RiLockPasswordLine, RiFontSize } from "react-icons/ri";
 import { HiOutlineTrash } from "react-icons/hi";
 import { IoMdHelp } from "react-icons/io";
+import { BiPhoneCall } from "react-icons/bi";
 import { useMutation } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
 import { useState, useContext } from "react";
@@ -69,6 +70,13 @@ function Settings() {
             <div className="flex items-center">
               <RiLockPasswordLine className="h-5 w-6" />
               <div className="ml-7 font-poppins-semibold text-sm">Change Password</div>
+            </div>
+            <MdArrowForwardIos className="text-gray-400 h-5 w-5" />
+          </div>
+          <div className="bg-white dark:bg-secondary_dark rounded-lg shadow-md w-full cursor-pointer hover:bg-gray-100 dark:hover:bg-tertiary_dark px-10 p-6 flex justify-between items-center">
+            <div className="flex items-center">
+              <BiPhoneCall className="h-5 w-6" />
+              <div className="ml-7 font-poppins-semibold text-sm">Adjust Verification Level</div>
             </div>
             <MdArrowForwardIos className="text-gray-400 h-5 w-5" />
           </div>

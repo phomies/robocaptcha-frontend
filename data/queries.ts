@@ -64,6 +64,7 @@ export const GET_USER = gql`
       name
       email
       phoneNumber
+      maskedNumber
       payments {
         dateEnd
         dateStart

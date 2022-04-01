@@ -19,6 +19,7 @@ function Profile() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [maskedNumber, setMaskedNumber] = useState<string>("");
 
   const { error, data } = useQuery(GET_USER, {
     context: {
@@ -50,6 +51,7 @@ function Profile() {
     setName(data?.getUser.name);
     setEmail(data?.getUser.email);
     setPhoneNumber(data?.getUser.phoneNumber);
+    setMaskedNumber(data?.getUser.maskedNumber);
   }, [data])
 
   return (
@@ -113,6 +115,14 @@ function Profile() {
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
                 <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-full" : "py-4"}`} value={editProfile ? phoneNumber : formatPhoneNumberIntl(phoneNumber)} onChange={e => setPhoneNumber(e.target.value)} />
+              </div>
+            </div>
+            <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
+              <div className={`w-1/4 flex text-xs sm:text-sm flex-col font-poppins-semibold ${editProfile ? "gap-y-2" : "gap-y-1"}`}>
+                <div className="text-right py-4">Masked Number</div>
+              </div>
+              <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
+                <input readOnly={true} className={`cursor-not-allowed bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-full" : "py-4"}`} value={formatPhoneNumberIntl(maskedNumber)} />
               </div>
             </div>
           </div>
