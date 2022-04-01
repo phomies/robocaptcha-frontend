@@ -73,3 +73,23 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const GET_PAYMENTS = gql`
+  query getUser {
+    getUser {
+      payments {
+        dateEnd
+        dateStart
+        plan
+      }
+    }
+  }
+`;
+
+export const GET_VERIFICATION_LEVEL = gql`
+  query getUser {
+    getUser {
+      verificationLevel
+    }
+  }
+`;

@@ -5,8 +5,8 @@ import { useState, useContext, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { AppContext } from '../components/context/AppContext';
 import { UPSERT_PAYMENT } from '../data/mutations';
-import { GET_USER } from "../data/queries";
-import { Modal } from 'antd';
+import { GET_PAYMENTS } from "../data/queries";
+import { Modal, message } from 'antd';
 import Head from 'next/head';
 
 function Subscription() {
@@ -17,7 +17,7 @@ function Subscription() {
   const [plan, setPlan] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  const { error, data } = useQuery(GET_USER, {
+  const { error, data } = useQuery(GET_PAYMENTS, {
     context: {
       headers: {
         fbToken: getFirebaseToken()
@@ -54,7 +54,6 @@ function Subscription() {
     setPlan(data?.getUser.payments[0].plan)
     setDateEnd(data?.getUser.payments[0].dateEnd)
   }, [data])
-
 
   return (
     <Layout>
@@ -138,11 +137,19 @@ function Subscription() {
                   footer={null}
                 >
                   <div className="font-poppins-regular text-sm flex">
-                    Your subscription will end on <p className="font-poppins-semibold">&nbsp; {new Date(dateEnd).toDateString()}</p>
+                    Your subscription will end on <p className="font-poppins-semibold">&nbsp; {new Date(dateEnd).toDateString()}.</p>
                   </div>
-                  <button onClick={() => setIsModalVisible(false)} className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-50 dark:hover:bg-blue-100  dark:text-gray-800 dark:border-0 w-full rounded-lg py-3 mt-5 shadow-sm">
-                    confirm
-                  </button>
+                  <div className="flex items-center mt-7">
+                    <button onClick={() => {
+                      setIsModalVisible(false);
+                      message.success("Plan cancelled");
+                    }} className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 shadow-sm">
+                      CONFIRM
+                    </button>
+                    <button onClick={() => setIsModalVisible(false)} className="text-gray-500 hover:text-gray-800 w-full py-3">
+                      CANCEL
+                    </button>
+                  </div>
                 </Modal>
                 <button onClick={() => setIsModalVisible(true)} className="border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-50 dark:hover:bg-blue-100  dark:text-gray-800 dark:border-0 w-full rounded-lg py-3 mt-5 shadow-sm">
                   Cancel plan
