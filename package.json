@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
+    "@headlessui/react": "^1.5.0",
     "antd": "^4.18.9",
     "chart.js": "^3.7.1",
     "country-list": "^2.2.0",
