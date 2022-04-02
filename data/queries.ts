@@ -93,3 +93,9 @@ export const GET_VERIFICATION_LEVEL = gql`
     }
   }
 `;
+
+export const SYNC_CONTACTS = gql`
+  query syncContacts {
+    syncContacts
+  }
+`;
