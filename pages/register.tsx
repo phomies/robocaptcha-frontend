@@ -54,21 +54,22 @@ export default function Register() {
   const props = {
     name: 'file',
     multiple: false,
+    // action: 'https://robocaptcha.xyz/register',
     accept: ".png, .jpeg, .jpg, .pdf",
-    onChange(info: any) {
-      const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully.`);
-        setIsFileDropped(true);
-      } else if (status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
+    // onChange(info: any) {
+    //   const { status } = info.file;
+    //   if (status !== 'uploading') {
+    //     console.log(info.file, info.fileList);
+    //   }
+    //   if (status === 'done') {
+    //     message.success(`${info.file.name} file uploaded successfully.`);
+    //     setIsFileDropped(true);
+    //   } else if (status === 'error') {
+    //     message.error(`${info.file.name} file upload failed.`);
+    //   }
+    // },
     onDrop(e: any) {
-      console.log('Dropped files', e.dataTransfer.files);
+      // console.log('Dropped files', e.dataTransfer.files);
       setIsFileDropped(true);
     },
 
