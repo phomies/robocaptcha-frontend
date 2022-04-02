@@ -4,6 +4,9 @@ import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
 import Head from 'next/head';
+import { Steps, Button, message, Upload } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
+
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -17,6 +20,54 @@ export default function Register() {
   const handleClick = async () => {
     await registerWithEmailPassword(email, password, name, phoneNumber);
     router.push('/home');
+  };
+
+  const { Step } = Steps;
+
+  const [current, setCurrent] = useState(0);
+
+  const steps = [
+    {
+      title: 'Register',
+    },
+    {
+      title: 'Verify',
+    },
+    {
+      title: 'Done',
+    },
+  ];
+
+  const next = () => {
+    setCurrent(current + 1);
+  };
+
+  const prev = () => {
+    setCurrent(current - 1);
+  };
+
+  const { Dragger } = Upload;
+
+  const props = {
+    name: 'file',
+    multiple: false,
+    action: 'http://localhost:3000/register',
+    accept: ".png, .jpeg, .jpg",
+    onChange(info: any) {
+      const { status } = info.file;
+      if (status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully.`);
+      } else if (status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e: any) {
+      console.log('Dropped files', e.dataTransfer.files);
+    },
+
   };
 
   return (
@@ -55,84 +106,144 @@ export default function Register() {
           src="/images/login.png"
         />
 
-        <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end xl:self-center mt-6 lg:mt-20 xl:-mt-20">
-          <form>
-            <div className="text-black hidden lg:block font-poppins-semibold text-2xl mb-4">
-              Sign Up
-            </div>
-            <input
-              className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
-              placeholder="Email"
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              className="placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
-              placeholder="Phone number"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <input
-              className={`placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${password !== '' &&
-                confirmPassword !== '' &&
-                password !== confirmPassword &&
-                'border border-red-400'
-                }`}
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <input
-              className={`placeholder:text-blue-darkBlue focus:outline-none px-5 lg:w-10/12 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
-                confirmPassword !== '' &&
-                password !== confirmPassword &&
-                'border border-red-400'
-                }`}
-              placeholder="Confirm password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            {password !== '' &&
-              confirmPassword !== '' &&
-              password !== confirmPassword && (
-                <div className="mt-2 -mb-2 text-red-400">
-                  The two passwords do not match.
-                </div>
-              )}
-            <button
-              className="mt-7 h-12 lg:h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
-              onClick={async (e) => {
-                e.preventDefault();
-                await handleClick();
-              }}
-            >
-              Register
-            </button>
+        <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end md:mt-16 mt-8">
+          <Steps current={current}>
+            {steps.map(item => (
+              <Step key={item.title} title={item.title} />
+            ))}
+          </Steps>
 
-            <div className="text-gray-400 sm:my-6 mt-8 mb-4 text-center lg:w-10/12 w-full">
-              or continue with
-            </div>
-            <div className="flex lg:w-10/12 w-full">
-              <div className="flex mx-auto mb-10">
-                <img
-                  className="cursor-pointer h-10 mr-6"
-                  alt="icon"
-                  src="/images/apple.png"
+          <div className="steps-content pt-5 mx-auto">
+            {current == 0 && (
+              <form className="my-4 h-max">
+                <div className="text-black font-poppins-semibold text-xl lg:text-2xl mb-4">
+                  Sign Up
+                </div>
+                <input
+                  className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
+                  placeholder="Name"
+                  onChange={(e) => setName(e.target.value)}
                 />
-                <img
-                  className="cursor-pointer h-10"
-                  alt="icon"
-                  src="/images/google.png"
+                <input
+                  className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
+                  placeholder="Email"
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
+                <input
+                  className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
+                  placeholder="Phone number"
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+                <input
+                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${password !== '' &&
+                    confirmPassword !== '' &&
+                    password !== confirmPassword &&
+                    'border border-red-400'
+                    }`}
+                  placeholder="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
+                    confirmPassword !== '' &&
+                    password !== confirmPassword &&
+                    'border border-red-400'
+                    }`}
+                  placeholder="Confirm password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                {password !== '' &&
+                  confirmPassword !== '' &&
+                  password !== confirmPassword && (
+                    <div className="mt-2 -mb-2 text-red-400">
+                      The two passwords do not match.
+                    </div>
+                  )}
+
+                <div className="text-gray-400 my-4 mt-8 text-center w-full">
+                  or continue with
+                </div>
+                <div className="flex w-full">
+                  <div className="flex mx-auto">
+                    <img
+                      className="cursor-pointer h-10 mr-6"
+                      alt="icon"
+                      src="/images/apple.png"
+                    />
+                    <img
+                      className="cursor-pointer h-10"
+                      alt="icon"
+                      src="/images/google.png"
+                    />
+                  </div>
+                </div>
+              </form>
+            )}
+
+            {current == 1 && (
+              <div className="my-2 md:my-10 h-max">
+                <div className="text-black font-poppins-semibold text-xl lg:text-2xl mb-4">
+                  Upload IC
+                </div>
+                <h1 className="text-gray-500 mb-8">We will require some additional information to verify your identity.</h1>
+
+                <Dragger className="mb-8" {...props}>
+                  <div className="my-5 mx-5 md:mx-0">
+                    <p className="ant-upload-drag-icon">
+                      <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p className="ant-upload-hint">
+                      Your IC will only be used for verification purposes
+                    </p>
+                  </div>
+                </Dragger>
               </div>
-            </div>
-          </form>
+            )}
+
+            {current == 2 && (
+              <div className="md:mt-10 md:mb-8 h-max">
+                <div className="text-black font-poppins-semibold text-xl lg:text-2xl mb-4">
+                  Registration successful!
+                </div>
+                <img
+                  className="w-4/5 mx-auto"
+                  alt="registration successful"
+                  src="/images/done.png"
+                />
+                <h1 className="text-gray-600 font-poppins-medium mt-5 mb-2">Thank you for signing up for roboCAPTCHA!</h1> 
+                <h1 className="text-gray-500 mb-5">Please wait 1 to 3 business days for us to verify your identity. You will receive a confirmation email once it has been completed. In the meantime, feel free to contact us at abc.email.com if you have any enquiries.</h1>
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-end mb-16 md:mb-0">
+            {current > 0 && (
+              <Button className="h-8 border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-50 hover:text-blue-500 hover:border-blue-500 rounded-sm shadow-lg"
+                style={{ margin: '0 8px' }} onClick={() => prev()}>
+                Previous
+              </Button>
+            )}
+            {current === steps.length - 1 && (
+              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-60 text-white shadow-lg" type="primary"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await handleClick();
+                }}>
+                Done
+              </Button>
+            )}
+            {current < steps.length - 1 && (
+              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue" type="primary" onClick={() => next()}>
+                Next
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
