@@ -54,7 +54,6 @@ export default function Register() {
   const props = {
     name: 'file',
     multiple: false,
-    action: 'https://robocaptcha.xyz/register',
     accept: ".png, .jpeg, .jpg, .pdf",
     onChange(info: any) {
       const { status } = info.file;
