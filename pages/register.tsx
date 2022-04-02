@@ -51,10 +51,17 @@ export default function Register() {
 
   const { Dragger } = Upload;
 
+  const dummyRequest = ({ file, onSuccess }: { file: any, onSuccess: any }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  };
+
   const props = {
     name: 'file',
     multiple: false,
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    customRequest: dummyRequest,
     accept: ".png, .jpeg, .jpg, .pdf",
     onChange(info: any) {
       const { status } = info.file;
@@ -225,7 +232,7 @@ export default function Register() {
                   alt="registration successful"
                   src="/images/done.png"
                 />
-                <h1 className="text-gray-600 font-poppins-medium mt-5 mb-2">Thank you for signing up for roboCAPTCHA!</h1> 
+                <h1 className="text-gray-600 font-poppins-medium mt-5 mb-2">Thank you for signing up for roboCAPTCHA!</h1>
                 <h1 className="text-gray-500 mb-5">Please wait 1 to 3 business days for us to verify your identity. You will receive a confirmation email once it has been completed. In the meantime, feel free to contact us at abc.email.com if you have any enquiries.</h1>
               </div>
             )}
@@ -244,15 +251,15 @@ export default function Register() {
                   e.preventDefault();
                   await handleClick();
                 }}
-                >
+              >
                 Done
               </Button>
             )}
             {current < steps.length - 1 && (
-              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue" type="primary" 
+              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue" type="primary"
                 onClick={() => next()}
-                disabled = {
-                  (current === 0) && (name === '' || email ==='' || phoneNumber === '' || password === '' || confirmPassword === '') || 
+                disabled={
+                  (current === 0) && (name === '' || email === '' || phoneNumber === '' || password === '' || confirmPassword === '') ||
                   (current === 1 && !isFileDropped)
                 }
               >
