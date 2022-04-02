@@ -10,16 +10,19 @@ import { InboxOutlined } from '@ant-design/icons';
 
 export default function Register() {
   const router: NextRouter = useRouter();
+
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
+
   const { registerWithEmailPassword } = useContext(AppContext);
 
   const handleClick = async () => {
     await registerWithEmailPassword(email, password, name, phoneNumber);
-    router.push('/home');
+    // router.push('/home');
   };
 
   const { Step } = Steps;
@@ -60,12 +63,14 @@ export default function Register() {
       }
       if (status === 'done') {
         message.success(`${info.file.name} file uploaded successfully.`);
+        setIsFileDropped(true);
       } else if (status === 'error') {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
     onDrop(e: any) {
       console.log('Dropped files', e.dataTransfer.files);
+      setIsFileDropped(true);
     },
 
   };
@@ -125,17 +130,20 @@ export default function Register() {
                   onChange={(e) => setName(e.target.value)}
                 />
                 <input
+                  required
                   className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
                   placeholder="Email"
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
+                  required
                   className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
                   placeholder="Phone number"
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
                 <input
+                  required
                   className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${password !== '' &&
                     confirmPassword !== '' &&
                     password !== confirmPassword &&
@@ -147,6 +155,7 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <input
+                  required
                   className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
                     confirmPassword !== '' &&
                     password !== confirmPassword &&
@@ -192,7 +201,7 @@ export default function Register() {
                 </div>
                 <h1 className="text-gray-500 mb-8">We will require some additional information to verify your identity.</h1>
 
-                <Dragger className="mb-8" {...props}>
+                <Dragger className="mb-2" {...props}>
                   <div className="my-5 mx-5 md:mx-0">
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
@@ -223,7 +232,7 @@ export default function Register() {
           </div>
 
           <div className="flex justify-end mb-16 md:mb-0">
-            {current > 0 && (
+            {current === 1 && (
               <Button className="h-8 border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-50 hover:text-blue-500 hover:border-blue-500 rounded-sm shadow-lg"
                 style={{ margin: '0 8px' }} onClick={() => prev()}>
                 Previous
@@ -234,12 +243,19 @@ export default function Register() {
                 onClick={async (e) => {
                   e.preventDefault();
                   await handleClick();
-                }}>
+                }}
+                >
                 Done
               </Button>
             )}
             {current < steps.length - 1 && (
-              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue" type="primary" onClick={() => next()}>
+              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue" type="primary" 
+                onClick={() => next()}
+                disabled = {
+                  (current === 0) && (name === '' || email ==='' || phoneNumber === '' || password === '' || confirmPassword === '') || 
+                  (current === 1 && !isFileDropped)
+                }
+              >
                 Next
               </Button>
             )}
