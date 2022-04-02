@@ -30,6 +30,12 @@ export const UPSERT_PAYMENT = gql`
   }
 `;
 
+export const DELETE_PAYMENT = gql`
+  mutation Mutation {
+    deletePayment
+  }
+`
+
 export const CREATE_USER = gql`
   mutation Mutation($createUserInput: CreateUserInput) {
     createUser(createUserInput: $createUserInput)
