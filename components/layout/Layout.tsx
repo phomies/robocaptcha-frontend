@@ -105,7 +105,7 @@ function Layout(props: Props) {
       console.log("checking connection");
       
       if (ws === null || ws.readyState !== ws.OPEN) {
-        ws = new WebSocket(process.env.NEXT_PUBLIC_NOTIFICATION_URL + '/' + userId);
+        ws = new WebSocket("wss://" + process.env.NEXT_PUBLIC_NOTIFICATION_URL + '/' + userId);
         ws.onmessage = ((message: any) => {
           console.log('received: ', message);
           notify(JSON.parse(message.data));
