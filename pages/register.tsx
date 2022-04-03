@@ -7,7 +7,6 @@ import Head from 'next/head';
 import { Steps, Button, message, Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 
-
 export default function Register() {
   const router: NextRouter = useRouter();
 
@@ -21,8 +20,16 @@ export default function Register() {
   const { registerWithEmailPassword } = useContext(AppContext);
 
   const handleClick = async () => {
-    await registerWithEmailPassword(email, password, name, phoneNumber);
-    // router.push('/home');
+    try {
+      await registerWithEmailPassword(email, password, name, phoneNumber);
+      message.success("Registration successful")
+    }
+    catch (error: any) {
+      console.log(error.code);
+      var msg = error.code.split("/")[1].replaceAll('-', ' ');
+      setCurrent(0);
+      message.error(msg);
+    }
   };
 
   const { Step } = Steps;
@@ -118,7 +125,7 @@ export default function Register() {
           src="/images/login.png"
         />
 
-        <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end md:mt-16 mt-8">
+        <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end md:mt-8 mt-8">
           <Steps current={current}>
             {steps.map(item => (
               <Step key={item.title} title={item.title} />
@@ -135,25 +142,30 @@ export default function Register() {
                   className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
                   placeholder="Name"
                   onChange={(e) => setName(e.target.value)}
+                  value={name}
                 />
+
                 <input
                   required
                   className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
                   placeholder="Email"
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
                 <input
                   required
                   className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
                   placeholder="Phone number"
+                  type="number"
                   onChange={(e) => setPhoneNumber(e.target.value)}
+                  value={phoneNumber}
                 />
                 <input
                   required
-                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${password !== '' &&
+                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${(password !== '' &&
                     confirmPassword !== '' &&
-                    password !== confirmPassword &&
+                    password !== confirmPassword) || (password !== '' && password.length < 6) &&
                     'border border-red-400'
                     }`}
                   placeholder="Password"
@@ -161,8 +173,8 @@ export default function Register() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+
                 <input
-                  required
                   className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
                     confirmPassword !== '' &&
                     password !== confirmPassword &&
@@ -170,6 +182,7 @@ export default function Register() {
                     }`}
                   placeholder="Confirm password"
                   type="password"
+
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -180,6 +193,12 @@ export default function Register() {
                       The two passwords do not match.
                     </div>
                   )}
+
+                {password !== '' && password.length < 6 &&
+                  <div className="mt-2 -mb-2 text-red-400">
+                    Password should be at least 6 characters
+                  </div>
+                }
 
                 <div className="text-gray-400 my-4 mt-8 text-center w-full">
                   or continue with
@@ -225,14 +244,14 @@ export default function Register() {
             {current == 2 && (
               <div className="md:mt-10 md:mb-8 h-max">
                 <div className="text-black font-poppins-semibold text-xl lg:text-2xl mb-4">
-                  Registration successful!
+                  Last step!
                 </div>
                 <img
                   className="w-4/5 mx-auto"
                   alt="registration successful"
                   src="/images/done.png"
                 />
-                <h1 className="text-gray-600 font-poppins-medium mt-5 mb-2">Thank you for signing up for roboCAPTCHA!</h1>
+                <h1 className="text-gray-600 font-poppins-medium mt-5 mb-2">Click on the submit button to complete your registration.</h1>
                 <h1 className="text-gray-500 mb-5">Please wait 1 to 3 business days for us to verify your identity. You will receive a confirmation email once it has been completed. In the meantime, feel free to contact us at abc.email.com if you have any enquiries.</h1>
               </div>
             )}
@@ -252,14 +271,14 @@ export default function Register() {
                   await handleClick();
                 }}
               >
-                Done
+                Submit
               </Button>
             )}
             {current < steps.length - 1 && (
               <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue" type="primary"
                 onClick={() => next()}
                 disabled={
-                  (current === 0) && (name === '' || email === '' || phoneNumber === '' || password === '' || confirmPassword === '') ||
+                  (current === 0) && (name === '' || email === '' || phoneNumber === '' || password === '' || confirmPassword === '' || password.length < 6 || password !== confirmPassword) ||
                   (current === 1 && !isFileDropped)
                 }
               >
