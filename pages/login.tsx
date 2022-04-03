@@ -71,7 +71,7 @@ export default function Login() {
       {},
       (user: any) => {
         refreshGoogleToken(user);
-        router.push('/home');
+        // router.push('/home');
       },
       (error: any) => {
         console.log(JSON.stringify(error));
@@ -82,7 +82,6 @@ export default function Login() {
   const handleEmailLogin = async () => {
     try {
       await loginWithEmailPassword(email, password);
-      router.push('/home');
     } catch (error) {
       console.log('Error with logging in', error);
       setIsModalVisible(true);
@@ -100,7 +99,6 @@ export default function Login() {
   const handleTokenLogin = async () => {
     try {
       await validatePhoneToken(token);
-      router.push('/home');
     } catch (error) {
       console.log('Error with logging in with token', error);
     }

@@ -20,6 +20,7 @@ import {
 } from 'react';
 import app from '../../firebase/clientApp';
 import { CREATE_USER } from '../../data/mutations';
+import { SyncLoader } from 'react-spinners';
 
 declare global {
   interface Window {
@@ -100,6 +101,18 @@ function AuthProvider(props: Props) {
     },
   });
 
+  // Local storage handlers
+  useEffect(() => {
+    if (localStorage.getItem('firebaseToken')) {
+      const firebaseToken = localStorage.getItem('firebaseToken');
+      setFirebaseToken(firebaseToken);
+    }
+    if (localStorage.getItem('theme')) {
+      const th = localStorage.getItem('theme');
+      setTheme(th);
+    }
+  }, []);
+
   // Google API handlers
   useEffect(() => {
     if (gapiModule) {
@@ -133,18 +146,6 @@ function AuthProvider(props: Props) {
 
   //     loginUser();
   //   }, [firebaseToken]);
-
-  // Theme handler
-  useEffect(() => {
-    if (localStorage.getItem('firebaseToken') !== null) {
-      const firebaseToken = localStorage.getItem('firebaseToken');
-      setFirebaseToken(firebaseToken);
-    }
-    if (localStorage.getItem('theme') !== null) {
-      const th = localStorage.getItem('theme');
-      setTheme(th);
-    }
-  }, []);
 
   const initGapiModule = async () => {
     // Dynamic imports
@@ -208,13 +209,13 @@ function AuthProvider(props: Props) {
   };
 
   const resetProvider = async () => {
-    await router.push('/login');
-
     setFirebaseToken(null);
     setGoogleToken(null);
     setIsLoggedIn(false);
+    setUserId(null);
     localStorage.removeItem('firebaseToken');
     localStorage.removeItem('userId');
+    await router.push('/login');
   };
 
   const signOut = async () => {
@@ -234,6 +235,7 @@ function AuthProvider(props: Props) {
   };
 
   const handleUser = async (rawUser: any) => {
+    setIsLoaded(false);
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
 
@@ -255,9 +257,12 @@ function AuthProvider(props: Props) {
           },
         }); // Update user claims from backend server
       }
+      router.push('/home');
       setIsLoaded(true);
     } else {
       await resetProvider();
+      router.push('/login');
+      setIsLoaded(true);
     }
   };
 
@@ -321,7 +326,11 @@ function AuthProvider(props: Props) {
   };
 
   if (!isLoaded) {
-    return <div>Is Loading</div>;
+    return (
+      <div className="flex w-full h-screen justify-center items-center bg-neutral-800">
+        <SyncLoader color="#1FBCE7" size={30} margin={3} />
+      </div>
+    );
   }
 
   return (

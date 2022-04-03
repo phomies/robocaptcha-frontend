@@ -30,6 +30,7 @@ function Home() {
   });
 
   if (callsError) {
+      console.log(callsError, getFirebaseToken());
     resetProvider();
   }
 
