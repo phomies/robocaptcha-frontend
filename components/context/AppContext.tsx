@@ -116,11 +116,13 @@ function AuthProvider(props: Props) {
   // Google API handlers
   useEffect(() => {
     if (!gapiModule) {
-      initGapiModule();
+        initGapiModule();
+        return;
     }
-    //   if (gapiModule.isSignedIn.get()) {
-    //     refreshGoogleToken(gapiModule.currentUser.get());
-    //   }
+
+    if (gapiModule.isSignedIn.get()) {
+      refreshGoogleToken(gapiModule.currentUser.get());
+    }
     // } else {
     // }
   }, []);
@@ -170,13 +172,10 @@ function AuthProvider(props: Props) {
     // console.log(user.getBasicProfile());
     // const userProfile = user.getBasicProfile();
     const authResponse = user.getAuthResponse(true); // True -> Get access token
-    console.log('Refreshing google token');
+    console.log('Refreshing google token', authResponse);
 
     if (authResponse) {
-      setGoogleToken({
-        idToken: authResponse.id_token,
-        firebaseToken: authResponse.access_token,
-      });
+      setGoogleToken(authResponse.access_token);
 
       const { user } = await loginToFirebase(
         authResponse.id_token,
@@ -307,7 +306,9 @@ function AuthProvider(props: Props) {
             },
           },
         });
-        await router.push('/home');
+
+        ['login', 'register'].includes(router.pathname) &&
+          (await router.push('/home'));
         setIsLoaded(true);
       }
     } else {
