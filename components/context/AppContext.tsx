@@ -90,8 +90,8 @@ function AuthProvider(props: Props) {
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const firebaseAuth = getAuth(app);
-
   const router = useRouter();
+
   const [createUser] = useMutation(CREATE_USER);
   const { refetch } = useQuery(LOGIN_USER, {
     context: {
@@ -115,13 +115,14 @@ function AuthProvider(props: Props) {
 
   // Google API handlers
   useEffect(() => {
-    if (gapiModule) {
-      if (gapiModule.isSignedIn.get()) {
-        refreshGoogleToken(gapiModule.currentUser.get());
-      }
-    } else {
+    if (!gapiModule) {
       initGapiModule();
     }
+    //   if (gapiModule.isSignedIn.get()) {
+    //     refreshGoogleToken(gapiModule.currentUser.get());
+    //   }
+    // } else {
+    // }
   }, []);
 
   // Firebase handler
@@ -136,12 +137,13 @@ function AuthProvider(props: Props) {
 
   //   useEffect(() => {
   //     const loginUser = async () => {
+  //       setIsLoaded(false);
   //       if (firebaseToken && !isLoggedIn) {
   //         console.log('Creating account if not exist');
   //         await refetch();
   //         setIsLoggedIn(true);
-  //         setIsLoaded(true);
   //       }
+  //       setIsLoaded(true);
   //     };
 
   //     loginUser();
@@ -165,6 +167,8 @@ function AuthProvider(props: Props) {
   };
 
   const refreshGoogleToken = async (user: any) => {
+    // console.log(user.getBasicProfile());
+    // const userProfile = user.getBasicProfile();
     const authResponse = user.getAuthResponse(true); // True -> Get access token
     console.log('Refreshing google token');
 
@@ -174,7 +178,10 @@ function AuthProvider(props: Props) {
         firebaseToken: authResponse.access_token,
       });
 
-      await loginToFirebase(authResponse.id_token, authResponse.access_token);
+      const { user } = await loginToFirebase(
+        authResponse.id_token,
+        authResponse.access_token
+      );
     }
   };
 
@@ -182,10 +189,8 @@ function AuthProvider(props: Props) {
     const credential = GoogleAuthProvider.credential(idToken, firebaseToken);
 
     // Users already linked to Firebase
-    await signInWithCredential(firebaseAuth, credential);
     console.log('Signed in with credentials');
-
-    await router.push('/');
+    return await signInWithCredential(firebaseAuth, credential);
   };
 
   const loginWithPhoneNumber = async (number: string) => {
@@ -234,31 +239,77 @@ function AuthProvider(props: Props) {
     }
   };
 
+  const registerWithEmailPassword = async (
+    email: string,
+    password: string,
+    name: string,
+    phoneNumber: string
+  ) => {
+    const userCredential = await createUserWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
+    const token = await userCredential.user.getIdToken();
+
+    await createUser({
+      context: {
+        headers: {
+          fbToken: token,
+        },
+      },
+      variables: {
+        createUserInput: {
+          email,
+          name,
+          phoneNumber,
+        },
+      },
+    });
+  };
+
   const handleUser = async (rawUser: any) => {
     setIsLoaded(false);
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
 
-      console.warn(idToken, rawUser);
       localStorage.setItem('firebaseToken', idToken);
       localStorage.setItem('userId', rawUser.uid);
 
+      console.warn(idToken, rawUser);
       setUserId(rawUser.uid);
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
       saveFirebaseToken(idToken);
 
+      const isNewUser =
+        (rawUser.metadata.creationTime as string) ===
+        (rawUser.metadata.lastSignInTime as string);
+      const providerData = rawUser?.providerData[0];
+
       // Update claims for existing users
-      if (rawUser.metadata.createdAt !== rawUser.metadata.lastLoginAt) {
+      if (providerData.providerId === 'google.com' && isNewUser) {
+        // Check if user login with google provider is new user
+        await router.push({
+          pathname: '/register',
+          query: {
+            isNewGoogleUser: true,
+            googleEmail: providerData.email,
+            googleName: providerData.displayName,
+          },
+        });
+        setIsLoaded(true);
+      } else {
+        // Update user claims from backend server
         await refetch({
           context: {
             headers: {
               fbToken: idToken,
             },
           },
-        }); // Update user claims from backend server
+        });
+        await router.push('/home');
+        setIsLoaded(true);
       }
-      router.push('/home');
-      setIsLoaded(true);
     } else {
       await resetProvider();
       router.push('/login');
@@ -294,35 +345,6 @@ function AuthProvider(props: Props) {
 
   const getUserId = () => {
     return userId;
-  };
-
-  const registerWithEmailPassword = async (
-    email: string,
-    password: string,
-    name: string,
-    phoneNumber: string
-  ) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      firebaseAuth,
-      email,
-      password
-    );
-    const token = await userCredential.user.getIdToken();
-
-    await createUser({
-      context: {
-        headers: {
-          fbToken: token,
-        },
-      },
-      variables: {
-        createUserInput: {
-          email,
-          name,
-          phoneNumber,
-        },
-      },
-    });
   };
 
   if (!isLoaded) {

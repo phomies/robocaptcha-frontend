@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextRouter, useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
 import Head from 'next/head';
@@ -9,7 +9,7 @@ import { InboxOutlined } from '@ant-design/icons';
 
 export default function Register() {
   const router: NextRouter = useRouter();
-
+  const [isNewGoogleUser, setIsNewGoogleUser] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -18,24 +18,36 @@ export default function Register() {
   const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
 
   const { registerWithEmailPassword } = useContext(AppContext);
+  useEffect(() => {
+    console.log(router.query);
+    const {
+      isNewGoogleUser: isNewUser,
+      googleName,
+      googleEmail,
+    } = router.query;
+
+    setIsNewGoogleUser(isNewUser ? true : false);
+    if (isNewUser) {
+      console.log(googleName, googleEmail);
+      setName(googleName as string);
+      setEmail(googleEmail as string);
+    }
+  }, [router.isReady]);
 
   const handleClick = async () => {
     try {
       await registerWithEmailPassword(email, password, name, phoneNumber);
-      message.success("Registration successful")
-    }
-    catch (error: any) {
+      message.success('Registration successful');
+    } catch (error: any) {
       console.log(error.code);
-      var msg = error.code.split("/")[1].replaceAll('-', ' ');
+      var msg = error.code.split('/')[1].replaceAll('-', ' ');
       setCurrent(0);
       message.error(msg);
     }
   };
 
   const { Step } = Steps;
-
   const [current, setCurrent] = useState(0);
-
   const steps = [
     {
       title: 'Register',
@@ -58,9 +70,9 @@ export default function Register() {
 
   const { Dragger } = Upload;
 
-  const dummyRequest = ({ file, onSuccess }: { file: any, onSuccess: any }) => {
+  const dummyRequest = ({ file, onSuccess }: { file: any; onSuccess: any }) => {
     setTimeout(() => {
-      onSuccess("ok");
+      onSuccess('ok');
     }, 0);
   };
 
@@ -69,7 +81,7 @@ export default function Register() {
     multiple: false,
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     customRequest: dummyRequest,
-    accept: ".png, .jpeg, .jpg, .pdf",
+    accept: '.png, .jpeg, .jpg, .pdf',
     onChange(info: any) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -86,7 +98,6 @@ export default function Register() {
       console.log('Dropped files', e.dataTransfer.files);
       setIsFileDropped(true);
     },
-
   };
 
   return (
@@ -127,7 +138,7 @@ export default function Register() {
 
         <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end md:mt-8 mt-8">
           <Steps current={current}>
-            {steps.map(item => (
+            {steps.map((item) => (
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
@@ -141,8 +152,9 @@ export default function Register() {
                 <input
                   className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
                   placeholder="Name"
-                  onChange={(e) => setName(e.target.value)}
                   value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={isNewGoogleUser}
                 />
 
                 <input
@@ -150,8 +162,9 @@ export default function Register() {
                   className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
                   placeholder="Email"
                   type="email"
-                  onChange={(e) => setEmail(e.target.value)}
                   value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isNewGoogleUser}
                 />
                 <input
                   required
@@ -163,11 +176,14 @@ export default function Register() {
                 />
                 <input
                   required
-                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${(password !== '' &&
-                    confirmPassword !== '' &&
-                    password !== confirmPassword) || (password !== '' && password.length < 6) &&
-                    'border border-red-400'
-                    }`}
+                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${
+                    (password !== '' &&
+                      confirmPassword !== '' &&
+                      password !== confirmPassword) ||
+                    (password !== '' &&
+                      password.length < 6 &&
+                      'border border-red-400')
+                  }`}
                   placeholder="Password"
                   type="password"
                   value={password}
@@ -175,14 +191,14 @@ export default function Register() {
                 />
 
                 <input
-                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
+                  className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${
+                    password !== '' &&
                     confirmPassword !== '' &&
                     password !== confirmPassword &&
                     'border border-red-400'
-                    }`}
+                  }`}
                   placeholder="Confirm password"
                   type="password"
-
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -194,11 +210,11 @@ export default function Register() {
                     </div>
                   )}
 
-                {password !== '' && password.length < 6 &&
+                {password !== '' && password.length < 6 && (
                   <div className="mt-2 -mb-2 text-red-400">
                     Password should be at least 6 characters
                   </div>
-                }
+                )}
 
                 <div className="text-gray-400 my-4 mt-8 text-center w-full">
                   or continue with
@@ -225,14 +241,19 @@ export default function Register() {
                 <div className="text-black font-poppins-semibold text-xl lg:text-2xl mb-4">
                   Upload IC
                 </div>
-                <h1 className="text-gray-500 mb-8">We will require some additional information to verify your identity.</h1>
+                <h1 className="text-gray-500 mb-8">
+                  We will require some additional information to verify your
+                  identity.
+                </h1>
 
                 <Dragger className="mb-2" {...props}>
                   <div className="my-5 mx-5 md:mx-0">
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p className="ant-upload-text">
+                      Click or drag file to this area to upload
+                    </p>
                     <p className="ant-upload-hint">
                       Your IC will only be used for verification purposes
                     </p>
@@ -251,21 +272,33 @@ export default function Register() {
                   alt="registration successful"
                   src="/images/done.png"
                 />
-                <h1 className="text-gray-600 font-poppins-medium mt-5 mb-2">Click on the submit button to complete your registration.</h1>
-                <h1 className="text-gray-500 mb-5">Please wait 1 to 3 business days for us to verify your identity. You will receive a confirmation email once it has been completed. In the meantime, feel free to contact us at abc.email.com if you have any enquiries.</h1>
+                <h1 className="text-gray-600 font-poppins-medium mt-5 mb-2">
+                  Click on the submit button to complete your registration.
+                </h1>
+                <h1 className="text-gray-500 mb-5">
+                  Please wait 1 to 3 business days for us to verify your
+                  identity. You will receive a confirmation email once it has
+                  been completed. In the meantime, feel free to contact us at
+                  abc.email.com if you have any enquiries.
+                </h1>
               </div>
             )}
           </div>
 
           <div className="flex justify-end mb-16 md:mb-0">
             {current === 1 && (
-              <Button className="h-8 border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-50 hover:text-blue-500 hover:border-blue-500 rounded-sm shadow-lg"
-                style={{ margin: '0 8px' }} onClick={() => prev()}>
+              <Button
+                className="h-8 border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-50 hover:text-blue-500 hover:border-blue-500 rounded-sm shadow-lg"
+                style={{ margin: '0 8px' }}
+                onClick={() => prev()}
+              >
                 Previous
               </Button>
             )}
             {current === steps.length - 1 && (
-              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-60 text-white shadow-lg" type="primary"
+              <Button
+                className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-60 text-white shadow-lg"
+                type="primary"
                 onClick={async (e) => {
                   e.preventDefault();
                   await handleClick();
@@ -275,10 +308,19 @@ export default function Register() {
               </Button>
             )}
             {current < steps.length - 1 && (
-              <Button className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue" type="primary"
+              <Button
+                className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue"
+                type="primary"
                 onClick={() => next()}
                 disabled={
-                  (current === 0) && (name === '' || email === '' || phoneNumber === '' || password === '' || confirmPassword === '' || password.length < 6 || password !== confirmPassword) ||
+                  (current === 0 &&
+                    (name === '' ||
+                      email === '' ||
+                      phoneNumber === '' ||
+                      password === '' ||
+                      confirmPassword === '' ||
+                      password.length < 6 ||
+                      password !== confirmPassword)) ||
                   (current === 1 && !isFileDropped)
                 }
               >
