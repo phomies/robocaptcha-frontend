@@ -52,6 +52,7 @@ export const GET_CONTACTS = gql`
         isBlacklisted
         isWhitelisted
         number
+        name
       }
     }
   }

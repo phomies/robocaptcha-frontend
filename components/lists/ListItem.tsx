@@ -11,10 +11,11 @@ import { formatPhoneNumberIntl } from 'react-phone-number-input';
 interface Props {
   isWhitelist: boolean
   number: string
+  name?: string
 }
 
 const ListItem = (props: Props) => {
-  const { isWhitelist, number } = props;
+  const { isWhitelist, number, name } = props;
   const { getFirebaseToken } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
@@ -47,13 +48,19 @@ const ListItem = (props: Props) => {
   })
 
   return (
-    <div className="dark:bg-secondary_dark text-xs md:text-sm py-4 px-7 flex justify-between">
-      <div className="flex items-center gap-x-3">
+    <div className="items-center grid grid-cols-10 dark:bg-secondary_dark text-xs md:text-sm py-4 px-7 justify-between">
+      <div className={`${isWhitelist ? "col-span-4" : "col-span-8"} flex items-center gap-x-3`}>
         <BiUserCircle className="h-6 w-6 text-gray-500" />
         {formatPhoneNumberIntl(number)}
       </div>
+      {isWhitelist &&
+        <div className="col-span-4">
+          {name}
+        </div>
+      }
+
       <Tooltip title={`Remove from ${isWhitelist ? "Whitelist" : "Blacklist"}`} placement="bottom">
-        <div className="flex items-center">
+        <div className="col-span-2 justify-self-end flex items-center">
           <HiOutlineTrash className="cursor-pointer w-5 h-5 text-red-400 hover:text-red-500"
             onClick={() => {
               if (isWhitelist) {

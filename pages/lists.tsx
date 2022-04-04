@@ -62,7 +62,7 @@ function Lists() {
           Sync contacts
         </button>
         <div className="flex flex-col md:flex-row gap-x-10">
-          <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full h-full">
+          <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full md:w-2/5 h-full">
             <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold flex items-center justify-between">
               Blacklist
               <HiPlusSm
@@ -85,12 +85,12 @@ function Lists() {
                   />
                 ))
             ) : (
-              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14">
+              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex px-7 items-center w-full h-14">
                 No records found
               </div>
             )}
           </div>
-          <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full h-full">
+          <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full md:w-3/5 h-full">
             <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold flex items-center justify-between">
               Whitelist
               <HiPlusSm
@@ -98,8 +98,9 @@ function Lists() {
                 onClick={() => setIsWLModalVisible(true)}
               />
             </div>
-            <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7">
-              <div className="col-span-3">Phone Number</div>
+            <div className="grid grid-cols-10 font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7">
+              <div className="col-span-4">Phone Number</div>
+              <div className="col-span-4">Contact Name</div>
             </div>
             {data?.getUser.contacts.filter((item: any) => item.isWhitelisted)
               .length > 0 ? (
@@ -110,10 +111,11 @@ function Lists() {
                     key={item._id}
                     isWhitelist={true}
                     number={item.number as string}
+                    name={item.name}
                   />
                 ))
             ) : (
-              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14">
+              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex px-7 items-center w-full h-14">
                 No records found
               </div>
             )}

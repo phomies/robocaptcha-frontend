@@ -14,6 +14,7 @@ interface Props {
 const ModalItem = (props: Props) => {
   const { isWhitelist, isVisible, setIsVisible } = props;
   const [number, setNumber] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const { getFirebaseToken } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
@@ -40,7 +41,8 @@ const ModalItem = (props: Props) => {
     variables: {
       upsertContactInput: {
         isWhitelisted: true,
-        number: number
+        number: number,
+        name: name
       }
     }
   })
@@ -54,11 +56,20 @@ const ModalItem = (props: Props) => {
       footer={null}
     >
       <input
-        className="text-blue-darkBlue  focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
-        placeholder="Contact Number"
+        className="text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
+        placeholder="Phone Number"
         value={number}
         onChange={(e) => setNumber(e.target.value)}
       />
+      {
+        isWhitelist &&
+        <input
+          className="text-blue-darkBlue mt-4 focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
+          placeholder="Contact Name (Optional)"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      }
       <button
         className={`mt-6 py-2 px-8 rounded-lg shadow-lg text-white font-poppins-medium ${isWhitelist ? "bg-blue-600 hover:bg-blue-700" : "bg-red-500 hover:bg-red-600"}`}
         onClick={() => {
