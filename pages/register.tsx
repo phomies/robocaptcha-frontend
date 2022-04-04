@@ -6,6 +6,8 @@ import { AppContext } from '../components/context/AppContext';
 import Head from 'next/head';
 import { Steps, Button, message, Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css'
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -36,6 +38,7 @@ export default function Register() {
 
   const handleClick = async () => {
     try {
+      console.log('PHONENUMBER ' + phoneNumber)
       await registerWithEmailPassword(email, password, name, phoneNumber);
       router.push('/home');
       message.success('Registration successful');
@@ -147,12 +150,12 @@ export default function Register() {
 
             <div className="steps-content pt-5 mx-auto">
               {current == 0 && (
-                <form className="my-4 h-max">
+                <form className="my-4">
                   <div className="text-black font-poppins-semibold text-xl lg:text-2xl mb-4">
                     Sign Up
                   </div>
                   <input
-                    className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
+                    className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3"
                     placeholder="Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -161,24 +164,33 @@ export default function Register() {
 
                   <input
                     required
-                    className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
+                    className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3"
                     placeholder="Email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isNewGoogleUser}
                   />
-                  <input
-                    required
-                    className="placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3"
-                    placeholder="Phone number"
-                    type="number"
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                  
+                  <PhoneInput
+                    inputStyle={{ color: '#1F58E7', height: '56px', width: '100%', borderColor: "#F6F8FB", background: "#F6F8FB"}}
+                    containerStyle={{height: '50px'}}
+                    buttonStyle={{height: '56px', color:"#1F58E7", borderColor: "#F6F8FB", background: "#F6F8FB"}}
+                    dropdownStyle={{height:'150px'}}
+
+                    inputProps={{
+                      name: 'phone',
+                      required: true,
+                      enableSearch: true
+                    }}
+                    country={'sg'}
                     value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e)}
                   />
+
                   <input
                     required
-                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${(password !== '' &&
+                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3 mt-5 ${(password !== '' &&
                       confirmPassword !== '' &&
                       password !== confirmPassword) ||
                       (password !== '' &&
@@ -192,7 +204,7 @@ export default function Register() {
                   />
 
                   <input
-                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
+                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
                       confirmPassword !== '' &&
                       password !== confirmPassword &&
                       'border border-red-400'
