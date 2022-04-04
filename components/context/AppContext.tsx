@@ -116,13 +116,9 @@ function AuthProvider(props: Props) {
   // Google API handlers
   useEffect(() => {
     if (!gapiModule) {
-        initGapiModule();
-        return;
+      initGapiModule();
     }
 
-    if (gapiModule.isSignedIn.get()) {
-      refreshGoogleToken(gapiModule.currentUser.get());
-    }
     // } else {
     // }
   }, []);
@@ -137,36 +133,18 @@ function AuthProvider(props: Props) {
     return () => unsubscribe();
   }, []);
 
-  //   useEffect(() => {
-  //     const loginUser = async () => {
-  //       setIsLoaded(false);
-  //       if (firebaseToken && !isLoggedIn) {
-  //         console.log('Creating account if not exist');
-  //         await refetch();
-  //         setIsLoggedIn(true);
-  //       }
-  //       setIsLoaded(true);
-  //     };
+  useEffect(() => {
+    const loginUser = async () => {
+      setIsLoaded(false);
+      if (firebaseToken && !isLoggedIn) {
+        console.log('Creating account if not exist');
+        setIsLoggedIn(true);
+      }
+      setIsLoaded(true);
+    };
 
-  //     loginUser();
-  //   }, [firebaseToken]);
-
-  const initGapiModule = async () => {
-    // Dynamic imports
-    const gapi = await import('gapi-script').then((pack) => pack.gapi);
-    const loadAuth2 = await import('gapi-script').then(
-      (pack) => pack.loadAuth2
-    );
-
-    const gapiAuth = await loadAuth2(
-      gapi,
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-      'https://www.googleapis.com/auth/contacts.readonly'
-    );
-    setGapiModule(gapiAuth);
-
-    return gapiAuth;
-  };
+    loginUser();
+  }, [firebaseToken]);
 
   const refreshGoogleToken = async (user: any) => {
     // console.log(user.getBasicProfile());
@@ -182,6 +160,26 @@ function AuthProvider(props: Props) {
         authResponse.access_token
       );
     }
+  };
+
+  const initGapiModule = async () => {
+    // Dynamic imports
+    const gapi = await import('gapi-script').then((pack) => pack.gapi);
+    const loadAuth2 = await import('gapi-script').then(
+      (pack) => pack.loadAuth2
+    );
+
+    const gapiAuth = await loadAuth2(
+      gapi,
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+      'https://www.googleapis.com/auth/contacts.readonly'
+    );
+    setGapiModule(gapiAuth);
+
+    if (gapiAuth.isSignedIn.get()) {
+      refreshGoogleToken(gapiAuth.currentUser.get());
+    }
+    return gapiAuth;
   };
 
   const loginToFirebase = async (idToken: string, firebaseToken: string) => {
@@ -299,7 +297,7 @@ function AuthProvider(props: Props) {
         setIsLoaded(true);
       } else {
         // Update user claims from backend server
-        await refetch({
+        refetch({
           context: {
             headers: {
               fbToken: idToken,
@@ -307,8 +305,7 @@ function AuthProvider(props: Props) {
           },
         });
 
-        ['login', 'register'].includes(router.pathname) &&
-          (await router.push('/home'));
+        ['login', 'register'].includes(router.pathname) && await router.push('/home');
         setIsLoaded(true);
       }
     } else {
