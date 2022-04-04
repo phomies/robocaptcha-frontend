@@ -5,9 +5,11 @@ import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
 import Head from 'next/head';
 import { Steps, Button, message, Upload } from 'antd';
+
 import { InboxOutlined } from '@ant-design/icons';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css'
+import { UploadRequestOption } from 'rc-upload/lib/interface';
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -74,9 +76,11 @@ export default function Register() {
 
   const { Dragger } = Upload;
 
-  const dummyRequest = ({ file, onSuccess }: { file: any; onSuccess: any }) => {
+  const dummyRequest = ( options : UploadRequestOption<any> ) => {
+    const { onSuccess } = options
     setTimeout(() => {
-      onSuccess('ok');
+      if (onSuccess !== undefined)
+        onSuccess('ok');
     }, 0);
   };
 
@@ -171,12 +175,12 @@ export default function Register() {
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isNewGoogleUser}
                   />
-                  
+
                   <PhoneInput
-                    inputStyle={{ color: '#1F58E7', height: '56px', width: '100%', borderColor: "#F6F8FB", background: "#F6F8FB"}}
-                    containerStyle={{height: '50px'}}
-                    buttonStyle={{height: '56px', color:"#1F58E7", borderColor: "#F6F8FB", background: "#F6F8FB"}}
-                    dropdownStyle={{height:'150px'}}
+                    inputStyle={{ color: '#1F58E7', height: '56px', width: '100%', borderColor: "#F6F8FB", background: "#F6F8FB" }}
+                    containerStyle={{ height: '50px' }}
+                    buttonStyle={{ height: '56px', color: "#1F58E7", borderColor: "#F6F8FB", background: "#F6F8FB" }}
+                    dropdownStyle={{ height: '150px' }}
 
                     inputProps={{
                       name: 'phone',
@@ -258,7 +262,7 @@ export default function Register() {
                     identity.
                   </h1>
 
-                  <Dragger className="mb-2" {...props}>
+                  <Dragger className="mb-2" {...props} customRequest={dummyRequest}>
                     <div className="my-5 mx-5 md:mx-0">
                       <p className="ant-upload-drag-icon">
                         <InboxOutlined />
