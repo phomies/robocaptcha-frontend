@@ -22,7 +22,9 @@ module.exports = {
         'poppins-semibold': ['Poppins-SemiBold', 'sans-serif'],
       },
     },
-    
+
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar-hide')
+  ]
 }

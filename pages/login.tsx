@@ -127,7 +127,7 @@ export default function Login() {
           OK
         </button>
       </Modal>
-      <div className="flex flex-col h-screen overflow-y-hidden">
+      <div className="flex flex-col h-screen overflow-y-scroll scrollbar-hide">
         <nav className="flex my-8 sm:mx-32 mx-10 gap-x-4 items-center mt-10 -mb-5">
           <img src={`/images/logo_light.png`} alt="Logo" className="h-8 w-8" />
           <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">

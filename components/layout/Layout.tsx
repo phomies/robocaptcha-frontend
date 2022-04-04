@@ -194,7 +194,7 @@ function Layout(props: Props) {
         width={width < 900 ? '80%' : '40%'}
         closable={false}
       >
-        <div className="dark:bg-secondary_dark h-screen overflow-y-scroll">
+        <div className="dark:bg-secondary_dark h-screen overflow-y-scroll scrollbar-hide">
           <div className="px-12 bg-white absolute z-50 h-20 dark:bg-secondary_dark dark:text-gray-50 pt-9 pb-7 w-full flex items-center gap-x-8">
             <ImCross
               className="h-4 w-4 cursor-pointer hover:text-blue-600 dark:hover:text-blue-200"
@@ -306,7 +306,7 @@ function Layout(props: Props) {
               />
             </div>
           </div>
-          <div className="bg-primary_light dark:bg-primary_dark -mt-5 overflow-y-scroll">
+          <div className="bg-primary_light dark:bg-primary_dark -mt-5 overflow-y-scroll scrollbar-hide">
             {props.children}
           </div>
         </div>
