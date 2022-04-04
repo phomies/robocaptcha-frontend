@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextRouter, useRouter } from 'next/router';
-import { useContext, useState, useEffect } from 'react';
+import { Fragment, useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
 import Head from 'next/head';
@@ -37,6 +37,7 @@ export default function Register() {
   const handleClick = async () => {
     try {
       await registerWithEmailPassword(email, password, name, phoneNumber);
+      router.push('/home');
       message.success('Registration successful');
     } catch (error: any) {
       console.log(error.code);
@@ -101,11 +102,12 @@ export default function Register() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-y-scroll">
+    <Fragment>
+
       <Head>
         <title>roboCAPTCHA | Register</title>
       </Head>
-      <div className="flex flex-col h-screen overflow-y-hidden">
+      <div>
         <nav className="flex my-8 sm:mx-32 mx-10 gap-x-4 items-center mt-10 mb-0 sm:-mb-5">
           <img src={`/images/logo_light.png`} alt="Logo" className="h-8 w-8" />
           <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">
@@ -177,8 +179,8 @@ export default function Register() {
                   <input
                     required
                     className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-12 lg:h-14 rounded-lg bg-blue-lightBlue mb-3 ${(password !== '' &&
-                        confirmPassword !== '' &&
-                        password !== confirmPassword) ||
+                      confirmPassword !== '' &&
+                      password !== confirmPassword) ||
                       (password !== '' &&
                         password.length < 6 &&
                         'border border-red-400')
@@ -329,6 +331,6 @@ export default function Register() {
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 }
