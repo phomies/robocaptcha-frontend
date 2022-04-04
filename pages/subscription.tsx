@@ -62,8 +62,7 @@ function Subscription() {
   };
 
   useEffect(() => {
-    console.log('DATA')
-    console.log(data)
+    console.log(data?.getUser.payments[0].isCancelled)
     setPlan(data?.getUser.payments[0].plan)
     setDateEnd(data?.getUser.payments[0].dateEnd)
     setIsCancelled(data?.getUser.payments[0].isCancelled)
@@ -79,9 +78,16 @@ function Subscription() {
         {plan === 'PREMIUM' &&
           <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 mb-12 md:w-72 w-full mt-2">
 
-            <h1 className="font-poppins-regular text-gray-500 dark:text-gray-400">
-              Subscription ends on
-            </h1>
+            {isCancelled === true ? (
+              <h1 className="font-poppins-regular text-gray-500 dark:text-gray-400">
+                Subscription ends on
+              </h1>
+            ) : (
+              <h1 className="font-poppins-regular text-gray-500 dark:text-gray-400">
+                Next payment
+              </h1>
+            )
+            }
 
             <h1 className="font-poppins-semibold text-gray-700 dark:text-white">
               {new Date(dateEnd).toDateString()}
@@ -161,13 +167,14 @@ function Subscription() {
                   <div className="flex items-center mt-7">
                     <button onClick={async () => {
                       await deletePayment();
+                      router.reload();
                       message.success("Plan cancelled");
                       setIsModalVisible(false);
                     }}
                       className="text-white  bg-blue-darkBlue rounded-lg py-2 px-5 shadow-sm mr-4 hover:bg-blue-600">
                       Confirm
                     </button>
-                    <button onClick={() => setIsModalVisible(false)} className="bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300  dark:text-gray-800 dark:border-0  py-2 px-5 border rounded-lg border-blue-darkBlue text-blue-darkBlue ">
+                    <button onClick={() => {setIsModalVisible(false);}} className="bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300  dark:text-gray-800 dark:border-0  py-2 px-5 border rounded-lg border-blue-darkBlue text-blue-darkBlue ">
                       Cancel
                     </button>
                   </div>

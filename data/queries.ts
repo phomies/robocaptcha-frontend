@@ -81,6 +81,7 @@ export const GET_PAYMENTS = gql`
         dateEnd
         dateStart
         plan
+        isCancelled
       }
     }
   }
