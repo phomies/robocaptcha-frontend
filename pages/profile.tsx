@@ -14,7 +14,7 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css'
 
 function Profile() {
-  const { getFirebaseToken } = useContext(AppContext);
+  const { getFirebaseToken, getTheme } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
   const [editProfile, setEditProfile] = useState<boolean>(false);
@@ -116,9 +116,9 @@ function Profile() {
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
                 {editProfile ? (
                   <PhoneInput
-                    inputStyle={{ color: '#1F58E7', height: '40px', width: '75%', borderColor: "#E5E7EB", background: "#FFFFFF" }}
+                    inputStyle={{ color: `${getTheme() === "light" ? "#1F58E7" : "#bfdbfe"}`, height: '40px', width: '75%', borderColor: `${getTheme() === "light" ? "#E5E7EB" : "#6b7280"}`, background: `${getTheme() === "light" ? "#FFFFFF" : "#28293d"}` }}
                     containerStyle={{ height: '40px' }}
-                    buttonStyle={{ height: '40px', color: "#1F58E7", borderColor: "#E5E7EB", background: "#FFFFFF" }}
+                    buttonStyle={{ height: '40px', color: "#1F58E7", borderColor: `${getTheme() === "light" ? "#E5E7EB" : "#6b7280"}`, background: `${getTheme() === "light" ? "#FFFFFF" : "#28293d"}` }}
                     dropdownStyle={{ height: '150px' }}
                     inputProps={{
                       name: 'phone',

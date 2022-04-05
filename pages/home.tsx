@@ -94,7 +94,7 @@ function Home() {
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
           </div>
-          <div className="max-h-[515px] overflow-y-scroll scrollbar-hide">
+          <div className="rounded-lg max-h-[515px] overflow-y-scroll scrollbar-hide">
             {callsData?.getUser.calls.length > 0 ? (
               callsData.getUser.calls.map((item: any) => (
                 <CallHistoryItem

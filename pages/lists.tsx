@@ -82,7 +82,7 @@ function Lists() {
             <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7">
               <div className="col-span-3">Phone Number</div>
             </div>
-            <div className="max-h-[450px] overflow-y-scroll scrollbar-hide">
+            <div className="rounded-lg max-h-[450px] overflow-y-scroll scrollbar-hide">
               {data?.getUser.contacts.filter((item: any) => item.isBlacklisted)
                 .length > 0 ? (
                 data.getUser.contacts
@@ -113,7 +113,7 @@ function Lists() {
               <div className="col-span-4">Phone Number</div>
               <div className="col-span-4">Contact Name</div>
             </div>
-            <div className="max-h-[450px] overflow-y-scroll scrollbar-hide">
+            <div className="rounded-lg max-h-[450px] overflow-y-scroll scrollbar-hide">
               {data?.getUser.contacts.filter((item: any) => item.isWhitelisted)
                 .length > 0 ? (
                 data.getUser.contacts
