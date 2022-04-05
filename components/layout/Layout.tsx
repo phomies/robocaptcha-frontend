@@ -42,7 +42,9 @@ function Layout(props: Props) {
     },
   });
 
-  if (notifsData) console.log(notifsData);
+  useEffect(() => {
+    if (notifsData) console.log('notifsData', notifsData);
+  }, [notifsData])
 
   useEffect(() => {
     if (router.pathname.includes('home')) {
@@ -63,14 +65,13 @@ function Layout(props: Props) {
   };
 
   const notify = (notification: any) => {
-    console.log(notification);
+    console.log('notification', notification);
     const dateTime = new Date(notification.dateTime);
 
     toast.custom((t) => (
       <div
-        className={`${
-          t.visible ? 'animate-enter' : 'animate-leave'
-        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        className={`${t.visible ? 'animate-enter' : 'animate-leave'
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 w-0 p-4">
           <div className="flex items-start">
@@ -135,11 +136,7 @@ function Layout(props: Props) {
   }, []);
 
   return (
-    <div
-      className={`font-poppins-medium text-gray-700 dark:text-gray-50 ${
-        getTheme() === 'dark' && 'dark'
-      }`}
-    >
+    <div className={`font-poppins-medium text-gray-700 dark:text-gray-50 ${getTheme() === 'dark' && 'dark'}`}>
       {/* menu drawer */}
       <Drawer
         className={`${getTheme() === 'dark' && 'dark'}`}
@@ -216,9 +213,8 @@ function Layout(props: Props) {
                 <div className="font-poppins-medium flex justify-between">
                   {item.content}
                   <div
-                    className={`-mt-2 -mr-6 bg-red-400 w-[7px] h-[7px] rounded-full ${
-                      item.read && 'hidden'
-                    }`}
+                    className={`-mt-2 -mr-6 bg-red-400 w-[7px] h-[7px] rounded-full ${item.read && 'hidden'
+                      }`}
                   />
                 </div>
                 <div className="font-poppins-regular mt-2 text-sm text-gray-400">

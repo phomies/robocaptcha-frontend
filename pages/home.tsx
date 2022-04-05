@@ -7,13 +7,13 @@ import { MdOutlineSubscriptions } from 'react-icons/md';
 import CallHistoryItem from '../components/home/CallHistoryItem';
 import { useQuery } from '@apollo/client';
 import { GET_CALLS } from '../data/queries';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppContext } from '../components/context/AppContext';
 import CallHistoryGraph from '../components/home/CallHistoryGraph';
 import Head from 'next/head';
 
 const getAction = (action: string) => {
-  if (action === 'success') return 0;
+  if (action === 'success' || action === 'whitelisted') return 0;
   if (action === 'in-progress') return 1;
   return 2;
 };
@@ -30,7 +30,7 @@ function Home() {
   });
 
   if (callsError) {
-      console.log(callsError, getFirebaseToken());
+    console.log(callsError, getFirebaseToken());
     resetProvider();
   }
 
@@ -38,14 +38,16 @@ function Home() {
   const callsRejectedArr: string[] = [];
   const dateTimeArr: string[] = [];
 
-  if (callsData) {
-    console.log(callsData);
-    callsData.getCallSummary.callsReceived.map((item: any) => {
-      callsAcceptedArr.push(item.callsAccepted);
-      callsRejectedArr.push(item.callsRejected);
-      dateTimeArr.push(item.dateTime);
-    })
-  }
+  useEffect(() => {
+    if (callsData) {
+      console.log('callsData', callsData);
+      callsData.getCallSummary.callsReceived.map((item: any) => {
+        callsAcceptedArr.push(item.callsAccepted);
+        callsRejectedArr.push(item.callsRejected);
+        dateTimeArr.push(item.dateTime);
+      })
+    }
+  }, [callsData])
 
   return (
     <Layout>

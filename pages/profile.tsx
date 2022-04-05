@@ -21,7 +21,7 @@ function Profile() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [maskedNumber, setMaskedNumber] = useState<string>("");
 
-  const { error, data } = useQuery(GET_USER, {
+  const { data } = useQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken()
@@ -44,8 +44,9 @@ function Profile() {
     }
   })
 
-  if (error) console.log("error");
-  if (data) console.log(data);
+  useEffect(() => {
+    if (data) console.log('profileData', data);
+  }, [data])
 
   useEffect(() => {
     setName(data?.getUser.name);
@@ -122,7 +123,7 @@ function Profile() {
                 <div className="text-right py-4">Masked Number</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={true} className={`cursor-not-allowed bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${maskedNumber === '' && "text-gray-500"}`} value={maskedNumber === '' ? "Processing masked number": formatPhoneNumberIntl(maskedNumber)} />
+                <input readOnly={true} className={`cursor-not-allowed bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${maskedNumber === '' && "text-gray-500"}`} value={maskedNumber === '' ? "Processing masked number" : formatPhoneNumberIntl(maskedNumber)} />
               </div>
             </div>
           </div>

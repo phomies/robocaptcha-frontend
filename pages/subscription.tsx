@@ -62,10 +62,12 @@ function Subscription() {
   };
 
   useEffect(() => {
-    console.log(data?.getUser.payments[0].isCancelled)
-    setPlan(data?.getUser.payments[0].plan)
-    setDateEnd(data?.getUser.payments[0].dateEnd)
-    setIsCancelled(data?.getUser.payments[0].isCancelled)
+    if (data) {
+      console.log('subscriptionData', data);
+      setPlan(data.getUser.payments[0].plan);
+      setDateEnd(data.getUser.payments[0].dateEnd);
+      setIsCancelled(data.getUser.payments[0].isCancelled);
+    }
   }, [data])
 
   return (
@@ -174,7 +176,7 @@ function Subscription() {
                       className="text-white  bg-blue-darkBlue rounded-lg py-2 px-5 shadow-sm mr-4 hover:bg-blue-600">
                       Confirm
                     </button>
-                    <button onClick={() => {setIsModalVisible(false);}} className="bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300  dark:text-gray-800 dark:border-0  py-2 px-5 border rounded-lg border-blue-darkBlue text-blue-darkBlue ">
+                    <button onClick={() => { setIsModalVisible(false); }} className="bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300  dark:text-gray-800 dark:border-0  py-2 px-5 border rounded-lg border-blue-darkBlue text-blue-darkBlue ">
                       Cancel
                     </button>
                   </div>
