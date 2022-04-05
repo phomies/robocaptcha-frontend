@@ -26,7 +26,6 @@ export const GET_USER = gql`
         content
         dateTime
         read
-        url
       }
       contacts {
         _id

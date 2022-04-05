@@ -237,10 +237,7 @@ function Layout(props: Props) {
               data?.getUser.notifications.map((item: any) => (
                 <div
                   key={item._id}
-                  className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-6 py-5"
-                  onClick={() => {
-                    router.push(item.url);
-                  }}
+                  className="text-sm dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-6 py-5"
                 >
                   <div className="font-poppins-medium flex justify-between">
                     {item.content}
