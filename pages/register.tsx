@@ -113,7 +113,7 @@ export default function Register() {
       <Head>
         <title>roboCAPTCHA | Register</title>
       </Head>
-      <div>
+      <div className="flex flex-col h-screen overflow-y-scroll scrollbar-hide">
         <nav className="flex my-8 sm:mx-32 mx-10 gap-x-4 items-center mt-10 mb-0 sm:-mb-5">
           <img src={`/images/logo_light.png`} alt="Logo" className="h-8 w-8" />
           <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">
@@ -144,7 +144,7 @@ export default function Register() {
             src="/images/login.png"
           />
 
-          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end md:mt-8 mt-8">
+          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end mt-8 md:my-auto">
             <Steps current={current}>
               {steps.map((item) => (
                 <Step key={item.title} title={item.title} />
@@ -299,7 +299,7 @@ export default function Register() {
               )}
             </div>
 
-            <div className="flex justify-end mb-16 md:mb-0">
+            <div className="flex justify-end mb-16 md:mb-8">
               {current === 1 && (
                 <Button
                   className="h-8 border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-50 hover:text-blue-500 hover:border-blue-500 rounded-sm shadow-lg"
