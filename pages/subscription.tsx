@@ -97,7 +97,7 @@ function Subscription() {
 
             <StripeCheckout
               token={handleToken}
-              stripeKey={process.env.NEXT_PUBLIC_STRIPE_API_KEY || ''}
+              stripeKey="pk_test_51KgSuUD4BheMu1ORMHlRgYf8asrY7t4llbnJZi7AeEcmFJ5e39bphoXX6yCkryTG4n50MUFcJWWTJGo8fL9554dI006JayrzYU"
               amount={amount * 100}
               name="Payment"
             >
