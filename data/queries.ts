@@ -7,7 +7,7 @@ export const LOGIN_USER = gql`
 `;
 
 export const GET_CALLS = gql`
-  query getUser {
+  query getCalls {
     getUser {
       calls {
         _id
@@ -31,7 +31,7 @@ export const GET_CALLS = gql`
 `;
 
 export const GET_NOTIFS = gql`
-  query getUser {
+  query getNotifs {
     getUser {
       notifications {
         _id
@@ -76,8 +76,9 @@ export const GET_USER = gql`
 `;
 
 export const GET_PAYMENTS = gql`
-  query getUser {
+  query getPayments {
     getUser {
+      _id
       payments {
         dateEnd
         dateStart
@@ -89,8 +90,9 @@ export const GET_PAYMENTS = gql`
 `;
 
 export const GET_VERIFICATION_LEVEL = gql`
-  query getUser {
+  query getNotifLevel {
     getUser {
+      _id
       verificationLevel
     }
   }
