@@ -40,7 +40,6 @@ export default function Register() {
 
   const handleClick = async () => {
     try {
-      console.log('PHONENUMBER ' + phoneNumber)
       await registerWithEmailPassword(email, password, name, phoneNumber);
       router.push('/home');
       message.success('Registration successful');
@@ -189,7 +188,7 @@ export default function Register() {
                     }}
                     country={'sg'}
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e)}
+                    onChange={(e) => {setPhoneNumber('+' + e);}}
                   />
 
                   <input
