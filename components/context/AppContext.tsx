@@ -34,7 +34,6 @@ interface Props {
 
 interface AppContextInterface {
   getFirebaseToken: () => string | null | undefined;
-  saveFirebaseToken: (token: string) => void;
   getTheme: () => string | null | undefined;
   saveTheme: (theme: string) => void;
   signOut: () => void;
@@ -58,7 +57,6 @@ interface AppContextInterface {
 
 const appContextDefaults: AppContextInterface = {
   getFirebaseToken: () => null,
-  saveFirebaseToken: () => null,
   getTheme: () => null,
   saveTheme: () => null,
   signOut: () => null,
@@ -267,7 +265,6 @@ function AuthProvider(props: Props) {
       console.warn(idToken, rawUser);
       setUserId(rawUser.uid);
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
-      saveFirebaseToken(idToken);
       const providerData = rawUser?.providerData[0];
 
       // Throws an error if user does not exists in database
@@ -280,11 +277,11 @@ function AuthProvider(props: Props) {
           },
         },
         variables: {
-          email: rawUser.email,
+          email: providerData ? providerData.email : rawUser.email,
         },
       });
 
-      if (isUserExist) {
+      if (isUserExist.data.checkUser) {
         ['login', 'register'].includes(router.pathname) &&
           (await router.push('/home'));
         setIsLoaded(true);
@@ -309,11 +306,6 @@ function AuthProvider(props: Props) {
   const getFirebaseToken = () => {
     return firebaseToken;
   };
-
-  const saveFirebaseToken = useCallback((firebaseToken: string) => {
-    localStorage.setItem('firebaseToken', firebaseToken);
-    setFirebaseToken(firebaseToken);
-  }, []);
 
   const getTheme = () => {
     return theme;
@@ -348,7 +340,6 @@ function AuthProvider(props: Props) {
     <AppContext.Provider
       value={{
         getFirebaseToken,
-        saveFirebaseToken,
         getTheme,
         saveTheme,
         signOut,
