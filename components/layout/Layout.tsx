@@ -17,7 +17,7 @@ import { ImCross } from 'react-icons/im';
 import DayNightToggle from 'react-day-and-night-toggle';
 import { Drawer } from 'antd';
 import useDeviceSize from '../../utils/useDeviceSize';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { GET_NOTIFS } from '../../data/queries';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -34,7 +34,7 @@ function Layout(props: Props) {
   const [isNotifsOpen, setIsNotifsOpen] = useState<boolean>(false);
   const [width] = useDeviceSize();
 
-  const { data: notifsData } = useQuery(GET_NOTIFS, {
+  const [getNotifs, { data }] = useLazyQuery(GET_NOTIFS, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),
@@ -43,8 +43,8 @@ function Layout(props: Props) {
   });
 
   useEffect(() => {
-    if (notifsData) console.log('notifsData', notifsData);
-  }, [notifsData])
+    if (data) console.log('notifsData', data);
+  }, [data])
 
   useEffect(() => {
     if (router.pathname.includes('home')) {
@@ -202,7 +202,7 @@ function Layout(props: Props) {
             </div>
           </div>
           <div className="mt-24 mb-11 flex flex-col gap-y-4 px-12">
-            {notifsData?.getUser.notifications.map((item: any) => (
+            {data?.getUser.notifications.map((item: any) => (
               <div
                 key={item._id}
                 className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-9 py-5"
@@ -294,7 +294,10 @@ function Layout(props: Props) {
               />
               <MdNotificationsNone
                 className="w-6 h-6 xl:h-8 xl:w-8 text-gray-600 dark:text-gray-50 hover:text-blue-600 dark:hover:text-blue-200 cursor-pointer"
-                onClick={() => setIsNotifsOpen(true)}
+                onClick={() => {
+                  getNotifs();
+                  setIsNotifsOpen(true);
+                }}
               />
               <FaUserCircle
                 className="w-7 h-7 xl:w-8 xl:h-8 text-blue-600 hover:text-blue-700 dark:text-blue-200 dark:hover:text-blue-300 cursor-pointer"
