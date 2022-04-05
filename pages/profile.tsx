@@ -12,11 +12,12 @@ import { formatPhoneNumberIntl } from 'react-phone-number-input';
 import Head from "next/head";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css'
+import useDeviceSize from '../utils/useDeviceSize';
 
 function Profile() {
   const { getFirebaseToken, getTheme } = useContext(AppContext);
   const router: NextRouter = useRouter();
-
+  const [width] = useDeviceSize();
   const [editProfile, setEditProfile] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -106,7 +107,7 @@ function Profile() {
                 <div className="text-right py-4">Name</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-3 py-2 rounded-lg" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
+                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full md:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-3 py-2 rounded-lg" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
               </div>
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
@@ -116,7 +117,7 @@ function Profile() {
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
                 {editProfile ? (
                   <PhoneInput
-                    inputStyle={{ color: `${getTheme() === "light" ? "#1F58E7" : "#bfdbfe"}`, height: '40px', width: '75%', borderColor: `${getTheme() === "light" ? "#E5E7EB" : "#6b7280"}`, background: `${getTheme() === "light" ? "#FFFFFF" : "#28293d"}` }}
+                    inputStyle={{ color: `${getTheme() === "light" ? "#1F58E7" : "#bfdbfe"}`, height: '40px', width: `${width < 768 ? "100%" : "75%"}`, borderColor: `${getTheme() === "light" ? "#E5E7EB" : "#6b7280"}`, background: `${getTheme() === "light" ? "#FFFFFF" : "#28293d"}` }}
                     containerStyle={{ height: '40px' }}
                     buttonStyle={{ height: '40px', color: "#1F58E7", borderColor: `${getTheme() === "light" ? "#E5E7EB" : "#6b7280"}`, background: `${getTheme() === "light" ? "#FFFFFF" : "#28293d"}` }}
                     dropdownStyle={{ height: '150px' }}

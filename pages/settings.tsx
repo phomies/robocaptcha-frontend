@@ -75,24 +75,24 @@ function Settings() {
         <div className="flex gap-x-4">
           <button onClick={() => {
             setVerificationLevel(0);
-          }} className={`${verificationLevel === 0 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 shadow-sm`}>
+          }} className={`${verificationLevel === 0 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 px-4 shadow-sm`}>
             0: No verification (Turned off)
           </button>
           <button onClick={() => {
             setVerificationLevel(1);
-          }} className={`${verificationLevel === 1 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 shadow-sm`}>
+          }} className={`${verificationLevel === 1 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 px-4 shadow-sm`}>
             1: Verify using blacklist/whitelist
           </button>
         </div>
         <div className="mt-4 flex gap-x-4 mb-2">
           <button onClick={() => {
             setVerificationLevel(2);
-          }} className={`${verificationLevel === 2 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 shadow-sm`}>
+          }} className={`${verificationLevel === 2 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 px-4 shadow-sm`}>
             2: Verify callers only once
           </button>
           <button onClick={() => {
             setVerificationLevel(3);
-          }} className={`${verificationLevel === 3 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 shadow-sm`}>
+          }} className={`${verificationLevel === 3 ? "bg-blue-100 ring-2" : "ring-1"} hover:ring-2 ring-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 w-full rounded-lg py-3 px-4 shadow-sm`}>
             3: Verify callers every time
           </button>
         </div>
@@ -120,7 +120,7 @@ function Settings() {
         footer={null}
       >
         <div className="font-poppins-regular text-sm mb-2">
-          Please rate our application and help provide user feedback!
+          <div>Please rate our application and help provide user feedback!</div>
           <Rate className="mt-4" />
         </div>
         <input

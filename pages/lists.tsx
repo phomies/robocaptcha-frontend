@@ -54,10 +54,10 @@ function Lists() {
       />
 
       <div className="w-full px-9 md:px-12 pt-6 pb-10">
-        <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 w-full mt-2 flex items-center">
-          <div className="">
-            <h1 className="font-poppins-semibold text-gray-700 dark:text-white">Add contacts to whitelist</h1>
-            <h1 className="font-poppins-regular text-gray-500 dark:text-gray-400">Your contacts will not need to go through verification</h1>
+        <div className="bg-white dark:bg-secondary_dark shadow-lg rounded-lg p-6 w-full mt-2 flex gap-x-5 items-center">
+          <div>
+            <h1 className="text-sm font-poppins-semibold text-gray-700 dark:text-white mb-1">Add contacts to whitelist</h1>
+            <h1 className="text-xs md:text-sm font-poppins-regular text-gray-500 dark:text-gray-400">Your contacts will not need to go through verification</h1>
           </div>
           <button
             onClick={async () => {
@@ -65,7 +65,7 @@ function Lists() {
               message.success('Contacts sync successful');
               router.reload();
             }}
-            className="ml-auto text-xs md:text-sm border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300 dark:text-gray-800 dark:border-0 w-32 md:w-40 rounded-lg py-2 h-10 shadow-sm"
+            className="ml-auto text-xs md:text-sm border border-blue-darkBlue text-blue-darkBlue bg-blue-lightBlue hover:bg-blue-100 dark:bg-blue-200 dark:hover:bg-blue-300 dark:text-gray-800 dark:border-0 px-3 md:px-6 rounded-lg py-2 shadow-sm"
           >
             Sync contacts
           </button>

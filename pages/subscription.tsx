@@ -108,7 +108,7 @@ function Subscription() {
 
         }
 
-        <h1 className="text-lg dark:text-white font-poppins-medium mt-4">
+        <h1 className="text-gray-800 text-base md:text-lg dark:text-white font-poppins-medium mt-4">
           Subscription models
         </h1>
         <h1 className="font-poppins-regular text-sm mb-6 text-gray-500 dark:text-gray-400">
@@ -130,25 +130,25 @@ function Subscription() {
 
             <hr className="my-5 dark:opacity-30" />
             <div className="flex mb-2">
-              <MdDone className="grid my-auto mr-3" />
+              <MdDone className="flex my-auto mr-3 flex-none" />
               <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-300">
                 Filter calls using customised blacklist and whitelist
               </h1>
             </div>
             <div className="flex mb-2">
-              <MdDone className="grid my-auto mr-3" />
+              <MdDone className="flex my-auto mr-3 flex-none" />
               <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-300">
                 Automated verification of calls
               </h1>
             </div>
             <div className="flex mb-2">
-              <MdDone className="grid my-auto mr-3" />
+              <MdDone className="flex my-auto mr-3 flex-none" />
               <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-300">
                 Customisable verification level
               </h1>
             </div>
             <div className="flex mb-2">
-              <MdDone className="grid my-auto mr-3" />
+              <MdDone className="flex my-auto mr-3 flex-none" />
               <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-300">
                 Call analysis
               </h1>
@@ -211,7 +211,7 @@ function Subscription() {
               </div>
               <hr className="my-5 dark:opacity-30" />
               <div className="flex mb-2">
-                <MdDone className="grid my-auto mr-3" />
+                <MdDone className="flex my-auto mr-3 flex-none" />
                 <h1 className="font-poppins-regular text-sm text-gray-500 dark:text-gray-300">
                   Filter calls using customised blacklist and whitelist
                 </h1>
