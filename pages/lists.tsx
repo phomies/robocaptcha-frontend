@@ -62,7 +62,7 @@ function Lists() {
           Sync contacts
         </button>
         <div className="flex flex-col md:flex-row gap-x-10">
-          <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full md:w-2/5 h-full">
+          <div className="mt-7 pt-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full md:w-2/5 h-full">
             <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold flex items-center justify-between">
               Blacklist
               <HiPlusSm
@@ -92,7 +92,7 @@ function Lists() {
             )}
           </div>
           </div>
-          <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full md:w-3/5 h-full">
+          <div className="mt-7 pt-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full md:w-3/5 h-full">
             <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold flex items-center justify-between">
               Whitelist
               <HiPlusSm

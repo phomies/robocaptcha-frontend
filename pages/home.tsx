@@ -65,7 +65,7 @@ function Home() {
           <HomeItem
             title="New Calls (Weekly)"
             stats={callsData?.getCallSummary.newCalls}
-            increase={callsData?.getCallSummary.newCallsPercentage}
+            increase={callsData?.getCallSummary.newCalls > 0 ? callsData?.getCallSummary.newCallsPercentage : ""}
             icon={
               <FiPhoneCall className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
@@ -83,33 +83,35 @@ function Home() {
           callsRejected={callsData?.getCallSummary.callsRejected}
           dateTimes={callsData?.getCallSummary.dateTimes}
         />
-        <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full">
+        <div className="mt-7 pt-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold">
             Call History
           </div>
-          <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
+          <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7 grid grid-cols-5 md:grid-cols-9">
             <div className="col-span-2">Phone Number</div>
-            <div className="hidden lg:block lg:col-span-2">Name</div>
+            {/* <div className="hidden lg:block lg:col-span-2">Name</div> */}
             <div className="hidden md:block md:col-span-2">Location</div>
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
           </div>
-          {callsData?.getUser.calls.length > 0 ? (
-            callsData.getUser.calls.map((item: any) => (
-              <CallHistoryItem
-                key={item._id}
-                phoneNumber={item.from}
-                contactName="Anonymous"
-                date={new Date(item.dateTime).toDateString()}
-                time={new Date(item.dateTime).toLocaleTimeString()}
-                action={getAction(item.action)}
-              />
-            ))
-          ) :
-            <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">
-              No records found
-            </div>
-          }
+          <div className="max-h-[515px] overflow-y-scroll scrollbar-hide">
+            {callsData?.getUser.calls.length > 0 ? (
+              callsData.getUser.calls.map((item: any) => (
+                <CallHistoryItem
+                  key={item._id}
+                  phoneNumber={item.from}
+                  // contactName="Anonymous"
+                  date={new Date(item.dateTime).toDateString()}
+                  time={new Date(item.dateTime).toLocaleTimeString()}
+                  action={getAction(item.action)}
+                />
+              ))
+            ) :
+              <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">
+                No records found
+              </div>
+            }
+          </div>
         </div>
       </div>
     </Layout>

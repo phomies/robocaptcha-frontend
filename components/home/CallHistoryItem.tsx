@@ -11,14 +11,14 @@ const { getName } = require('country-list');
 
 interface Props {
   phoneNumber: string
-  contactName?: string
+  // contactName?: string
   date: string
   time: string
   action: number
 }
 
 function CallHistoryItem(props: Props) {
-  const { phoneNumber, contactName, date, time, action } = props;
+  const { phoneNumber, date, time, action } = props;
   const { getFirebaseToken } = useContext(AppContext);
 
   const [blacklistContact] = useMutation(UPSERT_CONTACT, {
@@ -42,25 +42,25 @@ function CallHistoryItem(props: Props) {
   }
 
   return (
-    <div className="items-center dark:bg-secondary_dark text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
+    <div className="items-center dark:bg-secondary_dark text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9">
       <div className="col-span-2 flex items-center gap-x-2">
         <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
         {phoneNumber.includes("Anonymous") ? "Anonymous" : formatPhoneNumberIntl(phoneNumber)}
       </div>
-      <div className="hidden lg:block lg:col-span-2">{contactName || "-"}</div>
+      {/* <div className="hidden lg:block lg:col-span-2">{contactName || "-"}</div> */}
       <div className="hidden md:block md:col-span-2">{getCountry(phoneNumber)}</div>
       <div className="col-span-2 self-center">{date}</div>
       <div className="hidden md:block md:col-span-2">{time}</div>
       <div className="md:col-span-1 flex items-center gap-x-3 md:gap-x-8">
         {
           action === 0 ?
-            <BiCheckShield className="w-6 h-6 text-green-400" /> :
+            <BiCheckShield className="w-5 h-5 md:w-6 md:h-6 text-green-400" /> :
             action === 1 ?
-              <BiShield className="w-6 h-6 text-yellow-400" /> :
-              <BiShieldX className="w-6 h-6 text-red-400" />
+              <BiShield className="w-5 h-5 md:w-6 md:h-6 text-yellow-400" /> :
+              <BiShieldX className="w-5 h-5 md:w-6 md:h-6 text-red-400" />
         }
         <Tooltip title="Blacklist Caller" placement="bottom">
-          <MdBlock className="cursor-pointer w-5 h-5 text-gray-400 hover:text-red-400 dark:hover:text-red-400"
+          <MdBlock className="cursor-pointer w-4 h-4 md:w-5 md:h-5 text-gray-400 hover:text-red-400 dark:hover:text-red-400"
             onClick={() => {
               blacklistContact({
                 variables: {
