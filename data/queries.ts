@@ -103,3 +103,9 @@ export const SYNC_CONTACTS = gql`
     syncContacts
   }
 `;
+
+export const CHECK_USER = gql`
+  query checkUser($email: String) {
+    checkUser(email: $email)
+  }
+`

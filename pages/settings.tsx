@@ -19,7 +19,7 @@ function Settings() {
   const [feedbackModal, setFeedbackModal] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
   const [delAccModal, setDelAccModal] = useState<boolean>(false);
-  const { getFirebaseToken, resetProvider } = useContext(AppContext);
+  const { getFirebaseToken, resetProvider, signOut } = useContext(AppContext);
   const [verificationLevel, setVerificationLevel] = useState<number | null>();
 
   const { error, data } = useQuery(GET_VERIFICATION_LEVEL, {
@@ -158,6 +158,7 @@ function Settings() {
           onClick={async () => {
             await deleteUser();
             await resetProvider();
+            await signOut();
           }}>
           DELETE
         </button>

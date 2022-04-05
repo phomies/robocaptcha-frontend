@@ -26,7 +26,7 @@ interface Props {
 }
 
 function Layout(props: Props) {
-  const { getTheme, saveTheme, signOut, getFirebaseToken } =
+  const { getTheme, saveTheme, signOut, getFirebaseToken, resetProvider } =
     useContext(AppContext);
   const [title, setTitle] = useState<string>('');
   const router: NextRouter = useRouter();
@@ -83,6 +83,7 @@ function Layout(props: Props) {
 
   const logout = async () => {
     await signOut();
+    await resetProvider();
   };
 
   const notify = (notification: any) => {

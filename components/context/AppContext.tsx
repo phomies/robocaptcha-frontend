@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { GET_USER, LOGIN_USER } from '../../data/queries';
+import { CHECK_USER, GET_USER, LOGIN_USER } from '../../data/queries';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -93,7 +93,7 @@ function AuthProvider(props: Props) {
   const router = useRouter();
 
   const [createUser] = useMutation(CREATE_USER);
-  const [getUser] = useLazyQuery(GET_USER);
+  const [checkUser] = useLazyQuery(CHECK_USER);
 
   // Local storage handlers
   useEffect(() => {
@@ -120,7 +120,6 @@ function AuthProvider(props: Props) {
       console.log('Token listener', error)
     );
 
-    setIsLoaded(true);
     return () => unsubscribe();
   }, []);
 
@@ -128,7 +127,6 @@ function AuthProvider(props: Props) {
     const loginUser = async () => {
       setIsLoaded(false);
       if (firebaseToken && !isLoggedIn) {
-        console.log('Creating account if not exist');
         setIsLoggedIn(true);
       }
       setIsLoaded(true);
@@ -138,14 +136,13 @@ function AuthProvider(props: Props) {
   }, [firebaseToken]);
 
   const refreshGoogleToken = async (user: any) => {
-    // console.log(user.getBasicProfile());
-    // const userProfile = user.getBasicProfile();
     const authResponse = user.getAuthResponse(true); // True -> Get access token
     console.log('Refreshing google token', authResponse);
 
     if (authResponse) {
       setGoogleToken(authResponse.access_token);
 
+      if (firebaseToken || (firebaseAuth && firebaseAuth.currentUser)) return;
       const { user } = await loginToFirebase(
         authResponse.id_token,
         authResponse.access_token
@@ -202,6 +199,7 @@ function AuthProvider(props: Props) {
   };
 
   const resetProvider = async () => {
+    // Reset provider before pushing to /login, otherwise app will reroute back to home
     setFirebaseToken(null);
     setGoogleToken(null);
     setIsLoggedIn(false);
@@ -213,11 +211,9 @@ function AuthProvider(props: Props) {
 
   const signOut = async () => {
     try {
-      // Reset provider before pushing to /login, otherwise app will reroute back to home
-      await resetProvider();
-
       const promises = [];
-      gapiModule && promises.push(gapiModule.signOut);
+      console.log(gapiModule);
+      gapiModule && promises.push(gapiModule.signOut());
       firebaseAuth && promises.push(firebaseSignOut(firebaseAuth));
 
       await Promise.all(promises);
@@ -232,8 +228,7 @@ function AuthProvider(props: Props) {
     name: string,
     phoneNumber: string
   ) => {
-
-    // Applicable to 
+    // Applicable to
     if (firebaseAuth && firebaseAuth.currentUser) {
       await firebaseSignOut(firebaseAuth);
     }
@@ -274,34 +269,35 @@ function AuthProvider(props: Props) {
       saveFirebaseToken(idToken);
       const providerData = rawUser?.providerData[0];
 
-      try {
-        // Throws an error if user does not exists in database
-        // Occurs when google users are using their google API ID tokens 
-        // instead of Firebase tokens
-        await getUser({
-          context: {
-            headers: {
-              fbToken: idToken,
-            },
+      // Throws an error if user does not exists in database
+      // Occurs when google users are using their google API ID tokens
+      // instead of Firebase tokens
+      const isUserExist = await checkUser({
+        context: {
+          headers: {
+            fbToken: idToken,
           },
-        });
+        },
+        variables: {
+          email: rawUser.email,
+        },
+      });
 
+      if (isUserExist) {
         ['login', 'register'].includes(router.pathname) &&
           (await router.push('/home'));
         setIsLoaded(true);
-      } catch (error) {
-        if (providerData.providerId === 'google.com') {
-          // Check if user login with google provider is new user
-          await router.push({
-            pathname: '/register',
-            query: {
-              isNewGoogleUser: true,
-              googleEmail: providerData.email,
-              googleName: providerData.displayName,
-            },
-          });
-          setIsLoaded(true);
-        }
+      } else if (providerData.providerId === 'google.com') {
+        // Check if user login with google provider is new user
+        await router.push({
+          pathname: '/register',
+          query: {
+            isNewGoogleUser: true,
+            googleEmail: providerData.email,
+            googleName: providerData.displayName,
+          },
+        });
+        setIsLoaded(true);
       }
     } else {
       await resetProvider();
