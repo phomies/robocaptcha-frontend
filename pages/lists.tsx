@@ -8,7 +8,8 @@ import ModalItem from '../components/lists/ModalItem';
 import { GET_USER, SYNC_CONTACTS } from '../data/queries';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { message } from 'antd';
+import {message} from 'antd';
+import 'react-phone-input-2/lib/style.css'
 
 function Lists() {
   const { getFirebaseToken, getGoogleToken } = useContext(AppContext);
