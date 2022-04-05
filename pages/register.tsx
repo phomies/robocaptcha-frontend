@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
 import Head from 'next/head';
 import { Steps, Button, message, Upload } from 'antd';
-
+import app from '../firebase/clientApp';
 import { InboxOutlined } from '@ant-design/icons';
 import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css'
+import 'react-phone-input-2/lib/style.css';
 import { UploadRequestOption } from 'rc-upload/lib/interface';
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -20,6 +21,18 @@ export default function Register() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
+  const firebaseAuth = getAuth(app);
+  const {
+    getFirebaseToken,
+    getGapiModule,
+    loginWithEmailPassword,
+    loginWithPhoneNumber,
+    validatePhoneToken,
+    refreshGoogleToken,
+    getGoogleToken,
+    initGapiModule,
+    setAppVerifier,
+  } = useContext(AppContext);
 
   const { registerWithEmailPassword } = useContext(AppContext);
   useEffect(() => {
@@ -36,6 +49,38 @@ export default function Register() {
       setEmail(googleEmail as string);
     }
   }, [router.isReady]);
+
+  useEffect(() => {
+    getFirebaseToken() && router.push('/home');
+
+    const initAuthDoms = async () => {
+      if (firebaseAuth) {
+        // Recreate google login API
+        if (!getGoogleToken()) {
+          let gapiModule = getGapiModule();
+          if (!gapiModule) {
+            gapiModule = await initGapiModule();
+          }
+          attachSignIn(document.getElementById('google-sign-in'), gapiModule);
+        }
+      }
+    };
+    initAuthDoms();
+  }, []);
+
+  const attachSignIn = (element: HTMLElement | null, auth: any) => {
+    auth.attachClickHandler(
+      element,
+      {},
+      (user: any) => {
+        refreshGoogleToken(user);
+        // router.push('/home');
+      },
+      (error: any) => {
+        console.log(JSON.stringify(error));
+      }
+    );
+  };
 
   const handleClick = async () => {
     try {
@@ -74,11 +119,10 @@ export default function Register() {
 
   const { Dragger } = Upload;
 
-  const dummyRequest = ( options : UploadRequestOption<any> ) => {
-    const { onSuccess } = options
+  const dummyRequest = (options: UploadRequestOption<any>) => {
+    const { onSuccess } = options;
     setTimeout(() => {
-      if (onSuccess !== undefined)
-        onSuccess('ok');
+      if (onSuccess !== undefined) onSuccess('ok');
     }, 0);
   };
 
@@ -108,7 +152,6 @@ export default function Register() {
 
   return (
     <Fragment>
-
       <Head>
         <title>roboCAPTCHA | Register</title>
       </Head>
@@ -116,7 +159,8 @@ export default function Register() {
         <nav className="flex my-8 sm:mx-32 mx-10 gap-x-4 items-center mt-10 mb-0 sm:-mb-5">
           <img src={`/images/logo_light.png`} alt="Logo" className="h-8 w-8" />
           <div className="font-poppins-semibold text-xl text-gray-700 dark:text-gray-50">
-            robo<span className="text-blue-600 dark:text-blue-200">CAPTCHA</span>
+            robo
+            <span className="text-blue-600 dark:text-blue-200">CAPTCHA</span>
           </div>
         </nav>
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 sm:mx-32 mx-10 h-full">
@@ -175,29 +219,42 @@ export default function Register() {
                   />
 
                   <PhoneInput
-                    inputStyle={{ color: '#1F58E7', height: '56px', width: '100%', borderColor: "#F6F8FB", background: "#F6F8FB" }}
+                    inputStyle={{
+                      color: '#1F58E7',
+                      height: '56px',
+                      width: '100%',
+                      borderColor: '#F6F8FB',
+                      background: '#F6F8FB',
+                    }}
                     containerStyle={{ height: '50px' }}
-                    buttonStyle={{ height: '56px', color: "#1F58E7", borderColor: "#F6F8FB", background: "#F6F8FB" }}
+                    buttonStyle={{
+                      height: '56px',
+                      color: '#1F58E7',
+                      borderColor: '#F6F8FB',
+                      background: '#F6F8FB',
+                    }}
                     dropdownStyle={{ height: '150px' }}
-
                     inputProps={{
                       name: 'phone',
                       required: true,
                     }}
                     country={'sg'}
                     value={phoneNumber}
-                    onChange={(e) => {setPhoneNumber('+' + e);}}
+                    onChange={(e) => {
+                      setPhoneNumber('+' + e);
+                    }}
                   />
 
                   <input
                     required
-                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3 mt-5 ${(password !== '' &&
-                      confirmPassword !== '' &&
-                      password !== confirmPassword) ||
+                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3 mt-5 ${
+                      (password !== '' &&
+                        confirmPassword !== '' &&
+                        password !== confirmPassword) ||
                       (password !== '' &&
                         password.length < 6 &&
                         'border border-red-400')
-                      }`}
+                    }`}
                     placeholder="Password"
                     type="password"
                     value={password}
@@ -205,11 +262,12 @@ export default function Register() {
                   />
 
                   <input
-                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
+                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue ${
+                      password !== '' &&
                       confirmPassword !== '' &&
                       password !== confirmPassword &&
                       'border border-red-400'
-                      }`}
+                    }`}
                     placeholder="Confirm password"
                     type="password"
                     value={confirmPassword}
@@ -240,6 +298,7 @@ export default function Register() {
                         src="/images/apple.png"
                       />
                       <img
+                        id="google-sign-in"
                         className="cursor-pointer h-10"
                         alt="icon"
                         src="/images/google.png"
@@ -259,7 +318,11 @@ export default function Register() {
                     identity.
                   </h1>
 
-                  <Dragger className="mb-2" {...props} customRequest={dummyRequest}>
+                  <Dragger
+                    className="mb-2"
+                    {...props}
+                    customRequest={dummyRequest}
+                  >
                     <div className="my-5 mx-5 md:mx-0">
                       <p className="ant-upload-drag-icon">
                         <InboxOutlined />
