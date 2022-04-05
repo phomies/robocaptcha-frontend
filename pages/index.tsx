@@ -12,8 +12,7 @@ const Index: NextPage = () => {
   }, [getFirebaseToken()]);
 
   return (
-    <div>
-    </div>
+    <div />
   );
 };
 

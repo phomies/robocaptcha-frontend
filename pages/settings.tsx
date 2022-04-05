@@ -12,6 +12,7 @@ import { useState, useContext, useEffect } from "react";
 import { GET_USER } from "../data/queries";
 import { EDIT_USER, DELETE_USER } from "../data/mutations";
 import Head from "next/head";
+import client from '../apollo-client';
 
 function Settings() {
   const [isNotifsOn, setIsNotifsOn] = useState<boolean>(true);
@@ -159,6 +160,7 @@ function Settings() {
             await deleteUser();
             await resetProvider();
             await signOut();
+            await client.clearStore();
           }}>
           DELETE
         </button>
