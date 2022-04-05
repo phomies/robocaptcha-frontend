@@ -51,7 +51,6 @@ function Profile() {
     setName(data?.getUser.name);
     setEmail(data?.getUser.email);
     setPhoneNumber(data?.getUser.phoneNumber);
-    console.log('PHONENUMBER :P' + phoneNumber);
     setMaskedNumber(data?.getUser.maskedNumber);
   }, [data])
 
