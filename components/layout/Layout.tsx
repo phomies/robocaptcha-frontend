@@ -17,10 +17,10 @@ import { ImCross } from 'react-icons/im';
 import DayNightToggle from 'react-day-and-night-toggle';
 import { Drawer } from 'antd';
 import useDeviceSize from '../../utils/useDeviceSize';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { GET_NOTIFS } from '../../data/queries';
+import { READ_NOTIFS } from '../../data/mutations';
 import toast, { Toaster } from 'react-hot-toast';
-
 interface Props {
   children: React.ReactNode;
 }
@@ -41,6 +41,27 @@ function Layout(props: Props) {
       },
     },
   });
+
+  const [readIndivNotif] = useMutation(READ_NOTIFS, {
+    context: {
+      headers: {
+        fbToken: getFirebaseToken()
+      }
+    }
+  })
+
+  const readNotifs = () => {
+    if (data) {
+      console.log(data)
+      // data.getUser.notifications.map((item: any) => (
+      //   readIndivNotif({
+      //     variables: {
+      //       _id: item._id
+      //     }
+      //   })
+      // ))
+    }
+  }
 
   useEffect(() => {
     if (data) console.log('notifsData', data);
@@ -205,17 +226,14 @@ function Layout(props: Props) {
             {data?.getUser.notifications.map((item: any) => (
               <div
                 key={item._id}
-                className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-9 py-5"
+                className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-6 py-5"
                 onClick={() => {
                   router.push(item.url);
                 }}
               >
                 <div className="font-poppins-medium flex justify-between">
                   {item.content}
-                  <div
-                    className={`-mt-2 -mr-6 bg-red-400 w-[7px] h-[7px] rounded-full ${item.read && 'hidden'
-                      }`}
-                  />
+                  <div className={`flex flex-none -mt-3 -mr-4 bg-red-400 w-[8px] h-[8px] rounded-full ${item.read && 'hidden'}`} />
                 </div>
                 <div className="font-poppins-regular mt-2 text-sm text-gray-400">
                   {new Date(item.dateTime).toDateString()}{' '}
@@ -296,6 +314,7 @@ function Layout(props: Props) {
                 className="w-6 h-6 xl:h-8 xl:w-8 text-gray-600 dark:text-gray-50 hover:text-blue-600 dark:hover:text-blue-200 cursor-pointer"
                 onClick={() => {
                   getNotifs();
+                  readNotifs();
                   setIsNotifsOpen(true);
                 }}
               />

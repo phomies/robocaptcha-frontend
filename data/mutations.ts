@@ -31,13 +31,21 @@ export const UPSERT_PAYMENT = gql`
 `;
 
 export const DELETE_PAYMENT = gql`
-  mutation Mutation {
+  mutation deletePayment {
     deletePayment
   }
 `
 
 export const CREATE_USER = gql`
-  mutation Mutation($createUserInput: CreateUserInput) {
+  mutation createUser($createUserInput: CreateUserInput) {
     createUser(createUserInput: $createUserInput)
+  }
+`;
+
+export const READ_NOTIFS = gql`
+  mutation readNotifs($id: ID) {
+    readNotification(_id: $id) {
+      _id
+    }
   }
 `;
