@@ -201,7 +201,7 @@ export default function Login() {
                     type="password"
                   />
                   <button
-                    className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
+                    className="h-14 rounded-lg bg-blue-darkBlue hover:bg-blue-700 mx-auto text-white lg:w-10/12 w-full shadow-xl"
                     onClick={async (e) => {
                       e.preventDefault();
                       await handleEmailLogin();
@@ -229,7 +229,7 @@ export default function Login() {
                   )}
 
                   <button
-                    className="h-14 rounded-lg bg-blue-darkBlue mx-auto text-white lg:w-10/12 w-full shadow-xl"
+                    className="h-14 rounded-lg bg-blue-darkBlue hover:bg-blue-700 mx-auto text-white lg:w-10/12 w-full shadow-xl"
                     onClick={async (e) => {
                       e.preventDefault();
                       if (isTokenLogin) {

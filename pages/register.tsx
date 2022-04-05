@@ -247,14 +247,13 @@ export default function Register() {
 
                   <input
                     required
-                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3 mt-5 ${
-                      (password !== '' &&
+                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3 mt-5 ${(password !== '' &&
                         confirmPassword !== '' &&
                         password !== confirmPassword) ||
                       (password !== '' &&
                         password.length < 6 &&
                         'border border-red-400')
-                    }`}
+                      }`}
                     placeholder="Password"
                     type="password"
                     value={password}
@@ -262,12 +261,11 @@ export default function Register() {
                   />
 
                   <input
-                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue ${
-                      password !== '' &&
+                    className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue ${password !== '' &&
                       confirmPassword !== '' &&
                       password !== confirmPassword &&
                       'border border-red-400'
-                    }`}
+                      }`}
                     placeholder="Confirm password"
                     type="password"
                     value={confirmPassword}
@@ -373,7 +371,7 @@ export default function Register() {
               )}
               {current === steps.length - 1 && (
                 <Button
-                  className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-60 text-white shadow-lg"
+                  className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-800 text-white shadow-lg"
                   type="primary"
                   onClick={async (e) => {
                     e.preventDefault();
@@ -385,7 +383,7 @@ export default function Register() {
               )}
               {current < steps.length - 1 && (
                 <Button
-                  className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-600text-white shadow-lg focus:bg-blue-darkBlue"
+                  className="h-8 border bg-blue-darkBlue rounded-sm hover:bg-blue-800 text-white shadow-lg focus:bg-blue-darkBlue"
                   type="primary"
                   onClick={() => next()}
                   disabled={

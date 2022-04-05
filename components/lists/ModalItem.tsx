@@ -17,7 +17,7 @@ const ModalItem = (props: Props) => {
   const { isWhitelist, isVisible, setIsVisible } = props;
   const [number, setNumber] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const { getFirebaseToken, getTheme } = useContext(AppContext);
+  const { getFirebaseToken } = useContext(AppContext);
   const router: NextRouter = useRouter();
 
   const [blacklistContact] = useMutation(UPSERT_CONTACT, {
