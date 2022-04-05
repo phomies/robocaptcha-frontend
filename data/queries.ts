@@ -15,12 +15,12 @@ export const GET_USER = gql`
       phoneNumber
       maskedNumber
       verificationLevel
-      # calls {
-      #   _id
-      #   action
-      #   dateTime
-      #   from
-      # }
+      calls {
+        _id
+        action
+        dateTime
+        from
+      }
       notifications {
         _id
         content

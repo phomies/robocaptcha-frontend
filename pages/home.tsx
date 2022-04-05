@@ -99,8 +99,7 @@ function Home() {
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
           </div>
-          {/* // TODO: Uncomment */}
-          {/* {callsData?.getUser.calls.length > 0 ? (
+          {callsData?.getUser.calls.length > 0 ? (
             callsData.getUser.calls.map((item: any) => (
               <CallHistoryItem
                 key={item._id}
@@ -115,7 +114,7 @@ function Home() {
             <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">
               No records found
             </div>
-          } */}
+          }
         </div>
       </div>
     </Layout>

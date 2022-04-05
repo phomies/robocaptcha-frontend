@@ -36,7 +36,7 @@ function CallHistoryItem(props: Props) {
         {phoneNumber.includes("Anonymous") ? "Anonymous" : formatPhoneNumberIntl(phoneNumber)}
       </div>
       <div className="hidden lg:block lg:col-span-2">{contactName || "-"}</div>
-      <div className="hidden md:block md:col-span-2">{getName(parsePhoneNumber(phoneNumber)?.country) || "Unknown"}</div>
+      <div className="hidden md:block md:col-span-2">{parsePhoneNumber(phoneNumber)?.country && getName(parsePhoneNumber(phoneNumber)?.country as string) || "Unknown"}</div>
       <div className="col-span-2 self-center">{date}</div>
       <div className="hidden md:block md:col-span-2">{time}</div>
       <div className="md:col-span-1 flex items-center gap-x-3 md:gap-x-8">
