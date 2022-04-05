@@ -64,9 +64,9 @@ function Subscription() {
   useEffect(() => {
     if (data) {
       console.log('subscriptionData', data);
-      setPlan(data.getUser.payments[0].plan);
-      setDateEnd(data.getUser.payments[0].dateEnd);
-      setIsCancelled(data.getUser.payments[0].isCancelled);
+      setPlan(data?.getUser.payments[0]?.plan);
+      setDateEnd(data?.getUser.payments[0]?.dateEnd);
+      setIsCancelled(data?.getUser.payments[0]?.isCancelled);
     }
   }, [data])
 
