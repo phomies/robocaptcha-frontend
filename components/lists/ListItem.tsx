@@ -55,18 +55,18 @@ const ListItem = (props: Props) => {
       </div>
       {isWhitelist &&
         <div className="col-span-4">
-          {name}
+          {name || "-"}
         </div>
       }
 
       <Tooltip title={`Remove from ${isWhitelist ? "Whitelist" : "Blacklist"}`} placement="bottom">
         <div className="col-span-2 justify-self-end flex items-center">
           <HiOutlineTrash className="cursor-pointer w-5 h-5 text-red-400 hover:text-red-500"
-            onClick={() => {
+            onClick={async () => {
               if (isWhitelist) {
-                removeWhitelist();
+                await removeWhitelist();
               } else {
-                removeBlacklist();
+                await removeBlacklist();
               }
               router.reload();
             }} />
