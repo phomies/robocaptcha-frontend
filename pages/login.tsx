@@ -160,7 +160,7 @@ export default function Login() {
             src="/images/login.png"
           />
 
-          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end lg:self-center -mt-10 md:-mt-12 lg:mt-0 xl:-mt-32">
+          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end lg:self-center -mt-10 md:-mt-12 lg:mt-0 xl:-mt-32 ">
             <form>
               <div className="text-black hidden lg:block font-poppins-semibold text-2xl mb-8">
                 Sign in
