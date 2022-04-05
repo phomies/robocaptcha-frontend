@@ -10,6 +10,8 @@ import { GET_USER } from "../data/queries";
 import { EDIT_USER } from "../data/mutations";
 import { formatPhoneNumberIntl } from 'react-phone-number-input';
 import Head from "next/head";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css'
 
 function Profile() {
   const { getFirebaseToken } = useContext(AppContext);
@@ -98,7 +100,7 @@ function Profile() {
                 <div className="text-right py-4">Name</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-full" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
+                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-lg" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
               </div>
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
@@ -106,7 +108,7 @@ function Profile() {
                 <div className="text-right py-4">Email</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-full" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
+                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-lg" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
               </div>
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
@@ -114,7 +116,26 @@ function Profile() {
                 <div className="text-right py-4">Contact Number</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-full" : "py-4"}`} value={editProfile ? phoneNumber : formatPhoneNumberIntl(phoneNumber)} onChange={e => setPhoneNumber(e.target.value)} />
+                {editProfile ? (
+                  <PhoneInput
+                    inputStyle={{ color: '#1F58E7', height: '40px', width: '75%', borderColor: "#E5E7EB", background: "#FFFFFF" }}
+                    containerStyle={{ height: '40px' }}
+                    buttonStyle={{ height: '40px', color: "#1F58E7", borderColor: "#E5E7EB", background: "#FFFFFF" }}
+                    dropdownStyle={{ height: '150px' }}
+
+                    inputProps={{
+                      name: 'phone',
+                      required: true,
+                      enableSearch: true
+                    }}
+                    country={'sg'}
+                    value={phoneNumber}
+                    onChange={(e) => { setPhoneNumber('+' + e); }}
+                  />
+                ) : (
+                  <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200`} value={formatPhoneNumberIntl(phoneNumber)} />
+                )
+                }
               </div>
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
@@ -122,7 +143,7 @@ function Profile() {
                 <div className="text-right py-4">Masked Number</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={true} className={`cursor-not-allowed bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${maskedNumber === '' && "text-gray-500"}`} value={maskedNumber === '' ? "Processing masked number": formatPhoneNumberIntl(maskedNumber)} />
+                <input readOnly={true} className={`cursor-not-allowed bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${maskedNumber === '' && "text-gray-500"}`} value={maskedNumber === '' ? "Processing masked number" : formatPhoneNumberIntl(maskedNumber)} />
               </div>
             </div>
           </div>
