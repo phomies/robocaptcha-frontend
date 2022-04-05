@@ -56,7 +56,7 @@ const ModalItem = (props: Props) => {
       footer={null}
     >
       <input
-        className="text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
+        className="font-poppins-regular text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
         placeholder="Phone Number"
         value={number}
         onChange={(e) => setNumber(e.target.value)}
@@ -64,7 +64,7 @@ const ModalItem = (props: Props) => {
       {
         isWhitelist &&
         <input
-          className="text-blue-darkBlue mt-4 focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
+          className="font-poppins-regular text-blue-darkBlue mt-4 focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
           placeholder="Contact Name (Optional)"
           value={name}
           onChange={(e) => setName(e.target.value)}

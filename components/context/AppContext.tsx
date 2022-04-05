@@ -78,7 +78,7 @@ export const AppContext =
 export const useAppContext = () => useContext(AppContext);
 
 function AuthProvider(props: Props) {
-  const [theme, setTheme] = useState<string | null>(null);
+  const [theme, setTheme] = useState<string | null>("light");
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
   const [googleToken, setGoogleToken] = useState<any>(null);
   const [gapiModule, setGapiModule] = useState<any>(null);
