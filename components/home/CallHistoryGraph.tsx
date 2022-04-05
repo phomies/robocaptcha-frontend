@@ -27,11 +27,18 @@ const options = {
     legend: {
       display: false,
     },
-    title: {
-      display: false,
-      text: 'Chart.js Line Chart',
-    },
   },
+  scales: {
+    y: {
+      title: {
+        display: true,
+      },
+      min: 0,
+      ticks: {
+        precision: 0
+      }
+    }
+  }
 };
 
 interface Props {
