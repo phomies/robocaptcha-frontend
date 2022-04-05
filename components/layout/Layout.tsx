@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import { AppContext } from '../context/AppContext';
 import { NextRouter, useRouter } from 'next/router';
 import LayoutItem from './LayoutItem';
@@ -23,6 +23,7 @@ import { GET_USER } from '../../data/queries';
 import { READ_NOTIFS } from '../../data/mutations';
 import toast, { Toaster } from 'react-hot-toast';
 import client from '../../apollo-client';
+
 interface Props {
   children: React.ReactNode;
 }
@@ -64,11 +65,11 @@ function Layout(props: Props) {
     }
   }
 
-  useEffect(() => {
+  useMemo(() => {
     if (data) console.log('notifsData', data);
   }, [data])
 
-  useEffect(() => {
+  useMemo(() => {
     if (router.pathname.includes('home')) {
       setTitle('Home');
     } else if (router.pathname.includes('profile')) {

@@ -17,6 +17,7 @@ import {
   useEffect,
   useState,
   useCallback,
+  useMemo,
 } from 'react';
 import app from '../../firebase/clientApp';
 import { CREATE_USER } from '../../data/mutations';
@@ -121,7 +122,7 @@ function AuthProvider(props: Props) {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
+  useMemo(() => {
     const loginUser = async () => {
       setIsLoaded(false);
       if (firebaseToken && !isLoggedIn) {
@@ -262,7 +263,7 @@ function AuthProvider(props: Props) {
     });
   };
 
-  const handleUser = async (rawUser: any) => {
+  const handleUser = useMemo(() => async (rawUser: any) => {
     setIsLoaded(false);
     if (rawUser) {
       const idToken = await rawUser.getIdToken(true);
@@ -309,7 +310,7 @@ function AuthProvider(props: Props) {
       await resetProvider();
       setIsLoaded(true);
     }
-  };
+  }, []);
 
   const getFirebaseToken = () => {
     return firebaseToken;
