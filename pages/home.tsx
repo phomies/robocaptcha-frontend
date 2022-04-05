@@ -78,9 +78,11 @@ function Home() {
             }
           />
         </div>
-        {
-          callsData && <CallHistoryGraph data={callsData.getCallSummary.callsReceived} />
-        }
+        <CallHistoryGraph
+          callsAccepted={callsData?.getCallSummary.callsAccepted}
+          callsRejected={callsData?.getCallSummary.callsRejected}
+          dateTimes={callsData?.getCallSummary.dateTimes}
+        />
         <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold">
             Call History

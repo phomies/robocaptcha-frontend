@@ -43,11 +43,9 @@ export const GET_USER = gql`
       }
     }
     getCallSummary {
-      callsReceived {
-        callsAccepted
-        callsRejected
-        dateTime
-      }
+      callsAccepted
+      callsRejected
+      dateTimes
       newCalls
       newCallsPercentage
       totalBlockedCalls
