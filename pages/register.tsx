@@ -23,7 +23,6 @@ export default function Register() {
 
   const { registerWithEmailPassword } = useContext(AppContext);
   useEffect(() => {
-    console.log(router.query);
     const {
       isNewGoogleUser: isNewUser,
       googleName,
