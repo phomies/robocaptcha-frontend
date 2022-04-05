@@ -8,7 +8,7 @@ import { IoMdHelp } from "react-icons/io";
 import { BiPhoneCall } from "react-icons/bi";
 import { useMutation, useQuery } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useMemo } from "react";
 import { GET_USER } from "../data/queries";
 import { EDIT_USER, DELETE_USER } from "../data/mutations";
 import Head from "next/head";
@@ -52,7 +52,7 @@ function Settings() {
     },
   })
 
-  useEffect(() => {
+  useMemo(() => {
     setVerificationLevel(data?.getUser.verificationLevel);
   }, [data])
 

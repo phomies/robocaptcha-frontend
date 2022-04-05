@@ -1,13 +1,12 @@
 import Layout from '../components/layout/Layout';
 import { MdDone } from 'react-icons/md';
 import StripeCheckout from 'react-stripe-checkout';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { AppContext } from '../components/context/AppContext';
 import { NextRouter, useRouter } from "next/router";
-import { UPSERT_PAYMENT } from '../data/mutations';
+import { UPSERT_PAYMENT, DELETE_PAYMENT } from '../data/mutations';
 import { GET_USER } from "../data/queries";
-import { DELETE_PAYMENT } from "../data/mutations";
 import { Modal, message } from 'antd';
 import Head from 'next/head';
 import moment from 'moment'
@@ -61,7 +60,7 @@ function Subscription() {
     router.reload();
   };
 
-  useEffect(() => {
+  useMemo(() => {
     if (data) {
       console.log('subscriptionData', data);
       setPlan(data?.getUser.payments[0]?.plan);

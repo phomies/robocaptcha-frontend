@@ -1,7 +1,7 @@
 import Layout from "../components/layout/Layout";
 import { useQuery, useMutation } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useMemo } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
@@ -46,7 +46,7 @@ function Profile() {
     }
   })
 
-  useEffect(() => {
+  useMemo(() => {
     if (data) {
       console.log('profileData', data);
       setName(data.getUser.name);

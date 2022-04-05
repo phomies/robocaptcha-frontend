@@ -7,11 +7,10 @@ import { MdOutlineSubscriptions } from 'react-icons/md';
 import CallHistoryItem from '../components/home/CallHistoryItem';
 import { useQuery } from '@apollo/client';
 import { GET_USER } from '../data/queries';
-import { useContext, useEffect } from 'react';
+import { useContext, useMemo } from 'react';
 import { AppContext } from '../components/context/AppContext';
 import CallHistoryGraph from '../components/home/CallHistoryGraph';
 import Head from 'next/head';
-import { signOut } from "firebase/auth";
 
 const getAction = (action: string) => {
   if (action === 'success' || action === 'whitelisted') return 0;
@@ -20,7 +19,7 @@ const getAction = (action: string) => {
 };
 
 function Home() {
-  const { getFirebaseToken, resetProvider, signOut } = useContext(AppContext);
+  const { getFirebaseToken } = useContext(AppContext);
 
   const { error: callsError, data: callsData } = useQuery(GET_USER, {
     context: {
@@ -35,7 +34,7 @@ function Home() {
     // resetProvider();
   }
 
-  useEffect(() => {
+  useMemo(() => {
     if (callsData) {
       console.log('callsData', callsData);
     }
