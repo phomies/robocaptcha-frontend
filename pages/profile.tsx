@@ -85,7 +85,6 @@ function Profile() {
                   <div className="items-center text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500 cursor-pointer flex justify-self-end" onClick={() => {
                     setEditProfile(false);
                     setName(data?.getUser.name);
-                    setEmail(data?.getUser.email);
                     setPhoneNumber(data?.getUser.phoneNumber);
                   }}>
                     <ImCross className="mx-4 h-3 w-3" />
@@ -94,21 +93,20 @@ function Profile() {
               }
             </div>
             <hr className="mb-5 dark:opacity-30" />
-
-            <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
-              <div className={`w-1/4 flex text-xs sm:text-sm flex-col font-poppins-semibold ${editProfile ? "gap-y-2" : "gap-y-1"}`}>
-                <div className="text-right py-4">Name</div>
-              </div>
-              <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-lg" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
-              </div>
-            </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
               <div className={`w-1/4 flex text-xs sm:text-sm flex-col font-poppins-semibold ${editProfile ? "gap-y-2" : "gap-y-1"}`}>
                 <div className="text-right py-4">Email</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-6 py-2 rounded-lg" : "py-4"}`} value={email} onChange={e => setEmail(e.target.value)} />
+                <input readOnly={true} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "py-2" : "py-4"}`} value={email} />
+              </div>
+            </div>
+            <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
+              <div className={`w-1/4 flex text-xs sm:text-sm flex-col font-poppins-semibold ${editProfile ? "gap-y-2" : "gap-y-1"}`}>
+                <div className="text-right py-4">Name</div>
+              </div>
+              <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
+                <input readOnly={!editProfile} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${editProfile ? "h-10 border dark:border-gray-500 px-3 py-2 rounded-lg" : "py-4"}`} value={name} onChange={e => setName(e.target.value)} />
               </div>
             </div>
             <div className={`flex w-full items-center gap-x-9 ${editProfile ? "sm:gap-x-16" : "sm:gap-x-20"}`}>
@@ -122,7 +120,6 @@ function Profile() {
                     containerStyle={{ height: '40px' }}
                     buttonStyle={{ height: '40px', color: "#1F58E7", borderColor: "#E5E7EB", background: "#FFFFFF" }}
                     dropdownStyle={{ height: '150px' }}
-
                     inputProps={{
                       name: 'phone',
                       required: true,
@@ -142,7 +139,7 @@ function Profile() {
                 <div className="text-right py-4">Masked Number</div>
               </div>
               <div className={`w-3/4 flex flex-col text-xs sm:text-sm font-poppins-regular ${editProfile ? "py-2 justify-between gap-y-2" : "gap-y-1"}`}>
-                <input readOnly={true} className={`cursor-not-allowed bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${maskedNumber === '' && "text-gray-500"}`} value={maskedNumber === '' ? "Processing masked number" : formatPhoneNumberIntl(maskedNumber)} />
+                <input readOnly={true} className={`bg-transparent focus:outline-none flex w-full lg:w-3/4 text-blue-darkBlue dark:text-blue-200 ${!maskedNumber && "text-gray-500"}`} value={!maskedNumber ? "Processing masked number" : formatPhoneNumberIntl(maskedNumber)} />
               </div>
             </div>
           </div>
