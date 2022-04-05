@@ -57,9 +57,18 @@ const ModalItem = (props: Props) => {
       centered={true}
       footer={null}
     >
-      <input
-        className="font-poppins-regular text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-1"
-        placeholder="Phone Number"
+     
+      <PhoneInput
+        inputStyle={{color: "#1F58E7", height: '56px', width: '100%', borderColor: "#E5E7EB", background: "#F6F8FB" }}
+        containerStyle={{ height: '50px' }}
+        buttonStyle={{ height: '56px', color: "#1F58E7", borderColor: "#E5E7EB", background:"#F6F8FB" }}
+        dropdownStyle={{ height: '150px', color: "#FFFFFF", }}
+
+        inputProps={{
+          name: 'phone',
+          required: true,
+        }}
+        country={'sg'}
         value={number}
         onChange={(e) => { setNumber('+' + e); }}
       />
