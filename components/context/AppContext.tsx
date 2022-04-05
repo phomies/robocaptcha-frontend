@@ -140,6 +140,7 @@ function AuthProvider(props: Props) {
     if (authResponse) {
       setGoogleToken(authResponse.access_token);
 
+      // Prevent attempt to login using google provider after logged into email provider
       if (firebaseToken || (firebaseAuth && firebaseAuth.currentUser)) return;
       const { user } = await loginToFirebase(
         authResponse.id_token,
@@ -226,8 +227,11 @@ function AuthProvider(props: Props) {
     name: string,
     phoneNumber: string
   ) => {
-    // Applicable to google logins since we need to retrieve firebase token
+    // If a user uses google provider to login, they'll obtain google metadata
+    // Signs user out of google provider and sign in using email provider
+    let googleProviderUid;
     if (firebaseAuth && firebaseAuth.currentUser) {
+      googleProviderUid = firebaseAuth.currentUser.uid;
       await firebaseSignOut(firebaseAuth);
     }
     const userCredential = await createUserWithEmailAndPassword(
@@ -235,8 +239,16 @@ function AuthProvider(props: Props) {
       email,
       password
     );
-    console.warn(userCredential, "Register user")
+    console.warn(userCredential, 'Register user');
     const token = await userCredential.user.getIdToken();
+
+    // Create account on database with google provider uid and email provider uid
+    const createUserInput = {
+      email,
+      name,
+      phoneNumber,
+    };
+    googleProviderUid && Object.assign(createUserInput, { googleProviderUid });
 
     await createUser({
       context: {
@@ -245,11 +257,7 @@ function AuthProvider(props: Props) {
         },
       },
       variables: {
-        createUserInput: {
-          email,
-          name,
-          phoneNumber,
-        },
+        createUserInput
       },
     });
   };
