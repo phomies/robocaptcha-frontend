@@ -99,7 +99,7 @@ function Home() {
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
           </div>
-          // TODO: Uncomment
+          {/* // TODO: Uncomment */}
           {/* {callsData?.getUser.calls.length > 0 ? (
             callsData.getUser.calls.map((item: any) => (
               <CallHistoryItem
