@@ -34,7 +34,6 @@ interface Props {
 
 interface AppContextInterface {
   getFirebaseToken: () => string | null | undefined;
-  saveFirebaseToken: (token: string) => void;
   getTheme: () => string | null | undefined;
   saveTheme: (theme: string) => void;
   signOut: () => void;
@@ -58,7 +57,6 @@ interface AppContextInterface {
 
 const appContextDefaults: AppContextInterface = {
   getFirebaseToken: () => null,
-  saveFirebaseToken: () => null,
   getTheme: () => null,
   saveTheme: () => null,
   signOut: () => null,
@@ -142,6 +140,7 @@ function AuthProvider(props: Props) {
     if (authResponse) {
       setGoogleToken(authResponse.access_token);
 
+      // Prevent attempt to login using google provider after logged into email provider
       if (firebaseToken || (firebaseAuth && firebaseAuth.currentUser)) return;
       const { user } = await loginToFirebase(
         authResponse.id_token,
@@ -228,8 +227,11 @@ function AuthProvider(props: Props) {
     name: string,
     phoneNumber: string
   ) => {
-    // Applicable to google logins since we need to retrieve firebase token
+    // If a user uses google provider to login, they'll obtain google metadata
+    // Signs user out of google provider and sign in using email provider
+    let googleProviderUid;
     if (firebaseAuth && firebaseAuth.currentUser) {
+      googleProviderUid = firebaseAuth.currentUser.uid;
       await firebaseSignOut(firebaseAuth);
     }
     const userCredential = await createUserWithEmailAndPassword(
@@ -237,8 +239,16 @@ function AuthProvider(props: Props) {
       email,
       password
     );
-    console.warn(userCredential, "Register user")
+    console.warn(userCredential, 'Register user');
     const token = await userCredential.user.getIdToken();
+
+    // Create account on database with google provider uid and email provider uid
+    const createUserInput = {
+      email,
+      name,
+      phoneNumber,
+    };
+    googleProviderUid && Object.assign(createUserInput, { googleProviderUid });
 
     await createUser({
       context: {
@@ -247,11 +257,7 @@ function AuthProvider(props: Props) {
         },
       },
       variables: {
-        createUserInput: {
-          email,
-          name,
-          phoneNumber,
-        },
+        createUserInput
       },
     });
   };
@@ -267,7 +273,6 @@ function AuthProvider(props: Props) {
       console.warn(idToken, rawUser);
       setUserId(rawUser.uid);
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
-      saveFirebaseToken(idToken);
       const providerData = rawUser?.providerData[0];
 
       // Throws an error if user does not exists in database
@@ -280,11 +285,11 @@ function AuthProvider(props: Props) {
           },
         },
         variables: {
-          email: rawUser.email,
+          email: providerData ? providerData.email : rawUser.email,
         },
       });
 
-      if (isUserExist) {
+      if (isUserExist.data.checkUser) {
         ['login', 'register'].includes(router.pathname) &&
           (await router.push('/home'));
         setIsLoaded(true);
@@ -309,11 +314,6 @@ function AuthProvider(props: Props) {
   const getFirebaseToken = () => {
     return firebaseToken;
   };
-
-  const saveFirebaseToken = useCallback((firebaseToken: string) => {
-    localStorage.setItem('firebaseToken', firebaseToken);
-    setFirebaseToken(firebaseToken);
-  }, []);
 
   const getTheme = () => {
     return theme;
@@ -348,7 +348,6 @@ function AuthProvider(props: Props) {
     <AppContext.Provider
       value={{
         getFirebaseToken,
-        saveFirebaseToken,
         getTheme,
         saveTheme,
         signOut,
