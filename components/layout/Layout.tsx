@@ -52,14 +52,13 @@ function Layout(props: Props) {
 
   const readNotifs = () => {
     if (data) {
-      console.log(data)
-      // data.getUser.notifications.map((item: any) => (
-      //   readIndivNotif({
-      //     variables: {
-      //       _id: item._id
-      //     }
-      //   })
-      // ))
+      data.getUser.notifications.map((item: any) => (
+        readIndivNotif({
+          variables: {
+            id: item._id
+          }
+        })
+      ))
     }
   }
 
@@ -216,7 +215,10 @@ function Layout(props: Props) {
           <div className="px-12 bg-white absolute z-50 h-20 dark:bg-secondary_dark dark:text-gray-50 pt-9 pb-7 w-full flex items-center gap-x-8">
             <ImCross
               className="h-4 w-4 cursor-pointer hover:text-blue-600 dark:hover:text-blue-200"
-              onClick={() => setIsNotifsOpen(false)}
+              onClick={() => {
+                setIsNotifsOpen(false);
+                readNotifs();
+              }}
             />
             <div className="font-poppins-semibold text-secondary text-xl">
               Notifications
@@ -314,7 +316,6 @@ function Layout(props: Props) {
                 className="w-6 h-6 xl:h-8 xl:w-8 text-gray-600 dark:text-gray-50 hover:text-blue-600 dark:hover:text-blue-200 cursor-pointer"
                 onClick={() => {
                   getNotifs();
-                  readNotifs();
                   setIsNotifsOpen(true);
                 }}
               />
