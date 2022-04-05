@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { AppContext } from '../components/context/AppContext';
 import { NextRouter, useRouter } from "next/router";
 import { UPSERT_PAYMENT } from '../data/mutations';
-import { GET_PAYMENTS } from "../data/queries";
+import { GET_USER } from "../data/queries";
 import { DELETE_PAYMENT } from "../data/mutations";
 import { Modal, message } from 'antd';
 import Head from 'next/head';
@@ -22,7 +22,7 @@ function Subscription() {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
-  const { error, data } = useQuery(GET_PAYMENTS, {
+  const { error, data } = useQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken()

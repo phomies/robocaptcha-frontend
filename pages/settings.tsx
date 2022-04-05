@@ -9,7 +9,7 @@ import { BiPhoneCall } from "react-icons/bi";
 import { useMutation, useQuery } from "@apollo/client";
 import { AppContext } from "../components/context/AppContext";
 import { useState, useContext, useEffect } from "react";
-import { GET_VERIFICATION_LEVEL } from "../data/queries";
+import { GET_USER } from "../data/queries";
 import { EDIT_USER, DELETE_USER } from "../data/mutations";
 import Head from "next/head";
 
@@ -22,7 +22,7 @@ function Settings() {
   const { getFirebaseToken, resetProvider, signOut } = useContext(AppContext);
   const [verificationLevel, setVerificationLevel] = useState<number | null>();
 
-  const { error, data } = useQuery(GET_VERIFICATION_LEVEL, {
+  const { error, data } = useQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken()

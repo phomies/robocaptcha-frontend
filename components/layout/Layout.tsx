@@ -18,7 +18,7 @@ import DayNightToggle from 'react-day-and-night-toggle';
 import { Drawer } from 'antd';
 import useDeviceSize from '../../utils/useDeviceSize';
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { GET_NOTIFS } from '../../data/queries';
+import { GET_USER } from '../../data/queries';
 import { READ_NOTIFS } from '../../data/mutations';
 import toast, { Toaster } from 'react-hot-toast';
 interface Props {
@@ -34,7 +34,7 @@ function Layout(props: Props) {
   const [isNotifsOpen, setIsNotifsOpen] = useState<boolean>(false);
   const [width] = useDeviceSize();
 
-  const [getNotifs, { data }] = useLazyQuery(GET_NOTIFS, {
+  const [getNotifs, { data }] = useLazyQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),

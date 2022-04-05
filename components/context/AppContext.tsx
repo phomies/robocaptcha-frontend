@@ -1,5 +1,5 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { CHECK_USER, GET_USER, LOGIN_USER } from '../../data/queries';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { CHECK_USER } from '../../data/queries';
 import {
   getAuth,
   GoogleAuthProvider,

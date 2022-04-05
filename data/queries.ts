@@ -6,14 +6,40 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export const GET_CALLS = gql`
-  query getCalls {
+export const GET_USER = gql`
+  query getUser {
     getUser {
-      calls {
+      _id
+      name
+      email
+      phoneNumber
+      maskedNumber
+      verificationLevel
+      # calls {
+      #   _id
+      #   action
+      #   dateTime
+      #   from
+      # }
+      notifications {
         _id
-        action
+        content
         dateTime
-        from
+        read
+        url
+      }
+      contacts {
+        _id
+        isBlacklisted
+        isWhitelisted
+        number
+        name
+      }
+      payments {
+        dateEnd
+        dateStart
+        plan
+        isCancelled
       }
     }
     getCallSummary {
@@ -26,74 +52,6 @@ export const GET_CALLS = gql`
       newCallsPercentage
       totalBlockedCalls
       weeklyBlockedCalls
-    }
-  }
-`;
-
-export const GET_NOTIFS = gql`
-  query getNotifs {
-    getUser {
-      notifications {
-        _id
-        content
-        dateTime
-        read
-        url
-      }
-    }
-  }
-`;
-
-export const GET_CONTACTS = gql`
-  query getContacts {
-    getUser {
-      contacts {
-        _id
-        isBlacklisted
-        isWhitelisted
-        number
-        name
-      }
-    }
-  }
-`;
-
-export const GET_USER = gql`
-  query getUser {
-    getUser {
-      _id
-      name
-      email
-      phoneNumber
-      maskedNumber
-      payments {
-        dateEnd
-        dateStart
-        plan
-      }
-    }
-  }
-`;
-
-export const GET_PAYMENTS = gql`
-  query getPayments {
-    getUser {
-      _id
-      payments {
-        dateEnd
-        dateStart
-        plan
-        isCancelled
-      }
-    }
-  }
-`;
-
-export const GET_VERIFICATION_LEVEL = gql`
-  query getNotifLevel {
-    getUser {
-      _id
-      verificationLevel
     }
   }
 `;

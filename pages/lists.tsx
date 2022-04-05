@@ -5,7 +5,7 @@ import { AppContext } from '../components/context/AppContext';
 import { useState, useContext } from 'react';
 import ListItem from '../components/lists/ListItem';
 import ModalItem from '../components/lists/ModalItem';
-import { GET_CONTACTS, SYNC_CONTACTS } from '../data/queries';
+import { GET_USER, SYNC_CONTACTS } from '../data/queries';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -15,7 +15,7 @@ function Lists() {
   const [isWLModalVisible, setIsWLModalVisible] = useState<boolean>(false);
   const router = useRouter();
 
-  const { data } = useQuery(GET_CONTACTS, {
+  const { data } = useQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),

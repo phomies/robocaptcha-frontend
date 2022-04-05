@@ -6,7 +6,7 @@ import { FiPhoneCall } from 'react-icons/fi';
 import { MdOutlineSubscriptions } from 'react-icons/md';
 import CallHistoryItem from '../components/home/CallHistoryItem';
 import { useQuery } from '@apollo/client';
-import { GET_CALLS } from '../data/queries';
+import { GET_USER } from '../data/queries';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../components/context/AppContext';
 import CallHistoryGraph from '../components/home/CallHistoryGraph';
@@ -22,7 +22,7 @@ const getAction = (action: string) => {
 function Home() {
   const { getFirebaseToken, resetProvider, signOut } = useContext(AppContext);
 
-  const { error: callsError, data: callsData } = useQuery(GET_CALLS, {
+  const { error: callsError, data: callsData } = useQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),
@@ -99,7 +99,8 @@ function Home() {
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
           </div>
-          {callsData?.getUser.calls.length > 0 ? (
+          // TODO: Uncomment
+          {/* {callsData?.getUser.calls.length > 0 ? (
             callsData.getUser.calls.map((item: any) => (
               <CallHistoryItem
                 key={item._id}
@@ -114,7 +115,7 @@ function Home() {
             <div className="font-poppins-regular text-gray-400 text-xs md:text-sm flex justify-center items-center w-full h-14 md:h-20">
               No records found
             </div>
-          }
+          } */}
         </div>
       </div>
     </Layout>
