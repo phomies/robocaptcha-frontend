@@ -29,6 +29,7 @@ const ModalItem = (props: Props) => {
     variables: {
       upsertContactInput: {
         isBlacklisted: true,
+        isWhitelisted: false,
         number: number
       }
     }
@@ -42,6 +43,7 @@ const ModalItem = (props: Props) => {
     },
     variables: {
       upsertContactInput: {
+        isBlacklisted: false,
         isWhitelisted: true,
         number: number,
         name: name
@@ -57,7 +59,7 @@ const ModalItem = (props: Props) => {
       centered={true}
       footer={null}
     >
-     
+    
       <PhoneInput
         inputStyle={{color: "#1F58E7", height: '56px', width: '100%', borderColor: "#E5E7EB", background: "#F6F8FB" }}
         containerStyle={{ height: '50px' }}

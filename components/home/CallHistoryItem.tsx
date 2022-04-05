@@ -61,8 +61,8 @@ function CallHistoryItem(props: Props) {
         }
         <Tooltip title="Blacklist Caller" placement="bottom">
           <MdBlock className="cursor-pointer w-4 h-4 md:w-5 md:h-5 text-gray-400 hover:text-red-400 dark:hover:text-red-400"
-            onClick={() => {
-              blacklistContact({
+            onClick={async () => {
+              await blacklistContact({
                 variables: {
                   upsertContactInput: {
                     isBlacklisted: true,
