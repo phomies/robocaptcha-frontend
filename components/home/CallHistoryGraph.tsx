@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { useEffect } from 'react';
 
 ChartJS.register(
   CategoryScale,
@@ -35,20 +36,33 @@ const options = {
 };
 
 interface Props {
-  callsAcceptedArr: string[];
-  callsRejectedArr: string[];
-  dateTimeArr: string[];
+  data: any;
 }
 
 function CallHistoryGraph(props: Props) {
-  const labels = props.dateTimeArr;
+  const callsAcceptedArr: number[] = [];
+  const callsRejectedArr: number[] = [];
+  const dateTimeArr: string[] = [];
+
+  useEffect(() => {
+    props.data.map((item: any) => {
+      callsAcceptedArr.push(item.callsAccepted);
+      callsRejectedArr.push(item.callsRejected);
+      dateTimeArr.push(item.dateTime);
+    })
+    console.log('callsAcceptedArr', callsAcceptedArr);
+    console.log('callsRejectedArr', callsRejectedArr);
+    console.log('dateTimeArr', dateTimeArr);
+  }, [])
+
+  const labels = dateTimeArr;
 
   const data = {
     labels,
     datasets: [
       {
         label: 'Calls Accepted',
-        data: labels.map((item: string, index: number) => props.callsAcceptedArr[index]),
+        data: labels.map((item: string, index: number) => callsAcceptedArr[index]),
         borderColor: 'rgba(74, 222, 128, 0.7)',
         backgroundColor: 'rgba(74, 222, 128, 0.3)',
         borderWidth: 2,
@@ -58,7 +72,7 @@ function CallHistoryGraph(props: Props) {
       },
       {
         label: 'Calls Blocked',
-        data: labels.map((item: string, index: number) => props.callsRejectedArr[index]),
+        data: labels.map((item: string, index: number) => callsRejectedArr[index]),
         borderColor: 'rgba(248, 113, 113, 0.7)',
         backgroundColor: 'rgba(248, 113, 113, 0.1)',
         borderWidth: 2,

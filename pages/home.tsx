@@ -35,18 +35,9 @@ function Home() {
     // resetProvider();
   }
 
-  const callsAcceptedArr: string[] = [];
-  const callsRejectedArr: string[] = [];
-  const dateTimeArr: string[] = [];
-
   useEffect(() => {
     if (callsData) {
       console.log('callsData', callsData);
-      callsData.getCallSummary.callsReceived.map((item: any) => {
-        callsAcceptedArr.push(item.callsAccepted);
-        callsRejectedArr.push(item.callsRejected);
-        dateTimeArr.push(item.dateTime);
-      })
     }
   }, [callsData])
 
@@ -81,13 +72,15 @@ function Home() {
           />
           <HomeItem
             title="Subscription Renewal"
-            stats="-"
+            stats={new Date(callsData?.getUser.payments[0].dateEnd).toDateString()}
             icon={
               <MdOutlineSubscriptions className="text-blue-600 dark:text-blue-200 h-7 w-7" />
             }
           />
         </div>
-        <CallHistoryGraph callsAcceptedArr={callsAcceptedArr} callsRejectedArr={callsRejectedArr} dateTimeArr={dateTimeArr} />
+        {
+          callsData && <CallHistoryGraph data={callsData.getCallSummary.callsReceived} />
+        }
         <div className="mt-7 py-1 bg-white dark:bg-secondary_dark shadow-lg rounded-lg w-full">
           <div className="py-4 px-7 text-sm md:text-base font-poppins-semibold">
             Call History

@@ -21,6 +21,7 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import { GET_USER } from '../../data/queries';
 import { READ_NOTIFS } from '../../data/mutations';
 import toast, { Toaster } from 'react-hot-toast';
+import client from '../../apollo-client';
 interface Props {
   children: React.ReactNode;
 }
@@ -83,6 +84,7 @@ function Layout(props: Props) {
   const logout = async () => {
     await signOut();
     await resetProvider();
+    await client.clearStore();
   };
 
   const notify = (notification: any) => {
