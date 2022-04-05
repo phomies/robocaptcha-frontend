@@ -29,14 +29,26 @@ function CallHistoryItem(props: Props) {
     }
   })
 
+  const getCountry = (number: string) => {
+    if (parsePhoneNumber(number)?.country) {
+      if (getName(parsePhoneNumber(number)?.country) === "United States of America") {
+        return "America";
+      } else {
+        return getName(parsePhoneNumber(number)?.country);
+      }
+    } else {
+      return "Unknown";
+    }
+  }
+
   return (
-    <div className="dark:bg-secondary_dark text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
+    <div className="items-center dark:bg-secondary_dark text-xs md:text-sm py-4 px-6 grid grid-cols-5 md:grid-cols-9 lg:grid-cols-11">
       <div className="col-span-2 flex items-center gap-x-2">
         <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
         {phoneNumber.includes("Anonymous") ? "Anonymous" : formatPhoneNumberIntl(phoneNumber)}
       </div>
       <div className="hidden lg:block lg:col-span-2">{contactName || "-"}</div>
-      <div className="hidden md:block md:col-span-2">{parsePhoneNumber(phoneNumber)?.country && getName(parsePhoneNumber(phoneNumber)?.country as string) || "Unknown"}</div>
+      <div className="hidden md:block md:col-span-2">{getCountry(phoneNumber)}</div>
       <div className="col-span-2 self-center">{date}</div>
       <div className="hidden md:block md:col-span-2">{time}</div>
       <div className="md:col-span-1 flex items-center gap-x-3 md:gap-x-8">
