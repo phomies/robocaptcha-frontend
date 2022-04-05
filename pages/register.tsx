@@ -184,7 +184,6 @@ export default function Register() {
                     inputProps={{
                       name: 'phone',
                       required: true,
-                      enableSearch: true
                     }}
                     country={'sg'}
                     value={phoneNumber}

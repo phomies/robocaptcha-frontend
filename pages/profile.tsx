@@ -47,14 +47,13 @@ function Profile() {
   })
 
   useEffect(() => {
-    if (data) console.log('profileData', data);
-  }, [data])
-
-  useEffect(() => {
-    setName(data?.getUser.name);
-    setEmail(data?.getUser.email);
-    setPhoneNumber(data?.getUser.phoneNumber);
-    setMaskedNumber(data?.getUser.maskedNumber);
+    if (data) {
+      console.log('profileData', data);
+      setName(data.getUser.name);
+      setEmail(data.getUser.email);
+      setPhoneNumber(data.getUser.phoneNumber);
+      setMaskedNumber(data.getUser.maskedNumber);
+    }
   }, [data])
 
   return (
@@ -127,7 +126,6 @@ function Profile() {
                     inputProps={{
                       name: 'phone',
                       required: true,
-                      enableSearch: true
                     }}
                     country={'sg'}
                     value={phoneNumber}
@@ -150,8 +148,8 @@ function Profile() {
           </div>
           {
             editProfile &&
-            <button onClick={() => {
-              updateUser();
+            <button onClick={async () => {
+              await updateUser();
               router.reload();
             }} className="my-9 h-14 rounded-lg bg-blue-600 hover:bg-blue-700 dark:bg-blue-200 dark:hover:bg-blue-300 text-white dark:text-gray-800 w-full shadow-xl">
               Save Edit
