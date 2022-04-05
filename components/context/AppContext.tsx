@@ -228,7 +228,7 @@ function AuthProvider(props: Props) {
     name: string,
     phoneNumber: string
   ) => {
-    // Applicable to
+    // Applicable to google logins since we need to retrieve firebase token
     if (firebaseAuth && firebaseAuth.currentUser) {
       await firebaseSignOut(firebaseAuth);
     }
@@ -237,6 +237,7 @@ function AuthProvider(props: Props) {
       email,
       password
     );
+    console.warn(userCredential, "Register user")
     const token = await userCredential.user.getIdToken();
 
     await createUser({
