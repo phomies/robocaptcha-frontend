@@ -30,8 +30,8 @@ function Home() {
   });
 
   if (callsError) {
-    console.log(callsError, getFirebaseToken());
-    resetProvider();
+    console.log(callsError);
+    // resetProvider();
   }
 
   const callsAcceptedArr: string[] = [];
