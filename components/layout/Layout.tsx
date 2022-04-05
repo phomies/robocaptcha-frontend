@@ -8,6 +8,7 @@ import {
   MdPayment,
   MdOutlineListAlt,
   MdNotificationsActive,
+  MdOutlineNotificationsOff,
 } from 'react-icons/md';
 import { FiHome, FiSettings } from 'react-icons/fi';
 import { CgUserList } from 'react-icons/cg';
@@ -228,24 +229,29 @@ function Layout(props: Props) {
             </div>
           </div>
           <div className="mt-24 mb-11 flex flex-col gap-y-4 px-12">
-            {data?.getUser.notifications.map((item: any) => (
-              <div
-                key={item._id}
-                className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-6 py-5"
-                onClick={() => {
-                  router.push(item.url);
-                }}
-              >
-                <div className="font-poppins-medium flex justify-between">
-                  {item.content}
-                  <div className={`flex flex-none -mt-3 -mr-4 bg-red-400 w-[8px] h-[8px] rounded-full ${item.read && 'hidden'}`} />
+            {data?.getUser.notifications.length === 0 ?
+              <div className="flex flex-col h-full w-full items-center justify-center text-base dark:text-gray-200">
+                <MdOutlineNotificationsOff className="w-12 h-12 mt-12 mb-4" />
+                No notifications
+              </div> :
+              data?.getUser.notifications.map((item: any) => (
+                <div
+                  key={item._id}
+                  className="text-sm cursor-pointer dark:hover:bg-gray-900 dark:text-gray-50 bg-primary_light hover:bg-gray-200 dark:bg-tertiary_dark shadow-lg rounded-lg w-full px-6 py-5"
+                  onClick={() => {
+                    router.push(item.url);
+                  }}
+                >
+                  <div className="font-poppins-medium flex justify-between">
+                    {item.content}
+                    <div className={`flex flex-none -mt-3 -mr-4 bg-red-400 w-[8px] h-[8px] rounded-full ${item.read && 'hidden'}`} />
+                  </div>
+                  <div className="font-poppins-regular mt-2 text-sm text-gray-400">
+                    {new Date(item.dateTime).toDateString()}{' '}
+                    {new Date(item.dateTime).toLocaleTimeString()}
+                  </div>
                 </div>
-                <div className="font-poppins-regular mt-2 text-sm text-gray-400">
-                  {new Date(item.dateTime).toDateString()}{' '}
-                  {new Date(item.dateTime).toLocaleTimeString()}
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </Drawer>
