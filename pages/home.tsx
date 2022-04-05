@@ -11,6 +11,7 @@ import { useContext, useEffect } from 'react';
 import { AppContext } from '../components/context/AppContext';
 import CallHistoryGraph from '../components/home/CallHistoryGraph';
 import Head from 'next/head';
+import { signOut } from "firebase/auth";
 
 const getAction = (action: string) => {
   if (action === 'success' || action === 'whitelisted') return 0;
@@ -19,7 +20,7 @@ const getAction = (action: string) => {
 };
 
 function Home() {
-  const { getFirebaseToken, resetProvider } = useContext(AppContext);
+  const { getFirebaseToken, resetProvider, signOut } = useContext(AppContext);
 
   const { error: callsError, data: callsData } = useQuery(GET_CALLS, {
     context: {

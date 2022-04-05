@@ -347,7 +347,7 @@ function AuthProvider(props: Props) {
 
   if (!isLoaded) {
     return (
-      <div className="flex w-full h-screen justify-center items-center bg-neutral-800">
+      <div className="flex w-full h-screen justify-center items-center bg-primary_light dark:bg-neutral-800">
         <SyncLoader color="#1FBCE7" size={30} margin={3} />
       </div>
     );
