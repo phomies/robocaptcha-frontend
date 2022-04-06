@@ -5,12 +5,10 @@ import Link from 'next/link';
 import { AppContext } from '../components/context/AppContext';
 import Head from 'next/head';
 import { Steps, Button, message, Upload } from 'antd';
-import app from '../firebase/clientApp';
 import { InboxOutlined } from '@ant-design/icons';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { UploadRequestOption } from 'rc-upload/lib/interface';
-import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 export default function Register() {
   const router: NextRouter = useRouter();
@@ -21,18 +19,6 @@ export default function Register() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
-  const firebaseAuth = getAuth(app);
-  const {
-    getFirebaseToken,
-    getGapiModule,
-    loginWithEmailPassword,
-    loginWithPhoneNumber,
-    validatePhoneToken,
-    refreshGoogleToken,
-    getGoogleToken,
-    initGapiModule,
-    setAppVerifier,
-  } = useContext(AppContext);
 
   const { registerWithEmailPassword } = useContext(AppContext);
   useEffect(() => {
@@ -49,37 +35,6 @@ export default function Register() {
       setEmail(googleEmail as string);
     }
   }, [router.isReady]);
-
-  // useEffect(() => {
-  //   getFirebaseToken() && router.push('/home');
-
-  //   const initAuthDoms = async () => {
-  //     if (firebaseAuth) {
-  //       // Recreate google login API
-  //       if (!getGoogleToken()) {
-  //         let gapiModule = getGapiModule();
-  //         if (!gapiModule) {
-  //           gapiModule = await initGapiModule();
-  //         }
-  //         attachSignIn(document.getElementById('google-sign-in'), gapiModule);
-  //       }
-  //     }
-  //   };
-  //   initAuthDoms();
-  // }, []);
-
-  const attachSignIn = (element: HTMLElement | null, auth: any) => {
-    auth.attachClickHandler(
-      element,
-      {},
-      (user: any) => {
-        refreshGoogleToken(user);
-      },
-      (error: any) => {
-        console.log(JSON.stringify(error));
-      }
-    );
-  };
 
   const handleClick = async () => {
     try {
@@ -247,8 +202,8 @@ export default function Register() {
                   <input
                     required
                     className={`placeholder:text-blue-darkBlue focus:outline-none px-5 w-full h-14 rounded-lg bg-blue-lightBlue mb-3 mt-5 ${(password !== '' &&
-                        confirmPassword !== '' &&
-                        password !== confirmPassword) ||
+                      confirmPassword !== '' &&
+                      password !== confirmPassword) ||
                       (password !== '' &&
                         password.length < 6 &&
                         'border border-red-400')
@@ -283,25 +238,6 @@ export default function Register() {
                       Password should be at least 6 characters
                     </div>
                   )}
-
-                  {/* <div className="text-gray-400 my-4 mt-8 text-center w-full">
-                    or continue with
-                  </div>
-                  <div className="flex w-full">
-                    <div className="flex mx-auto">
-                      <img
-                        className="cursor-pointer h-10 mr-6"
-                        alt="icon"
-                        src="/images/apple.png"
-                      />
-                      <img
-                        id="google-sign-in"
-                        className="cursor-pointer h-10"
-                        alt="icon"
-                        src="/images/google.png"
-                      />
-                    </div>
-                  </div> */}
                 </form>
               )}
 
@@ -400,6 +336,7 @@ export default function Register() {
                   Next
                 </Button>
               )}
+              <div className="h-20" />
             </div>
           </div>
         </div>
