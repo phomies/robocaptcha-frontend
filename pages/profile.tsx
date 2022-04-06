@@ -49,7 +49,7 @@ function Profile() {
 
   useMemo(() => {
     if (data) {
-      console.log('profileData', data);
+      // console.log('profileData', data);
       setName(data.getUser.name);
       setEmail(data.getUser.email);
       setPhoneNumber(data.getUser.phoneNumber);

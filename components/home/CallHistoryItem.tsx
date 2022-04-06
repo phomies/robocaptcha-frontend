@@ -11,7 +11,6 @@ const { getName } = require('country-list');
 
 interface Props {
   phoneNumber: string
-  // contactName?: string
   date: string
   time: string
   action: number
@@ -47,7 +46,6 @@ function CallHistoryItem(props: Props) {
         <BiUserCircle className="hidden lg:block h-6 w-6 text-gray-500" />
         {phoneNumber.includes("Anonymous") ? "Anonymous" : formatPhoneNumberIntl(phoneNumber)}
       </div>
-      {/* <div className="hidden lg:block lg:col-span-2">{contactName || "-"}</div> */}
       <div className="hidden md:block md:col-span-2">{getCountry(phoneNumber)}</div>
       <div className="col-span-2 self-center">{date}</div>
       <div className="hidden md:block md:col-span-2">{time}</div>
@@ -66,6 +64,7 @@ function CallHistoryItem(props: Props) {
                 variables: {
                   upsertContactInput: {
                     isBlacklisted: true,
+                    isWhitelisted: false,
                     number: phoneNumber
                   }
                 }

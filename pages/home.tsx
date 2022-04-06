@@ -21,7 +21,7 @@ const getAction = (action: string) => {
 function Home() {
   const { getFirebaseToken } = useContext(AppContext);
 
-  const { error: callsError, data: callsData } = useQuery(GET_USER, {
+  const { data: callsData } = useQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken(),
@@ -29,16 +29,11 @@ function Home() {
     },
   });
 
-  if (callsError) {
-    console.log(callsError);
-    // resetProvider();
-  }
-
-  useMemo(() => {
-    if (callsData) {
-      console.log('callsData', callsData);
-    }
-  }, [callsData])
+  // useMemo(() => {
+  //   if (callsData) {
+  //     console.log('callsData', callsData);
+  //   }
+  // }, [callsData])
 
   return (
     <Layout>
@@ -88,7 +83,6 @@ function Home() {
           </div>
           <div className="font-poppins-semibold bg-gray-50 dark:bg-tertiary_dark text-xs md:text-sm py-4 px-7 grid grid-cols-5 md:grid-cols-9">
             <div className="col-span-2">Phone Number</div>
-            {/* <div className="hidden lg:block lg:col-span-2">Name</div> */}
             <div className="hidden md:block md:col-span-2">Location</div>
             <div className="col-span-2">Date</div>
             <div className="hidden md:block md:col-span-2">Time</div>
@@ -99,7 +93,6 @@ function Home() {
                 <CallHistoryItem
                   key={item._id}
                   phoneNumber={item.from}
-                  // contactName="Anonymous"
                   date={new Date(item.dateTime).toDateString()}
                   time={new Date(item.dateTime).toLocaleTimeString()}
                   action={getAction(item.action)}

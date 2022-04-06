@@ -21,7 +21,7 @@ function Subscription() {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
-  const { error, data } = useQuery(GET_USER, {
+  const { data } = useQuery(GET_USER, {
     context: {
       headers: {
         fbToken: getFirebaseToken()
@@ -62,7 +62,7 @@ function Subscription() {
 
   useMemo(() => {
     if (data) {
-      console.log('subscriptionData', data);
+      // console.log('subscriptionData', data);
       setPlan(data?.getUser.payments[0]?.plan);
       setDateEnd(data?.getUser.payments[0]?.dateEnd);
       setIsCancelled(data?.getUser.payments[0]?.isCancelled);

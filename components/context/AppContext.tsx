@@ -136,7 +136,7 @@ function AuthProvider(props: Props) {
 
   const refreshGoogleToken = async (user: any) => {
     const authResponse = user.getAuthResponse(true); // True -> Get access token
-    console.log('Refreshing google token', authResponse);
+    // console.log('Refreshing google token', authResponse);
 
     if (authResponse) {
       setGoogleToken(authResponse.access_token);
@@ -174,7 +174,7 @@ function AuthProvider(props: Props) {
     const credential = GoogleAuthProvider.credential(idToken, firebaseToken);
 
     // Users already linked to Firebase
-    console.log('Signed in with credentials');
+    // console.log('Signed in with credentials');
     return await signInWithCredential(firebaseAuth, credential);
   };
 
@@ -190,7 +190,7 @@ function AuthProvider(props: Props) {
   const validatePhoneToken = async (token: string) => {
     if (tokenVerification) {
       const response = await tokenVerification.confirm(token);
-      console.log('Validated phone token', response.user);
+      // console.log('Validated phone token', response.user);
     }
   };
 
@@ -212,13 +212,13 @@ function AuthProvider(props: Props) {
   const signOut = async () => {
     try {
       const promises = [];
-      console.log(gapiModule);
+      // console.log(gapiModule);
       gapiModule && promises.push(gapiModule.signOut());
       firebaseAuth && promises.push(firebaseSignOut(firebaseAuth));
 
       await Promise.all(promises);
     } catch (error) {
-      console.log('Error logging out', error);
+      // console.log('Error logging out', error);
     }
   };
 
@@ -240,7 +240,7 @@ function AuthProvider(props: Props) {
       email,
       password
     );
-    console.warn(userCredential, 'Register user');
+    // console.warn(userCredential, 'Register user');
     const token = await userCredential.user.getIdToken();
 
     // Create account on database with google provider uid and email provider uid
@@ -271,7 +271,7 @@ function AuthProvider(props: Props) {
       localStorage.setItem('firebaseToken', idToken);
       localStorage.setItem('userId', rawUser.uid);
 
-      console.warn(idToken, rawUser);
+      // console.warn(idToken, rawUser);
       setUserId(rawUser.uid);
       setFirebaseToken(idToken); // Set firebase access token for communications with backend
       const providerData = rawUser?.providerData[0];

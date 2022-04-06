@@ -65,9 +65,9 @@ function Layout(props: Props) {
     }
   }
 
-  useMemo(() => {
-    if (data) console.log('notifsData', data);
-  }, [data])
+  // useMemo(() => {
+  //   if (data) console.log('notifsData', data);
+  // }, [data])
 
   useMemo(() => {
     if (router.pathname.includes('home')) {
@@ -90,7 +90,7 @@ function Layout(props: Props) {
   };
 
   const notify = (notification: any) => {
-    console.log('notification', notification);
+    // console.log('notification', notification);
     const dateTime = new Date(notification.dateTime);
 
     toast.custom((t) => (
@@ -133,13 +133,13 @@ function Layout(props: Props) {
 
     let ws: WebSocket | null = null;
     let autoReload = setInterval(() => {
-      console.log('checking connection');
+      // console.log('checking connection');
 
       if (ws === null || ws.readyState !== ws.OPEN) {
         // TODO - Shift into env variable
         ws = new WebSocket('wss://notification.robocaptcha.xyz/' + userId);
         ws.onmessage = (message: any) => {
-          console.log('received: ', message);
+          // console.log('received: ', message);
           notify(JSON.parse(message.data));
         };
       }

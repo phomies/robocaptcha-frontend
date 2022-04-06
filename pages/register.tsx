@@ -44,7 +44,7 @@ export default function Register() {
 
     setIsNewGoogleUser(isNewUser ? true : false);
     if (isNewUser) {
-      console.log(googleName, googleEmail);
+      // console.log(googleName, googleEmail);
       setName(googleName as string);
       setEmail(googleEmail as string);
     }
@@ -74,7 +74,6 @@ export default function Register() {
       {},
       (user: any) => {
         refreshGoogleToken(user);
-        // router.push('/home');
       },
       (error: any) => {
         console.log(JSON.stringify(error));
@@ -134,9 +133,9 @@ export default function Register() {
     accept: '.png, .jpeg, .jpg, .pdf',
     onChange(info: any) {
       const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
+      // if (status !== 'uploading') {
+      //   console.log(info.file, info.fileList);
+      // }
       if (status === 'done') {
         message.success(`${info.file.name} file uploaded successfully.`);
         setIsFileDropped(true);
@@ -145,7 +144,7 @@ export default function Register() {
       }
     },
     onDrop(e: any) {
-      console.log('Dropped files', e.dataTransfer.files);
+      // console.log('Dropped files', e.dataTransfer.files);
       setIsFileDropped(true);
     },
   };

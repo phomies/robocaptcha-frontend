@@ -25,7 +25,7 @@ function Lists() {
     },
   });
 
-  if (data) console.log('contactsData', data);
+  // if (data) console.log('contactsData', data);
 
   const [syncContacts] = useLazyQuery(SYNC_CONTACTS, {
     context: {
