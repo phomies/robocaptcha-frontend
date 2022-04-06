@@ -50,23 +50,23 @@ export default function Register() {
     }
   }, [router.isReady]);
 
-  useEffect(() => {
-    getFirebaseToken() && router.push('/home');
+  // useEffect(() => {
+  //   getFirebaseToken() && router.push('/home');
 
-    const initAuthDoms = async () => {
-      if (firebaseAuth) {
-        // Recreate google login API
-        if (!getGoogleToken()) {
-          let gapiModule = getGapiModule();
-          if (!gapiModule) {
-            gapiModule = await initGapiModule();
-          }
-          attachSignIn(document.getElementById('google-sign-in'), gapiModule);
-        }
-      }
-    };
-    initAuthDoms();
-  }, []);
+  //   const initAuthDoms = async () => {
+  //     if (firebaseAuth) {
+  //       // Recreate google login API
+  //       if (!getGoogleToken()) {
+  //         let gapiModule = getGapiModule();
+  //         if (!gapiModule) {
+  //           gapiModule = await initGapiModule();
+  //         }
+  //         attachSignIn(document.getElementById('google-sign-in'), gapiModule);
+  //       }
+  //     }
+  //   };
+  //   initAuthDoms();
+  // }, []);
 
   const attachSignIn = (element: HTMLElement | null, auth: any) => {
     auth.attachClickHandler(
@@ -284,7 +284,7 @@ export default function Register() {
                     </div>
                   )}
 
-                  <div className="text-gray-400 my-4 mt-8 text-center w-full">
+                  {/* <div className="text-gray-400 my-4 mt-8 text-center w-full">
                     or continue with
                   </div>
                   <div className="flex w-full">
@@ -301,7 +301,7 @@ export default function Register() {
                         src="/images/google.png"
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </form>
               )}
 
