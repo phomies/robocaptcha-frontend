@@ -136,8 +136,8 @@ export default function Login() {
           </div>
         </nav>
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 sm:mx-32 mx-10 h-full">
-          <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44">
-            <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8">
+          <div className="self-center sm:mt-10 lg:-mt-24">
+            <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8 lg:mt-16">
               Sign in to
             </div>
             <div className="font-poppins-medium text-secondary lg:text-3xl text-xl lg:mb-12 mb-5">
@@ -155,12 +155,12 @@ export default function Login() {
           </div>
 
           <img
-            className="hidden xl:block w-7/12 mt-48"
+            className="hidden xl:block w-7/12 mt-56"
             alt="login"
             src="/images/login.png"
           />
 
-          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end lg:self-center -mt-10 md:-mt-12 lg:mt-0 xl:-mt-32 ">
+          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end lg:self-center -mt-10 md:-mt-12 lg:-mt-3">
             <form>
               <div className="text-black hidden lg:block font-poppins-semibold text-2xl mb-8">
                 Sign in

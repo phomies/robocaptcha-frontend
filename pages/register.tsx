@@ -118,8 +118,8 @@ export default function Register() {
           </div>
         </nav>
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 sm:mx-32 mx-10 h-full">
-          <div className="self-center sm:mt-10 lg:-mt-24 xl:-mt-44">
-            <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8 md:mt-5 lg:mt-0">
+          <div className="self-center sm:mt-10 lg:-mt-24">
+            <div className="font-poppins-semibold text-secondary lg:text-5xl text-2xl lg:mb-6 mb-2 mt-8 md:mt-5">
               Sign up for
             </div>
             <div className="font-poppins-medium text-secondary lg:text-3xl text-xl lg:mb-12 mb-5">
@@ -136,12 +136,12 @@ export default function Register() {
           </div>
 
           <img
-            className="hidden xl:block w-7/12 mt-48"
+            className="hidden xl:block w-7/12 mt-56"
             alt="login"
             src="/images/login.png"
           />
 
-          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end mt-8 md:my-auto">
+          <div className="text-sm text-blue-darkBlue font-poppins-regular justify-end mt-8 lg:my-auto">
             <Steps current={current}>
               {steps.map((item) => (
                 <Step key={item.title} title={item.title} />
