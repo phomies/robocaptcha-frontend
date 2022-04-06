@@ -94,7 +94,7 @@ function Home() {
                   key={item._id}
                   phoneNumber={item.from}
                   date={new Date(item.dateTime).toDateString()}
-                  time={new Date(item.dateTime).toLocaleTimeString()}
+                  time={new Date(item.dateTime).toLocaleTimeString('en-US')}
                   action={getAction(item.action)}
                 />
               ))

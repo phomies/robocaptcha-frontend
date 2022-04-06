@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { UPSERT_CONTACT } from "../../data/mutations";
 import { formatPhoneNumberIntl, parsePhoneNumber } from 'react-phone-number-input';
+import { NextRouter, useRouter } from "next/router";
 
 const { getName } = require('country-list');
 
@@ -19,6 +20,7 @@ interface Props {
 function CallHistoryItem(props: Props) {
   const { phoneNumber, date, time, action } = props;
   const { getFirebaseToken } = useContext(AppContext);
+  const router: NextRouter = useRouter();
 
   const [blacklistContact] = useMutation(UPSERT_CONTACT, {
     context: {
@@ -70,6 +72,7 @@ function CallHistoryItem(props: Props) {
                 }
               });
               message.success(`${formatPhoneNumberIntl(phoneNumber)} added to blacklist`);
+              router.reload();
             }}
           />
         </Tooltip>
